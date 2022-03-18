@@ -1,0 +1,168 @@
+p017
+hello.java
+sublime字体：
+  首选项-设置用户-fontsize 20
+  有中文时文件编码为GBK（一般为utf8），需要和dos（属性-选项）一致
+javac Hello.java 编译文件为class（字节码文件）
+java Hello  
+  不带.class 是在执行class里的Hello类
+  
+                                                        //java快速入门
+                                                        //演示开发步骤
+                                                        //1.Hello是一个类，一个公有public的类
+                                                        //{}类的开始结束
+                                                        public class Hello{
+                                                          //main方法 程序入口
+                                                          //{}方法的开始结束
+                                                          public static void main(String[] args){
+                                                            System.out.println("hello, wolrd");//表示输出到屏幕
+                                                          }
+                                                        }
+
+
+
+p018
+.class字节码文件是可以执行的java程序，在JVM上装载执行
+修改过的.java文件需要重新编译javac为新的class文件
+
+
+
+p019  主类
+源文件基本组成是类class
+执行入口是main方法，书写格式固定 public static void main(String[] args){}
+大小写敏感
+要带分号，先写好成对的{}
+public类只能有一个，要与.java文件同名
+其他类不限制，每个类编译后都会生成一个class
+main方法可以写在别的类中 
+
+javac Hello.java
+java Dog
+
+                                                          public class HelloWorld {
+                                                              public static void main(String []args) {
+                                                                 System.out.println("Hello World!");
+                                                              }
+                                                          }
+                                                          class Dog{
+                                                              public static void main(String []args) {
+                                                                 System.out.println("Hello dog");
+                                                              }
+                                                          }
+                                                          class Tiger{
+                                                            public static void main(String []args){
+                                                              System.out.println("hello tiger")
+                                                            }
+                                                          }
+
+
+
+p020  学习方法
+1.需求：工作？跳槽对方需求？技术控？
+2.能否使用传统技术解决？ -------------新技术
+3.新技术不考虑细节------------------基本语法原理
+4.快速入门-------------------------基本程序，crud 先完成后完美
+5.开始研究细节----------------------注意事项，细节，规范，优化，永无止境
+
+
+
+p021 转义字符
+
+                                                //转义字符
+                                                public class ChangeChar {
+                                                    public static void main(String []args) {
+                                                    // \t 制表，对齐
+                                                    System.out.println("北京\t天津\t上海");
+                                                    // \n
+                                                    System.out.println("jack\nrose\nmary");
+                                                    // \r  表示回车
+                                                    System.out.println("jack\rBeijing");
+                                                    System.out.println("jack\r\nBeijing");
+                                                    // \" \' \\
+                                                    System.out.println("C:\\Windows\\System32\\\\cmd.exe\nTeachersays\"learning java has great expectation\"");
+                                                    System.out.println("书名\t作者\t价格\t销量\n三国\t罗贯中\t120\t1000");
+                                                    }
+                                                }
+
+
+
+p022 初学易错点
+文件名写错了、不在当前目录下
+主类和文件名不一致
+分号分号分号分号分号分号分号分号分号分号分号分号分号分号分号分号分号分号分号分号分号分号分号分号分号分号分号分号分号分号分号分号
+1和l
+0和O
+非法字符：
+  ；和;
+  ” 和"
+  ’ 和'
+找不到符号：
+  void---viod
+  main---mian
+解析时候已到文件尾部
+  {}缺少
+业务错误、环境错误、库、权限、运行版本
+
+
+
+p023 注释
+p024 java注释使用
+先将思路用注释写出，在具体写程序
+
+                                                public class Adder{
+                                                  public static void main(String []args){
+                                                    //下面代码完成两数相加
+                                                    //定义变量
+                                                    int n1 = 10;
+                                                    int n2 =29;
+                                                    //add
+                                                    int sum = n1+n2;
+                                                    //print
+                                                    System.out.println("result=" + sum);
+                                                  }
+                                                }
+
+
+
+p025 文档注释
+注释可被javadoc解析，生成网页文件，一般卸载类中
+javadoc -d d:\\temp -author -version Adder.java
+index.html
+javadoc标签
+                                                //文档注释
+                                                /**
+                                                 * @author Sean
+                                                 * @version 1.0
+                                                */
+                                                //javadoc -d d:\\temp -author -version Adder.java
+                                                //index.html
+                                                public class Adder
+                                                {
+                                                  public static void main(String []args){
+                                                    //下面代码完成两数相加
+                                                    //定义变量
+                                                  /*	int n1 = 10;
+                                                    int n2 =29;
+                                                    //add
+                                                    int sum = n1+n2;
+                                                    //print
+                                                    System.out.println("result=" + sum);*/
+                                                    System.out.println("teacher says learning java has great expectation");
+                                                  }
+                                                }
+
+
+
+p026  代码规范
+类、方法的注释用javadoc写
+非javadoc的注释（单多行注释）是给开发维护者看的，
+tab缩进（整体选中----tab）
+shift tab向右缩进
++ - = * < > 符号两边空格
+源文件使用utf-8编码
+每行不超过80字符
+次行风格 public class Adder
+        {
+        }
+行尾风格 public class Adder{
+        }
