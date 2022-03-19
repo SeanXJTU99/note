@@ -30,7 +30,7 @@ JDK：开发工具包
     JRE=JVM+java核心类库
     非开发人员只需要JRE，直接运行开发好的java.class
     
-p012  JDK安装
+p012  JDK安装  java8 取消自动检测更新
 p013  JDK配置
 p014+15  win7+Mac
   配置path
