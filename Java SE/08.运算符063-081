@@ -1,0 +1,257 @@
+p063
+运算符：算数、赋值、关系、逻辑、位运算、三元
+/ 除法，保持数值精度 10/3=3
+          System.out.println(10/4);//2
+          System.out.println(10.0/4);//2.5
+          double b = 10/4; // 2->2.0
+          System.out.println(b); //2.0
+% 取模（取余）11%9 = 2
+++/--：
+   前++：先运算后取值  a = 2; b=++a;//b=3
+   后++：先取值后运算  a = 2; b=a++;//b=2
+   前--：先运算后取值  a = 2; b=--a;//b=1
+   后--：先取值后运算  a = 2; b=a--;//b=2
+   
+
+p064
+取模 a%b = a-a/b*b
+            public class arithmeticOperator{
+              public static void main(String[] args){
+                //a%b = a-a/b*b
+                System.out.println(10%3);//1
+                System.out.println(-10%3);//-10-(-10/3)*3=-1
+                System.out.println(10%-3);//10-(10/-3)*(-3)=1
+                System.out.println(-10%-3);//-1		
+              }
+            }
+自增
+            public class arithmeticOperator{
+              public static void main(String[] args){
+                int i =10;
+                //单独使用完全一样
+                i++;
+                System.out.println(i);
+                ++i;
+                System.out.println(i);
+                int j =8;
+                int k = ++j;  //j++; int k=j;
+                System.out.println(k+j);
+                int n = j++;  //int n = j; j++;
+                System.out.println(n+j);
+              }
+            }
+
+
+p065  经典面试题
+int i=1;
+i=i++; // temp = i; i++; i = temp; 1
+int i=1;
+i=++i; // i++; temp=i; i=temp;  2
+
+
+p066 ++、--
+int i1 = 10;
+int i2 = 20;
+int i = i1++;          //i1=11;i=10
+System.out.println(i); //10
+System.out.println(i2);//20
+i = --i2;              //i2=i=19;
+System.out.println(i); //19
+System.out.println(i2);//19
+
+
+p067  运算练习
+            public class arithmeticOperator{
+              public static void main(String[] args){
+                //需求：
+                //还有59天放假，合xx星期xx天
+                //int days保存天数59
+                //days/7 星期数
+                //days%7 天数
+                int days = 59;
+                int weeks = days/7;
+                int left = days%7;
+                System.out.println(days +"天 合"+weeks+"星期零"+left+"天");
+              }
+            }
+
+
+p068 运算练习
+                //定义变量保存华氏温度，5/9*(fah-100)
+                //求出相应的摄氏温度
+                //定义一个double保存华氏温度
+                //公式计算
+                //保存到double cent
+                double fah = 234.6;
+                double cent = 5/9*(fah-100); //5/9=0
+                System.out.println(cent);//0.0
+                double centimeter = 5.0/9.0*(fah-100.0);
+                System.out.println(centimeter);//74.77777777777777
+
+
+
+p069关系运算 
+最终结果是boolean
+instanceof 检查是否是类的对象  "hsp" instanceof String; // true
+
+
+p070 关系
+int a= 9;
+int b = 8;
+boolean flag = a>b;
+System.out.println(flag);
+
+
+p071 逻辑运算符
+最终结果是bool
+&与
+&&短路与   a&&b
+|或
+||短路或   a||b
+^异或
+!非
+
+
+p072 与
+a&&b : a为false，b不再判断  （常用）
+a&b  ：a为false，b还要判断
+int age = 50;
+if(age>20 && age < 90){
+  System.out.println("true");
+}
+                      public class arithmeticOperator{
+                        public static void main(String[] args){
+                          int a =4;
+                          int b= 9;
+                          if(a < 1 && ++b <50)                   //不会计算++b,b=9
+                          {
+                            System.out.println("true");
+                          }
+                          System.out.println("a="+a+"\n"+"b="+b);//b=9
+                          if (++b <50 && a<1){
+                            System.out.println("true");
+                          }
+                          System.out.println("a="+a+"\n"+"b="+b);//b=10
+                              if (a<10 && ++b<50){               //第一条件成立，会计算++b
+                            System.out.println("true");
+                          }
+                          System.out.println("a="+a+"\n"+"b="+b);//b=10
+                        }
+                      }
+
+
+
+p073 或
+a||b  一真则真，不判断第二个
+a|b   一真则真，判断第二个
+
+
+
+p074 非/异或
+非：
+  true->false
+  false->true
+异或：
+  不同为真
+  相同为假
+  System.out.println((4<1)^(6>3));//true
+
+
+
+p075 练习
+int x =5;
+int y =5;
+if(++x==6 & y++==6){
+  x=11;
+}
+System.out.println(x+y);
+
+                    public class arithmeticOperator{
+                      public static void main(String[] args){
+                        int x =5;
+                        int y =5;
+                        if(++x==6 & y++==6){  //y++先比较再自增
+                          x=11;
+                        }
+                        System.out.println(x+y);
+                        x=5;y=5;
+                        if(x++==6 && ++y==6){  //x++先比较再自增,false&&不再计算++y
+                          x=11;
+                        }
+                        System.out.println(x+y);
+                        x=5;y=5;
+                        if(x++==5 | ++y==5){
+                          x=11;
+                        }
+                        System.out.println(x+y);
+                        x=5;y=5;
+                        if(x++==5 || ++y==5){  //x++==5 true 不计算++y
+                          x=11;
+                        }
+                        System.out.println(x+y);
+                        boolean x1= true;
+                        boolean y1 =false;
+                        short z= 46;
+                        if((z++==46)&&(y1=true)) z++;//y=false;z=48;
+                        if((x1=false)||(++z==49)) z++;//x=false;z=50;
+                        System.out.println(z);//50
+                      }
+                    }
+
+
+
+p076 赋值运算
+
+p077 赋值运算
+计算等号右边，然后赋值给左边  int n = a + b + c;
+左边只能是变量，右边可以是变量，表达式，常数
+a += 3; a = a+3;
+复合赋值运算会进行强制类型转换
+byte b = 3; b += 2; b = (byte)(b+2);
+
+
+p078 三元运算
+条件? 表达式1（true):表达式2(false)
+    int a =10; int b=99;
+    int res = a>b?a++:b-- //res=99
+                    public class TernaryOperator{
+                      public static void main(String[] args){
+                        int a =10; int b=99;
+                        int res = a<b?a++:--b;
+                        System.out.println(res+"\n"+a+"\n"+b);
+                      }
+                    }
+
+
+p079
+表达式式1、2要可以接收变量
+int a =3;int b =4;
+int c= a<b? 1.1:3.3;            //error
+int c = a<b?（int）1.1:(int)3.4;//ok
+int c =a<b? (int)1.1:b+3;       //ok
+
+p080  三个数的最大值
+                public class TernaryOperatorExercise{
+                  public static void main(String[] args){
+                    int n1 =55; int n2 = 33; int n3 =123;
+                    //先得到n1 n2的最大数，保存在max1
+                    //再求出max1和n3的最大数，保存再max2
+                    int max1 = n1>n2? n1: n2;
+                    int max2 = max1>n3? max1:n3;
+                    System.out.println(max2);
+                    //一条语句实现
+                    /*int max = (n1> n2 ? n1:n2)> n3 ?(n1> n2? n1:n2):n3;
+                    System.out.println(max);*/
+                  }
+                }
+
+
+p081 优先级
+{}（） （括号
+++、-- （单目
+算术 * / % + -
+位移 >> <<
+关系 > <= instanceof
+逻辑 && ||
+三元 ?:
+赋值 = *= /= +=
