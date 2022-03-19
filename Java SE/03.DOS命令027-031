@@ -1,0 +1,39 @@
+p027  DOS原理
+disc operate system 磁盘操作系统
+接受--解析--执行
+md d:\\hsptemp  创建目录
+rd d:\\hsptemp  删除目录
+cd..            返回上级目录
+
+
+p028
+路径
+相对路径
+    从当前目录开始定位  ..\..\abc2\test200\hello.txt
+绝对路径
+    从根目录（cdef）开始定位 d:\abc2\test200\hello.txt
+
+
+
+p029 p030 p031
+dir 当前目录的子目录(directory
+  dir d:\python36\Scripts
+cd  change directory
+  cd..                                  返回上级
+  cd /D d:\python36            前往目录并改变盘符
+  D:\python36>cd Scripts                相对路径
+  D:\python36\Scripts>cd ..\..\Pycharm  绝对路径
+  cd\                                   回根目录
+tree 建立树
+   D:\python36> tree c:\dell
+cls 清屏
+exit 退出dos
+copy
+  copy pic.txt e:\ok.txt
+del
+  del hello.txt pic.txt
+echo 输入内容到文件
+  echo hello > hello.txt
+move 剪切
+  move e:\ok.txt d:\python36
+type
