@@ -1,0 +1,206 @@
+p052 基本数据类型转换
+赋值和运算时，精度小类型自动转换为精度大的类型
+char--int--long--float--double
+byte--short--int--long--float--double
+
+int a = 'c';//
+double d = 80;
+
+                                      public class Autoconvert{
+                                        public static void main(String[] args){
+                                          //演示自动转换
+                                          int a = 'c';//ok  print ascii of c
+                                          double d = 80;//ok
+                                          boolean isPass = false;
+                                          System.out.println(a);
+                                          System.out.println(d);
+                                        }
+                                      }
+
+
+
+p053 注意事项
+1.多种类型混合时自动转换为最大精度
+2.将大精度数值赋值给小精度类型时会报错，反之会自动转换
+              int n1 = 10;
+              double d1 = n1+1.1;
+              //float d2 = n1 + 1.1;//error, n1 + 1.1 is double, cannot convert to float
+              float d2 = 1.1F + n1;//ok
+              //int n2 = 1.1;//error
+3.（byte--short) char不会互相自动转换
+      byte赋值先判断是否在byte范围内，如果是就可以-128----127
+                byte b1 = 10;//ok,-128---127
+                byte b1 = 1000; //error
+      变量赋值就需要满足自动转换条件
+                int n2 = 1;
+                //byte b2 = n2;//error
+                char c1 = b1;//error, byte char cannot auto convert
+
+p054
+4.byte short char 可以参与计算，只要参与计算就会先全部转换为int
+                 short s1 = 1;
+                 byte b2 = 1;
+                 short s2 = b2 + s1;//error
+                 int s2 = b2 + s1;//ok
+5.boolean 不参与自动转换
+                                                  public class Autoconvert{
+                                                    public static void main(String[] args){
+                                                      //演示自动转换
+                                                      byte b4 = 1;
+                                                      short s3 = 100;
+                                                      int n2 = 1;
+                                                      double n3 = 1.1;
+                                                      float n4 = 1.1F;
+                                                      double sum = b4 + s3 + n2 +n3;
+                                                      System.out.println(sum);
+                                                    }
+                                                  }
+                                                          
+                                                          
+p055 强制类型转换
+可能造成精度降低或溢出
+int i = (int)1.9;
+ 
+                                          public class Forceconvert{
+                                            public static void main(String[] args){
+                                              //演示强制转换
+                                              int n1 = (int)1.9;
+                                              System.out.println("n1=" + n1);//n1=1精度损失
+                                              int n2 = 2000;
+                                              byte b1 =(byte)2000;
+                                              System.out.println("b1=" + b1);//b1 = -48 溢出
+                                            }
+                                          }
+  
+
+
+p056 强制转换
+强转符号只对最近操作数有效，往往使用小括号提升优先级
+               int x = (int)10*3.5 + 6.5;//error
+               int y = (int)(10 *3.5 + 6.5);//ok,41
+char类型能保存int常量，但不保存int变量
+               char c1 = 100;
+               int m = 100;
+               char c2 = m;  //error
+               char c3 = (char)m; // ok
+               System.out.println(c3); //ok, d
+byte short char运算时转换为int
+ 
+ 
+ 
+p057
+short s=12;
+s = s-9;     //s-9进行了运算，成为int
+byte b =10;
+b =b+11;     //error int->byte
+b=(byte)(b+11);
+char c= 'a';
+int i =16;
+float d= .213F;
+double res = c + i +d;
+byte b = 16;
+short s =14;
+short t =s+b; //error int->short
+ 
+ 
+p058 string转换
+basic->String: +""
+String->basic: XX.parseXX
+                              public class StringtoBasic{
+                                public static void main(String[] args){
+                                  //basic->String
+                                  int n1 =100;
+                                  float f1 =1.1F;
+                                  double d1 =5.5;
+                                  boolean b1 =true;
+                                  String s1 = n1 +"";
+                                  String s2 = f1 +"";
+                                  String s3 = d1 +"";
+                                  String s4 = b1 +"";
+                                  System.out.println(s1+" " + s2 +" "+s3+" "+s4);//100 1.1 5.5 true
+                                  //String->basic
+                                  //要用对应的包装类的相应方法
+                                  String s5 = "123";
+                                  Integer num1 = Integer.parseInt(s5);
+                                  System.out.println(num1);//123		
+                                  Float.parseFloat(s5);
+                                  Long.parseLong(s5);
+                                  Byte.parseByte(s5);
+                                  Boolean.parseBoolean("true");
+                                  Short.parseShort(s5);
+                                  double num2 = Double.parseDouble(s5);
+                                  System.out.println(num2 + 1);//124
+                                  //得到s5字符串的第一个字符
+                                  System.out.println(s5.charAt(0));//1
+                                }
+                              }
+
+
+p59注意事项
+‘123’可以转换为123
+但hello不可能转换为int
+                        public class StringtoBasicDetail{
+                          public static void main(String[] args){
+                            String str = "hello";
+                            int n1 = Integer.parseInt(str);
+                            System.out.println(n1);//exception		
+                          }
+                        }
+
+
+p060
+                              public class StringtoBasicDetail{
+                                public static void main(String[] args){
+                                  int n1 =13;
+                                  int n2 = 17;
+                                  int n3 = n1+n2;
+                                  System.out.println(n3);//30
+                                  int n4 = 38;
+                                  int n5 = n4 - n3;
+                                  System.out.println(n5);//8
+                                }
+                              }
+
+
+p061
+                                public class Homework02{
+                                  public static void main(String[] args){
+                                    char c1 = '\n';
+                                    char c2 = '\t';
+                                    System.out.println(c1);
+
+                                    //String book1 = 'book1';
+                                    String book1 = "book1";
+                                    //String book2 = 'book2';
+                                    String book2 = "book2";
+                                    System.out.println(book1 +book2);
+                                    //char c1 = 'm';//Main.java:12: error: variable c1 is already defined in method main(String[])
+                                    c1 = 'm';
+                                    c2 = 'f';
+                                    System.out.println(c1+c2);//字符运算，int
+
+                                    float p1 = 123.56F;
+                                    float p2 = 100F;
+                                    System.out.println(p1 + p2);
+
+                                    String name = "jack";
+                                    int age = 20;
+                                    double score = 80.9;
+                                    char gender = 'm';
+                                    String hobby = "play basketball";
+                                    System.out.println("姓名\t年龄\t成绩\t性别\t爱好\n" + name + "\t" + age + "\t"
+                                               + score + "\t"+ gender+ "\t" + hobby);
+                                    //姓名	年龄	成绩	性别	爱好
+                                    //jack	20	 80.9	 m	  play basketball
+                                  }
+                                }
+
+
+p062
+变量：数据存储空间的表示
+数据类型 byte[1] char[2] short[2]
+API 检索
+字符本质是编码
+布尔只能是true或false
+类型转换：自动、强制
+String<->basic +""/parseXX()
