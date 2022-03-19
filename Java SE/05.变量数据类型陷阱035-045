@@ -1,0 +1,145 @@
+p035
+变量：类型 名称 值
+                                                    class test{
+                                                        public static void main(String []args){
+                                                            int a = 1; //类型 int 名称 a 值 1
+                                                            int b = 3'
+                                                            b = 89;
+                                                            System.out.println(a);
+                                                            System.out.println(b);
+                                                        }
+                                                    }
+
+
+
+p036
+变量是数据存储空间表示，
+变量是门牌号，通过门牌号可以找到房间，访问变量的值
+
+
+
+p037
+                                                    public class Homework01{
+                                                      public static void main(String []args){
+                                                        //recore inf of Bob
+                                                        int age = 20;
+                                                        double score = 88.6;
+                                                        char gender = 'M';
+                                                        //String name = 'Bob';会报错 只能用""
+                                                        String name = "Bob";
+                                                        System.out.println(name +"\t" + age);	
+                                                      }
+                                                    }
+ 
+
+
+p038
+int 4字节  double 8字节
+该区域有自己的名称【变量名】和类型【空间大小】
+先声明后使用
+    System.out.println(name +"\t" + age);
+    String name = "Bob";
+值可以变化，类型不能变化
+    int a = 77;
+    a = 'M';
+同一个作用域不能重名
+    int a = 77;
+    int a = 88;//错误
+                                                public class Homework01{
+                                                    public static void main(String []args){
+                                                        int a = 77;
+                                                    }
+                                                }
+                                                class Var{
+                                                    public static void main(String []args){
+                                                        int a = 82;  //正确
+                                                    }
+                                                }    
+    
+    
+    
+p039  + 号
+
+两边数值，加法
+任一方为字符串，拼接
+                                                public class Homework01{
+                                                  public static void main(String []args){
+                                                    System.out.println(100 + 98);     //198
+                                                    System.out.println("100" + 98);	  //10098
+                                                    System.out.println("hello" + 3 + 100);  //hello3100
+                                                    System.out.println(100 + 3 + "hello");	//103hello 
+                                                  }
+                                                }
+
+
+
+
+p040  *数据类型
+每个数据都有明确的数据类型（强类型语言）
+基本+引用类型
+基本
+  数值
+    整数（byte[1] short[2] int[4] long[8]     1字节=8bit
+    浮点（float[4] double[8]
+  字符
+    char[2]  'a'
+  布尔
+    boolean[1] true false
+引用
+  类 class  (字符串
+  接口 interface
+  数组 []
+
+
+
+p041  整数
+byte -128----127
+short int long
+
+
+p042
+整数类型空间固定，不受os系统影响
+  int n1 = 1;
+  int n2 = 3L;//强制转换long型，比int空间大，错误
+  long n3 = 3L;
+
+
+
+p043 浮点
+浮点数=符号+指数+尾数
+尾数可能丢失，造成精度损失
+
+
+p044
+浮点空间固定
+默认double，声明float变量需要加F
+float n2 = 1.1;//错误
+float n2 = 1.1F;
+double n3 = 2.2F;
+double n4 = .512;//省略小数点
+double n5 = 5.12e4;//科学计数法
+double n6 = 6.12E-2;
+使用陷阱
+                                                              System.out.println(2.7); // 2.7
+                                                              System.out.println(8.1/3); // 2.6999999999999997
+当我们对运算结果是小鼠的进行相等判断时，要小心
+应以两数差值的绝对值，在某个精度范围内判断
+                                                        public class Homework01{
+                                                          public static void main(String []args){
+                                                            float n1 = 2.12343455F;
+                                                            double n2 = 2.7;
+                                                            double n3 = 8.1/3;
+                                                            System.out.println(n1);
+                                                            System.out.println(n2);
+                                                            System.out.println(n3);
+                                                            //相等比较
+                                                            if(n2 == n3){
+                                                              System.out.println("equal");
+                                                            }
+                                                            //差值比较
+                                                            if(Math.abs(n2 - n3) < 0.00001){
+                                                              System.out.println("equals");
+                                                            }
+                                                            System.out.println(Math.abs(n2 - n3));
+                                                          }
+                                                        }
