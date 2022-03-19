@@ -1,0 +1,28 @@
+p046  API 文档
+API 已经提供的类和方法
+中文在线文档：https://matools.com/api
+JDK8
+  包
+    类
+      字段，构造器，方法
+    接口
+    异常
+ArrayList类有哪些方法
+JDK API -----java.util(包-----ArrayList（类-----boolean,add,（方法
+JDK API -----显示------索引-------MAth--------java.long-------Math
+
+
+p047  字符
+单字符 char
+                                                      public class Homework01{
+                                                        public static void main(String []args){
+                                                          char c1 = 'a';
+                                                          char c2 = '\t';
+                                                          char c3 = '韩';
+                                                          char c4 = 97;
+
+                                                          System.out.println(c1);
+                                                          System.out.println(c2);
+                                                          System.out.println(c3);
+                                                        }
+                                                      }
