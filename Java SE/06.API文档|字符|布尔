@@ -1,0 +1,85 @@
+p046  API 文档
+API 已经提供的类和方法
+中文在线文档：https://matools.com/api
+JDK8
+  包
+    类
+      字段，构造器，方法
+    接口
+    异常
+ArrayList类有哪些方法
+JDK API -----java.util(包-----ArrayList（类-----boolean,add,（方法
+JDK API -----显示------索引-------MAth--------java.long-------Math
+
+
+p047  字符
+单字符 char
+                                                      public class Homework01{
+                                                        public static void main(String []args){
+                                                          char c1 = 'a';
+                                                          char c2 = '\t';
+                                                          char c3 = '韩';
+                                                          char c4 = 97;  //字符型可以直接存放一个数字
+                                                                         //但输出的是97代表的unicode码'a'
+                                                          System.out.println(c1);
+                                                          System.out.println(c2);
+                                                          System.out.println(c3);
+                                                        }
+                                                      }
+
+快捷键修改（软件快捷键冲突）：
+  sublime首选项--默认--ctrl+f搜索快捷键---用户---修改快捷键---保存
+  
+  
+  
+p048
+字符只能用'a'
+字符串只能用"abc"
+数字输出Unicode码 38889--韩
+字符可以运算
+                                                  public class Hello{
+                                                    public static void main(String[] args){
+                                                      char c1 = 'a';
+                                                      char c2 = '汉';
+                                                      char c3 = 38889;
+                                                      System.out.println((int)c1);
+                                                      System.out.println((int)c2);
+                                                      System.out.println(c3);
+                                                      //字符运算
+                                                      char c5 = 'b' + 1;
+                                                      System.out.println('a' + 10);
+                                                      System.out.println(c5);
+                                                      System.out.println((int)c5);
+                                                    }
+                                                  }
+                                                  
+
+p049  字符本质
+本质是其编码的二进制值，编码规范可以选择
+存储：'a'----97-----binary----存储
+读取：存储----binary----97-----'a'
+
+
+
+p050 ASCII
+共128字符，一个字节表示256字符，无法表示英文以外的字符
+Unicode
+两个字节，英文汉字都占用2字节，
+Utf-8
+1-6个字节表示一个字符，字母1字节，汉字3字节
+
+
+
+p051  布尔
+true false
+不能用01等整数代替true和false
+                                                          public class Booleancodde{
+                                                            public static void main(String[] args){
+                                                              boolean isPass = false;
+                                                              if(isPass == true){
+                                                                System.out.println("考试通过");
+                                                              }else{
+                                                                System.out.println("考试未通过");
+                                                              }
+                                                            }
+                                                          }
