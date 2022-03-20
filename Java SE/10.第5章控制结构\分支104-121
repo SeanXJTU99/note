@@ -1,0 +1,227 @@
+p104 流程控制
+顺序、分支、循环
+Java定义变量向前引用  int n1 =1; int n2 = n1 +2;
+
+
+p105 分支
+单|双|多 分支
+if（条件表达式）{执行代码块}
+                              import java.util.Scanner;
+                              public class If01{
+                                  public static void main(String []args) {
+                                  Scanner myScanner = new Scanner(System.in);
+                                  System.out.println("input your age plz");
+                                  int age = myScanner.nextInt();
+                              if(age >18)System.out.println("go to gail");
+                              }}
+
+
+ 
+p106  流程图
+
+p107  双分支
+if(条件){code1}
+else{code2}
+
+p108  双分支流程图
+
+p109  练习
+                                      //import java.util.Scanner;
+                                      public class IfExercise{
+                                          public static void main(String []args) {
+                                      //1
+                                        double d1 = 34.5;
+                                        double d2 = 2.6;
+                                        if (d1 > 10 && d2 <20) System.out.println(d1+d2);
+                                      //2
+                                        int n1 =5;
+                                        int n2 =6;
+                                        int n3 = n1 +n2;
+                                        if(n3%3==0 && n3 % 5 ==0){System.out.println("yes");}
+                                        else{System.out.println("no");}	
+                                      //3
+                                        int year = 2000;
+                                        if((year % 4 ==0 && year %100!=0)||year % 400 ==0){
+                                          System.out.println("run nian");
+                                        }	
+                                        else{System.out.println("not run nian");}
+                                      }}
+
+
+p110  多分支
+if-else if -else if -----else
+可以没有else，缺省默认值
+
+
+p111  多分支示例  信用分评价 If03
+                            import java.util.Scanner;
+                            public class If03{
+                               public static void main(String []args) {
+                                  Scanner myScanner = new Scanner(System.in);
+                                  System.out.println("your grade:");
+                                  int grade = myScanner.nextInt();                   //若输入不是整数->异常处理
+                                  if(grade >=1 && grade <=100){                      //确保输入数据在100范围内，否则重新输入
+                                      if(grade == 100){System.out.println("perfect");}
+                                      else if(grade >80 && grade <=99){System.out.println("good");}
+                                      else if(grade >60 && grade <=80){System.out.println("not bad");}
+                                      else{System.out.println("bad");}}
+                                  else{System.out.println("grade should in range of 100, reinput plz ^_^");}
+                            }}
+
+
+p112 多分支示例2
+
+p113 嵌套分支
+一般嵌套不超过3层
+if(){
+    if(){
+        if-else
+    }else{
+        if-else
+    }
+}
+
+先输入成绩，判断进入决赛
+若进入决赛，再判断性别
+                import java.util.Scanner;
+                public class If04{
+                    public static void main(String []args) {
+                  Scanner myScanner = new Scanner(System.in);
+                  System.out.println("your score:");
+                  int grade = myScanner.nextInt();  //先输入成绩，判断进入决赛
+                  if(grade >8){
+                    System.out.println("final entered");
+                    System.out.println("your gender:"); //若进入决赛，再判断性别
+                    char gender = myScanner.next().charAt(0);
+                    if(gender == 'M'){System.out.println("male final");}
+                    else if(gender == 'F'){System.out.println("female final");}
+                  }else{System.out.println("get out of here");}
+                }}
+
+
+p114 嵌套分支
+
+p115 switch
+switch(表达式){
+    case 常量1：
+    code1；
+    break；  // 无break时直接进入code2，穿透
+    case 常量2；
+    code2；
+    break；
+    ……
+    default：
+    code of default；
+    break；
+}
+
+
+p116 switch
+    无break时直接进入code2，穿透
+
+p117 switch入门
+//输入一个字符，abcde分别输出星期12345
+                  import java.util.Scanner;
+                  public class Switch01{
+                    public static void main(String []args) {
+                        Scanner myScanner = new Scanner(System.in);
+                        System.out.println("char:");
+                        char c1 = myScanner.next().charAt(0);
+                        switch(c1){
+                          case 'a':
+                            System.out.println("Monday");
+                            break;
+                          case 'b':
+                            System.out.println("Tuesday");
+                            break;
+                          default:
+                            System.out.println("fuck you");
+                        }System.out.println("get out");
+                  }}
+          
+          
+          
+p118 switch细节
+1.表达式数据类型应当和case后的常量类型一致
+  或者可以自动转换相互比较的类型，如char和int
+2.表达式只能是byte short int char enum String
+3.case只能用常量或常量表达式 'b'+1可以
+4.default可以缺省
+5.break缺省时顺序执行switch所有语句
+
+
+
+p119 switch练习
+小写转大写
+合格、不合格
+                      import java.util.Scanner;
+                      public class SwitchExercise{
+                          public static void main(String []args) {
+                        Scanner myScanner = new Scanner(System.in);
+                        /*System.out.println("char from a to z:");
+                        char c1 = myScanner.next().charAt(0);
+                        switch(c1){
+                          case 'a':
+                            System.out.println("A");
+                            break;
+                          case 'b':
+                            System.out.println("B");
+                            break;
+                          case 'c':
+                            System.out.println("C");
+                            break;
+                          default:
+                            System.out.println("other");
+                        }System.out.println("get out");*/
+                        System.out.println("your grade:");
+                        // [60,100] (int)(grade/60) =1
+                        // [0,60) (int)(grade/60) =0
+                        int score = myScanner.nextInt();
+                        if(score >=0 && score<=100){
+                          switch((int)(score / 60)){
+                          case 0:
+                            System.out.println(" not pass");
+                            break;
+                          case 1:
+                            System.out.println("pass");
+                            break;
+                          }
+                        }else{
+                          System.out.println("grade should in range 100");
+                        }
+                      }}
+
+
+
+p120  打印季节（穿透
+                        System.out.println("input month:");
+                          int month = myScanner.nextInt();
+                          switch(month) {
+                            case 3:
+                            case 4:
+                            case 5:
+                              System.out.println("spring");
+                              break;
+                            case 6:
+                            case 7:
+                            case 8:
+                              System.out.println("summer");
+                              break;
+                            case 9:
+                            case 10:
+                            case 11:
+                              System.out.println("autumn");
+                              break;
+                            case 1:
+                            case 2:
+                            case 12:
+                              System.out.println("winter");
+                              break;
+                            default:
+                              System.out.println("false");
+                          }
+  
+  
+  p121  switch 和if
+  判断值不多，符合byte short int char String enum ，最好用switch
+  对区间判断，符合Boolean 最好用if
