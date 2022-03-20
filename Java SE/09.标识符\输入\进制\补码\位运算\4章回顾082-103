@@ -1,0 +1,172 @@
+p082 标识符命名规则
+可以自己取名的就是标识符
+只能含有数字、字母、_$
+不能数字开头  3ab
+不能含有空格
+不能使用关键字 class public void main
+不能使用保留字 goto case future outer rest var operator inner const byValue
+可以包含保留字 abcclass
+大小写敏感
+
+
+
+p083 练习
+p084 规范
+包：多单词组成时所有字母小写 com.hsp.crm
+类、接口：所有单词首字母大写 AssignOperator（大驼峰）
+变量、方法：第一个单词小写，后面都大写 tankShotGame（小驼峰）
+常量：所有字母大写 TAX_RATE
+
+
+p085 关键字
+class interface enum byte short int void true null try private protected main do while else
+保留字
+
+
+p086 键盘输入语句
+input.java,需要一个扫描器 Scanner
+导入java.util
+                                    import java.util.Scanner; //表示把java.util的Scanner类导入
+                                    public class Input{
+                                        public static void main(String []args) {
+                                        //导入scanner类所在的包
+                                        //创建scanner类的对象，new myScanner
+                                        Scanner myScanner = new Scanner(System.in);
+                                        //提示用户输入
+                                        System.out.println("input your name plz");
+                                        String name = myScanner.next(); //接收用户输入
+                                        System.out.println("input your age plz");
+                                        int age = myScanner.nextInt(); 
+                                        System.out.println("input your salary plz");
+                                        double sal = myScanner.nextDouble();//接收用户输入double
+                                        System.out.println("name="+ name + "\nage=" + age +
+                                                  "\nsalary=" + sal);
+                                        }
+                                    }
+
+
+
+p087 进制概念
+java中
+二进制 0b  0B
+八进制 0
+十六进制 0x
+
+---------2/8/16转10------
+p088 2进制转10进制
+    binary-decimal
+p089 8进制转10进制
+    0234=156
+p090 16转10
+    0x23A=10 + 3*16 + 2*256 = 570
+    System.out.println(0x23A);
+    
+--------10转2/8/16-------
+p091 10转2
+    34 = 0B 00100010
+p092 10转8
+    131 = 0 203
+p093 10转16
+    237 = 0x ED
+    
+-------2转8/16------------
+p094 2转8  3位一组转换
+    0b 11010101 = 0 325
+p095 2转16  4位一组转换
+    0b 11010101 = 0x D5
+    
+-------8/16转2-----------
+p096 8转2
+    0 237 = 0B 010011111 = 0B 1001 1111
+p097 16转2
+    0x 23B = 0B 001000111011 = 0B 0010 0011 1011
+
+
+p098 位运算
+int a =1>>2; //向右位移2位（算术右移
+int e = 3>>>2;//无符号右移
+~2 按位取反
+2&3 按位与
+2|3 按位或
+-3^3 按位异或
+
+
+
+p099 原码反码补码
+正数：三码相同（包括0
+负数：反码=符号位不变，其他按位取反
+      补码=反码+1
+JAVA没有无符号数
+所有运算通过补码进行
+看结果要看原码
+
+
+
+p100 位运算符
+2&3
+          public class BitOperator{
+          public static void main(String []args){
+            System.out.println(2&3);
+            //先得到2的补码
+            //  2的原码 00000000 00000000 00000000 00000010 （int型）
+            //  2的补码 00000000 00000000 00000000 00000010
+            //  3的补码 00000000 00000000 00000000 00000011
+            //按位与    00000000 00000000 00000000 00000010
+            //符号位是0 正数，原码也是补码
+            //2
+          }
+          }
+~-2
+      -2的原码  10000000 00000000 00000000 00000010
+      -2的反码  11111111 11111111 11111111 11111101
+      -2的补码  11111111 11111111 11111111 11111110 补码=反码+1
+     ~-2的补码  00000000 00000000 00000000 00000001
+     ~-2的原码  1  
+     
+~2
+      2的补码  00000000 00000000 00000000 00000010
+      ~2的补码 11111111 11111111 11111111 11111101
+      ~2的反码 11111111 11111111 11111111 11111100  反码=补码-1
+      ~2的原码 10000000 00000000 00000000 00000011
+      ~2的结果 -3
+      
+      
+      
+p101 位运算符
+>> 低位溢出，符号位不变，并用符号位补溢出的高位
+<< 符号不变，低位补0
+>>> 无符号右移，低位溢出，高位补0
+int a =1>>2; // 1= 0001 -> 0000 = 0 = 1/2/2
+int a =1<<2; // 1 = 0001 -> 0100 = 4 = 1*2*2
+
+
+
+p102  本章作业
+10/3 = 3; 
+10/5 = 2;
+10%2 = 0;
+-10.5%3 = ? a%b = a - (int)a/b*b
+    -10.5%3 = -10.5 - (int)-10/3*3 = -10.5 +9 = -1.5(近似值
+    System.out.println(-10.4%3);//-1.4000000000000004
+    
+int i =66;
+System.out.println(++i+i); // i = i+1; i+i=134
+
+int n1 = (int)"18"; //error, Integer.parseInt("18");
+int i =48; char ch =i+1; // error, int->char
+byte b=19; short s =b+2; //error int->short
+
+String->double  char->String
+                                    public class Homework04{
+                                    public static void main(String []args){
+                                    int i =66;
+                                    System.out.println(++i+i); // i = i+1; i+i=134
+                                    String str = "18.8";
+                                    double d1 = Double.parseDouble(str);
+                                    char c1 = 'M';
+                                    String str2 = c1+"";
+                                    System.out.println(d1+str2);
+                                    }
+                                    }
+    
+p103  第4章回顾
