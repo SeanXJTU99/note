@@ -1,0 +1,262 @@
+p122  for
+for(循环变量初始化；循环条件；迭代){执行代码}
+                                          p123  
+                                          public class For01{
+                                            public static void main(String []args) {
+                                              for ( int i =1; i<=10; i++){
+                                                System.out.println("hello world "+i);
+                                              }
+                                            }
+                                          }
+
+
+p124 for细节
+1.循环条件只能返回Boolean  i<=10
+2.for(;循环条件;) i=1; i++ 可以写在别的地方，但分号不能省略
+    for ( int i =1; i<=10; i++)
+    i变量只能在for循环体中使用
+                                          int i =1;
+                                          for ( ; i<=10;){
+                                            System.out.println("hello world "+i);  //i变量可以在for以外使用
+                                            i++;
+                                          }                                         //此时i=11
+
+    for(;;)无限循环，通常配合break使用
+3.初始化语句可以有多条，但类型应该一样，用逗号隔开
+                              int count =3;
+                              for( int i = 0, j =0; i < count; i ++, j += 2){
+                                System.out.println(i + "\t" + j);
+                              }
+
+
+p125  for练习
+1-100间所有9的倍数的整数，统计个数及总和
+
+化繁为简：拆解需求
+先死后活：先考虑固定值100，在转为变量limit
+//思路：输出1-100的值
+//在输出中过滤 i%9=0
+//统计个数的变量count 和 总和 sum
+//改变初始化值为变量
+                              public class ForExercise{
+                                public static void main(String []args) {
+                                  //1-100
+                                  //filter i%9=0
+                                  //sum\count
+                                  int count =0;
+                                  int sum =0;
+                                  int star =1;
+                                  int end =100;
+                                  int filter = 9;
+                                  for (int i =star;i<=end;i++){
+                                  if( i%filter == 0){
+                                    System.out.println("i="+i);count ++ ;sum += i;
+                                    }
+                                  }System.out.println(count);System.out.println(sum);
+                                }
+                              }
+
+
+
+p126 for 练习
+输出 i + （5-i）= 5
+                            public class ForExercise02{
+                              public static void main(String []args) {
+                                //print 0 - 5
+                                int n =5;
+                                for( int i=0; i<=n; i++){
+                                  System.out.println(i + "+" + (n-i) + "=" + n);
+                                }
+                              }
+                            }
+                            
+                            
+                            
+p127  while
+变量初始化；
+while(循环条件){循环条件；变量迭代；}
+
+p128  while 示例 While01.java
+                    int i=1;
+                    while( i<=10){
+                      System.out.println(i ); i++;
+                    }
+    
+p129 while 练习01
+                          public class WhileExercise01{
+                            public static void main(String []args) {
+                              int i=1;
+                              int a =40;
+                              int end =200;
+                              /*while( i<=100){
+                                if(i%3==0){
+                                System.out.println(i ); }i++;
+                              }*/
+                              while(a<=end){
+                                System.out.println(a ); a+=2;
+                              }
+                            }
+                          }
+
+
+
+p130 do while
+初始化；
+do{循环体；变量迭代；}while（条件）；
+    while先问还钱再决定打不打
+    do while先打一顿再问还不还钱，至少循环一次
+    
+ p131 do while 示例  DoWhile01.java
+                              int i=1;
+                              do{
+                                System.out.println(i ); i++;
+                              }while(i<=10);
+ 
+ 
+ p132
+ 1-200能被5整除但不被3整除的个数  DoWhileExercise01.java
+                            int i=1;
+                            int end =200;
+                            int count = 0;
+                            do{
+                            if( i % 5 == 0 && i % 3 != 0){
+                              //System.out.println(i );
+                              count ++ ;
+                             }i++;
+                            }while(i<=end);
+                            System.out.println(count);
+
+
+
+p133  还钱
+若李四不还钱，老王使用五连鞭，直到说还钱为止
+1.不停问还钱吗 do{}while(true)
+2.char answer = '' Scanner接收回答
+3.当ans='y'时停止循环 while（ans!='y'）
+                                      import java.util.Scanner;
+                                      public class DoWhileExercise02{
+                                        public static void main(String []args) {
+                                          Scanner myScanner = new Scanner(System.in);
+                                          char ans = ' ';
+                                          do{
+                                            System.out.println("give back money?");
+                                            ans = myScanner.next().charAt(0);
+                                            System.out.println("his answer is "+ ans);
+                                          }//while(true);
+                                          while(ans!='y');System.out.println("his gave money back");
+                                        }
+                                      }
+
+
+p134  多重循环
+一般嵌套两层，最多不要超过三层
+
+p135  多重练习 MultiForExercise01
+3个班，每个班5学生,统计平均分和及格人数
+每个班：j=1,j<=5
+1.创建scanner对象接收输入
+2.得到平均分，定义一个sum，累积成绩
+3.3个班：i=1，i<=3
+4.total/(3*5)
+5.passnum=0;当学生成绩>=60时passnum++；
+                            import java.util.Scanner;
+                            public class MulForExercise01{
+                              public static void main(String []args) {
+                                Scanner myScanner = new Scanner(System.in);
+                                double total = 0;
+                                int passNum =0;
+                                for (int i =1; i <=3; i ++){
+                                double sum =0;
+                                for (int j=1; j<=5; j++){
+                                  System.out.println("plz input class"+i+" No." + j + " student's score:");
+                                  double score = myScanner.nextDouble();
+                                  System.out.println("score is " + score);
+                                  if(score>=60){passNum ++;}
+                                  sum += score;
+                                }
+                                System.out.println("ave score is " + sum/5); total += sum;
+                                }System.out.println("total ave score is " +total/15);
+                                System.out.println("pass number is " +passNum);
+                              }
+                            }
+
+
+p136 修改MulForExercise01.java
+
+
+p137 空心金字塔
+1.一个5行5列的矩形
+*****
+*****
+*****
+*****
+*****
+		for(int i =1; i<=5;i++){
+			for(int j =1;j<=5;j++){
+				System.out.print("*");
+			}System.out.print("\n");
+		}
+    
+2.一个5行i列的直角三角  j<=5 --> j<=i
+*
+**
+***
+****
+*****
+            for(int i =1; i<=5;i++){
+              for(int j =1;j<=i;j++){
+                System.out.print("*");
+              }System.out.print("\n");
+3.一个金字塔 （每层2i-1个星星，5-i个空格）
+    *
+   ***
+  *****
+ *******
+*********
+              for(int i =1; i<=5;i++){
+                for(int k =1; k <= 5-i; k++){
+                  System.out.print(" ");
+                }
+                for(int j =1;j<=2*i-1;j++){
+                  System.out.print("*");
+                }System.out.print("\n");
+              }
+4.空心金字塔 （输出当前行的首尾*）
+判断*是否为当前行首尾星星
+j==1||j=2i-1  print *
+else print 空格
+最后一行全输出 j==1||j=2i-1||i==5
+
+5.行数改为变量
+                                    public class Stars{
+                                      public static void main(String []args) {
+                                        int total =10;
+                                        for(int i =1; i<=total;i++){
+                                          for(int k =1; k <= total-i; k++){
+                                            System.out.print(" ");
+                                          }
+                                          for(int j =1;j<=2*i-1;j++){
+                                            if( j == 1 ||  j==(2 * i - 1)|| i ==total){
+                                              System.out.print("*");
+                                            }else{
+                                              System.out.print(" ");}
+                                          }System.out.print("\n");
+                                        }
+                                    }}
+         *
+        * *
+       *   *
+      *     *
+     *       *
+    *         *
+   *           *
+  *             *
+ *               *
+*******************
+
+
+
+
+
+
+
