@@ -135,7 +135,7 @@ p164 数组赋值机制
 基本数据类型赋值是具体数值，互不影响(值拷贝)
 数组是引用类型，地址拷贝（引用传递）
     int[] arr1 = {1,2,3};
-		int[] arr2 = arr1;
+    int[] arr2 = arr1;
     arr2[1] = 80;     //arr1[1]=80  引用
 
 
@@ -159,13 +159,141 @@ arr2[0] = 80;            堆  0x0011
 
 p166 数组拷贝
 实现数组拷贝，要求数据空间独立
+				public class ArrayCopy {
+				    public static void main(String []args) {
+					int[] arr1 = {10,20,30};             //arr1->0x0011
+					int[] arr2 = new int[arr1.length];   //arr2->0x0022
+					//arr1->arr2
+					for(int i = 0; i< arr1.length; i++){
+						arr2[i] = arr1[i];
+					}
+					arr2[0] = 80;
+					System.out.println("=====arr1 element=====");
+					for (int i = 0; i < arr1.length; i ++){
+						System.out.print(arr1[i] + " ");
+					}
+					System.out.println("\n=====arr2 element=====");
+					for (int i = 0; i < arr2.length; i ++){
+						System.out.print(arr2[i] + " ");
+					}
+				    }
+				}
 
 
 
+p167 数组反转
+arr = {1,2,3,4,5,6};
+1.arr[0] arr[5] exchange 
+2.arr[1] arr[4] exchange
+3.arr[2] arr[3] exchange
+一共交换3次=length/2
+交换下标为arr[i] arr[arr.length-1-i]
+exchange: a=b;b=c;c=a;
+
+					public class ArrayReverse {
+					    public static void main(String []args) {
+						int[] arr = {11,22,33,44,55,6};
+						int len = arr.length;
+						for(int i = 0; i< len/2;i++){
+							int temp = arr[len-i-1];
+							arr[len-1-i] = arr[i];
+							arr[i] = temp;
+						}
+						for(int i = 0; i< len;i++){
+							System.out.print(arr[i] + " ");
+						}
+					    }
+					}
 
 
 
+p168 数组反转2
+1.创建新数组arr2
+2.逆序遍历arr1，每个元素拷贝到arr2
+3.增加一个循环变量j标识arr2的下标
+4.让arr指向arr2的空间，此时arr原来的空间会成为垃圾被销毁
 
+				public class ArrayReverse02 {
+				    public static void main(String []args) {
+					int[] arr = {11,22,33,44,55,6};
+
+					int len = arr.length;
+					int[] arr2 = new int[len];
+					for(int i = len-1,  j = 0; i>=0; j++, i--){
+						arr2[j]= arr[i];
+					}
+					arr = arr2; // arr 指向arr2的数据空间，原空间销毁
+					for(int i = 0; i< len;i++){
+						System.out.print(arr2[i] + " ");
+					}
+				    }
+				}
+
+
+
+p169  数组添加
+动态的给数组添加元素效果，实现扩容 ArrayAdd
+原始数组静态分配 int[] arr = {1,2,3};
+增加4进入数组
+用户可以决定是否继续添加
+
+1.新建一个len+1的数组
+2.copy arr到arr2，添加4到arr2
+3.令arr指向arr2
+			public class ArrayAdd{
+			    public static void main(String []args) {
+				int[] arr = {1,2,3};//static assignment
+				int len = arr.length;
+				int[] arr2 = new int[len+1];
+				for(int i = 0; i< len; i ++){
+					arr2[i]  = arr[i];
+				}
+				arr2[len] = 4;
+				arr = arr2;
+				for(int i = 0; i <=len;i++){
+					System.out.print(arr[i]+ " ");
+				}
+			    }
+			}
+
+
+
+p170 数组添加2
+用户决定动态添加
+1.scanner接收用户输入
+2.用户什么时候退出不确定，使用do-while break控制
+					import java.util.Scanner;
+					public class ArrayAdder{
+					    public static void main(String []args) {
+						Scanner myScanner = new Scanner(System.in);
+						int[] arr = {1,2,3};//static assignment
+						do{
+							int len = arr.length;
+							int[] arr2 = new int[len+1];
+							for(int i = 0; i< len; i ++){
+								arr2[i]  = arr[i];
+							}
+							System.out.print("input number to add:");
+							int addNum = myScanner.nextInt();
+							arr2[len] = addNum;
+							arr = arr2;
+							System.out.print("===========arr========\n");
+							for(int i = 0; i <=len;i++){
+								System.out.print(arr[i]+ "\t");
+							}
+							System.out.print("\nwanna add?");
+							char ans = myScanner.next().charAt(0);
+							if(ans == 'n'){
+								break;
+							}
+						}while(true);
+						System.out.print("Adder quited.");
+					    }
+					}
+
+
+
+p171 数组缩减
 
 
 
