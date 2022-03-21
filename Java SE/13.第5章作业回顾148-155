@@ -1,0 +1,153 @@
+p148  本章作业
+
+100000元，经过路口
+现金>50000,交5%
+现金<50000,交1000
+问能过几次路口
+                      public class Homework01{
+                        public static void main(String []args) {
+                          int total = 100000;
+                          double left = total;
+                          int n = 0;
+                          while (left > 0){
+                            if (left>50000){
+                              left *= 0.95;
+                              n ++ ;
+                            }else if(left>=1000){
+                              left -= 1000;
+                              n++;
+                            }else{
+                              break;
+                            }
+                          }System.out.println(n);
+                        }
+                      }
+   
+   
+  
+p149 水仙花数
+                            import java.util.Scanner;
+                            public class Homework04{
+                              public static void main(String []args) {
+                                //determine if a number is a 153 = 1^3+5^3+3^3?
+                                Scanner myScanner = new Scanner(System.in);
+                                System.out.println("plz input a integer:");
+                                int n = myScanner.nextInt();
+                                int n1 = (int)(n/100);
+                                int n2 = (int)((n%100)/10);
+                                //int n3 = n-100*n1-10*n2;
+                                int n3 = n%10;
+                                if( n1*n1*n1+n2*n2*n2+n3*n3*n3 == n){
+                                  System.out.println("y");
+                                }else{
+                                  System.out.println("n");
+                                }
+                              }
+                            }
+                            
+                            
+                            
+p150
+1-100间不能被5整除的数，5个一行
+int count 统计输出的个数，count%5=0时输出一个\n
+
+                              public class Homework06{
+                                public static void main(String []args) {
+                                  int count = 0;
+                                  for(int i = 1; i<=100; i++){
+                                    if(i % 5 != 0){
+                                      count ++;
+                                      System.out.print(i+ " ");
+                                      if(count%5 == 0){
+                                        System.out.print("\n");
+                                      }
+                                    }
+                                  }	
+                                }
+
+
+p151
+a-z Z-A
+                        public class Homework07{
+                          public static void main(String []args) {
+                            /*
+                            char n = 'a';
+                            char N = 'Z';
+                            for(int i=1; i <= 25; i++){
+                              System.out.println(n+i);
+                            }
+                            for(int j=1; j <= 25; j++){
+                              System.out.println(N-j);
+                            }
+                            */ 
+                            //字符可以直接运算
+                            for(char c1 ='a'; c1 <= 'z'; c1 ++){
+                              System.out.print(c1 + " ");
+                            }
+                            for(char c2 ='Z'; c2 >= 'A'; c2 --){
+                              System.out.print(c2 + " ");
+                            }
+                          }
+                        }
+ 
+ 
+p152
+1/1-1/2+1/3-1/4+1/5...-1/100的和
+模2选择正负
+小数除法1.0/i
+                                      public class Homework08{
+                                        public static void main(String []args) {
+                                          double sum = 0;
+                                          for(int i = 1; i <= 100; i ++){
+                                            if(i%2 == 0){
+                                              //sum -= 1/i;
+                                              sum -= 1.0/i;
+                                            }else{
+                                              sum += 1.0/i;
+                                            }
+                                          }
+                                          System.out.println(sum);
+                                        }
+                                      }
+        or
+        double sig = -1;
+        for (int j=1;j<=i;j++){
+          sig *= -1;
+        }
+        sum += sig/i;                                     
+                                    
+                                     
+                                     
+p153
+1+(1+2)+(1+2+3)+(1+2+3+4)...(1+2+..+100)
+                          public class Homework09{
+                            public static void main(String []args) {
+                              int sum = 0;
+                              for(int i = 1; i <= 100; i ++){
+                                int count = 0;
+                                for (int j=1;j<=i;j++){
+                                  count += j;
+                                }
+                                sum += count;
+                              }
+                              System.out.println(sum);
+                            }
+                          }
+ 
+ 
+
+p154  本章回顾
+控制结构：顺序，分支，循环
+分支
+if-else if-else
+switch-case-default: 判断分支不多，byte short int char String
+循环
+for
+while
+do-while  至少执行一次
+break     跳出当前层循环
+continue  不跳出当前层循环，而是在当前层进入下一次循环
+return    结束方法/程序
+
+
+p155 
