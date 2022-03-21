@@ -1,0 +1,151 @@
+p185
+作业1
+String strs[] = {'a','b','c'};             //False char->str
+String strs[] = {"a","b","c"};             //ok
+String strs[] = new String{"a","b","c"};   //False add []
+String strs[] = new String[]{"a","b","c"}; //ok
+String strs[] = new String[3]{"a","b","c"};//False without3.
+
+p186
+
+p187
+插入+排序
+[10,12,45,90]->[10,12,23,45,90]
+
+先确定数字位置:遍历寻找第一个出现的<=的index，若无则为arr.length
+再插入：
+int[] arr2 = new int[arr.length+1];
+		for (int i = 0, j= 0; i <arr2.length; i++){
+			if( i != index){
+				arr2[i] = arr[j];
+				j++;
+			}else{
+				arr2[i] = insertNum;
+			}
+		}
+		arr = arr2;
+    
+ 
+ 
+ 
+p188
+public class Homework05{
+    public static void main(String []args) {
+		//random number
+		int[] arr = new int[10];
+		for(int i= 0; i<arr.length;i++){
+			arr[i] = (int)(Math.random() * 100)+1;
+		}
+		System.out.println();
+		for(int i = arr.length-1; i>=0; i--){
+			System.out.println(arr[i]+ "\t");
+		}
+		
+		//max,ave,maxIndex
+		int max = arr[0];
+		int maxIndex = 0;
+		double total = arr[0];
+		for (int i=1;i<arr.length;i++){
+			total += arr[i];
+			if(max<arr[i]){
+				max = arr[i];
+				maxIndex = i;
+			}
+		}
+		System.out.println("max=" + max + " maxIndex=" +
+						   maxIndex + " average=" + total/arr.length);
+		
+		//search 8
+		int findNum = 8;
+		int index =-1;
+		for(int i= 0; i<arr.length; i++){
+			if(findNum == arr[i]){
+				System.out.println(i);
+				index = i;
+				break;
+			}
+		}
+		if(index ==-1){
+			System.out.println("8 not found.");
+		}
+	}
+}
+
+
+p189
+char[] arr1 = {'a','b','c','d'};
+char[] arr2 = arr1;         让arr2指向arr1 
+arr1[2] = 'M';
+for(int i = 0; i<arr2.length; i++){
+  System.out.println(arr1[i] + ","+arr2[i]);
+}
+a,a;b,b,;M,M;c,c;
+
+
+p190  冒泡排序
+                public class Bubbelsort{
+                  public static void main(String[] args){
+                    int[] arr = {5,4,3,2,1};
+                          int temp =0;
+                    for(int i = 0; i <arr.length-1; i ++){
+                      for(int j = 0; j <arr.length-1-i; j++){
+                        if(arr[j]>arr[j+1]){
+                          temp = arr[j];
+                          arr[j] = arr[j+1];
+                          arr[j+1] = temp;
+                        }
+                      }
+                    }
+                    System.out.println();
+                    for(int i = 0; i<arr.length; i ++){
+                      System.out.println(arr[i]);
+                    }
+                  }
+                }
+
+
+
+
+
+p191 本章回顾
+数组：同类型的一组数据
+用arr[i]遍历
+动静态初始化
+默认值
+声明，分配空间，赋值，访问
+拷贝
+反转（交换，逆序，
+插入（扩容
+删除
+冒泡排序（两两比较
+顺序查找（遍历，index=-1
+二维数组：一维数组的元素也是数组，杨辉三角
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
