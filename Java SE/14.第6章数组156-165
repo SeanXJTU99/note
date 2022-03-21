@@ -1,0 +1,176 @@
+p156  
+养鸡场六只鸡的体重
+
+
+p157
+数组：存放多个同一类型的数据
+数组本身也是一种数据类型，是引用类型
+本质：一组数据
+可以通过for循环遍历
+可以用数组名.length访问数组大小
+
+double[] hens = {3,5,1,2,3.4,50};
+double hens[] = {3,5,1,2,3.4,50};
+表示存放double类型的数组，数组的名称为hens，{}依次为数组的值
+
+for (int i = 0; i <６；i++){
+  hens[i]//遍历数组元素
+}
+hens.length 数组大小（元素数量
+                    public class Array01{
+                      public static void main(String []args) {
+                        double[] hens = {3,5,1,2,3.4,50, 90, 80};
+                        double total = 0;
+                        int len = hens.length;
+                        for (int i = 0; i < len ; i++){
+                          total += hens[i];
+                          //System.out.println("No."i+1 + " weight is " + hens[i]);
+                        }
+                        double ave = total/len;
+                        System.out.println(ave);
+                      }
+                    }
+
+
+
+
+p158 数组使用
+动态初始化
+int a[] = new int[5] 创建了一个数组a，存放5个int数值
+
+数组引用\访问\元素获取
+Array[index]
+
+输入5个成绩，存储在
+                              import java.util.Scanner;
+                              public class Array02{
+                                public static void main(String []args) {
+                                  double[] scores = new double[5];
+                                  Scanner myScanner = new Scanner(System.in);
+                                  for (int i=0; i<5; i++){
+                                    System.out.println("plz input score:");
+                                    scores[i] = myScanner.nextDouble();
+                                  }
+                                  System.out.println("elements of the Array scores are");
+                                  for (int i = 0; i < 5; i ++){
+                                    System.out.print( scores[i]+ " ");
+                                  }
+                                }
+                              }
+
+
+
+
+p159 
+动态初始化
+先声明 int a[]/int[] a   空指针，未分配空间
+再创建 a = new int[10]   分配内存空间
+
+
+
+p160
+静态初始化
+int a[] = {1, 1, 1, 2, 3};  一般用于元素较少且确定的情况
+
+double scores[] = {15,15,15,15,15};
+相当于
+double scores[] = new double[5];
+scores[0]=15;scores[1]=15;scores[2]=15;scores[3]=15;scores[4]=15
+
+
+
+p161数组注意事项
+同一类型数据统一管理
+类型不能混用
+未赋值数组有默认值 
+    short[] arr4 = new short[4];
+    byte/short/int 0
+    float/double 0.0 
+    string null 
+    char \u0000 
+    boolean false
+
+数组是引用类型，数组型数据本质是对象（object
+
+
+
+p162 数组应用
+输出字母表
+强制转换'A'+1
+                public class ArrayExercise{
+                  public static void main(String []args) {
+                    char[] arpb = new char[26];
+                    //'A'+1='B'
+                    for (int i =0; i< arpb.length; i++){
+                      arpb[i] = (char)('A' + i);
+                      System.out.print(arpb[i]+" ");
+                    }
+                  }
+                }
+
+
+
+p163 数组最大值
+假定arr[0]最大， maxIndex = 0
+从1开始遍历，若max<当前元素arr[i]：
+  max=arr[i]，maxIndex = i
+                            public class ArrayExercise{
+                              public static void main(String []args) {
+                                int[] arr ={4,-1,9,0,10,23};
+                                int max = arr[0];
+                                int maxIndex = 0;
+                                for (int i =1; i<arr.length; i++){
+                                  if(max<arr[i]){
+                                    max = arr[i];
+                                    maxIndex= i;
+                                  }
+                                }System.out.print(max +"\n"+ maxIndex);
+                              }
+                            }
+
+
+
+
+p164 数组赋值机制
+基本数据类型赋值是具体数值，互不影响(值拷贝)
+数组是引用类型，地址拷贝（引用传递）
+    int[] arr1 = {1,2,3};
+		int[] arr2 = arr1;
+    arr2[1] = 80;     //arr1[1]=80  引用
+
+
+p165 引用传递
+
+JVM内存：栈，堆，方法区
+int n1 = 10  n1->[10]
+int n2 = n1  n2->[10]
+n2 = 80      n2->[80]
+
+int[] arr1 = {1,2,3};    栈  arr1->0x0011          堆 0x0011 
+                                                   [1][2][3]
+int[] arr2 = arr1;       栈  arr2->0x0011          堆 0x0011
+                                                   [1][2][3]
+arr2[0] = 80;            堆  0x0011
+                            [80][2][3]
+
+
+
+
+
+p166 数组拷贝
+实现数组拷贝，要求数据空间独立
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
