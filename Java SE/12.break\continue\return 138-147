@@ -1,0 +1,167 @@
+p138 break
+随机生成1-100的随机数，直到生成97，并计数
+		for(int i = 0;i<=10; i++){
+			System.out.println((int)(Math.random() * 100)+1);
+      
+p139 break结构
+
+    while(){
+      ;;;
+      if(){
+        ;;
+        break;//立即终止当前while循环
+      }
+    }
+
+p140 break 入门
+                      public class Break01{
+                        public static void main(String []args) {
+                          for (int i=0;i<10;i++){
+                            if(i==3){
+                              break;
+                            }System.out.println("i="+i);
+                          }
+                        }
+                      }
+
+
+
+p141  break细节： 标签
+1.多层嵌套的语句块中可以用label指明终止哪一层循环
+2.label语法：
+    label1:for(){
+    label2:   for(){
+    label3:       for(){
+                        break label2;
+                       }
+                   }
+                }
+3 label1是可命名的
+4 break指定到哪个label就退出到哪里
+5 尽量不用label
+6 无标签默认推出最近的循环 BreakDetail.java
+                            abc1:
+                            for (int i=0;i<4;i++){
+                            abc2:
+                              for(int j = 0; j <10; j++){
+                                if (j==2){
+                                break abc2;
+                                }System.out.println("j="+j);
+                              }	}//0,1,0,1,0,1,0,1
+
+
+
+p142
+1-100内数求和，大于20时停止
+                                        public class BreakExercise{
+                                          public static void main(String []args) {
+                                            //1-100 sum, stop when sum>20
+                                            int sum = 0;
+                                            //int i = 0;
+                                            int n = 0;
+                                            //for (;i<=100;){
+                                            for (int i =0 ; i <=100; i++){
+                                              sum += i;
+                                              if(sum>20){
+                                                //System.out.println("when sum=" + sum+" >20 i=" + i);
+                                                n = i;
+                                                break;
+                                              }
+                                             // i++;
+                                            }System.out.println("i=" + n);
+                                          }
+                                        }
+
+
+p143 
+3次登陆机会，用户名xx，密码666登陆成功，否则提示还有几次机会，
+
+字符串比较的方法：equals
+    String name = "Sean"; System.out.println("Shaun".equals(name));//False
+    
+                                                    import java.util.Scanner;
+                                                    public class BreakExercise{
+                                                      public static void main(String []args) {
+                                                        //3 times for login, sean, 666->break
+                                                        //scanner String name, String passwd
+                                                        Scanner myScanner = new Scanner(System.in);
+                                                        String name = "";String pawd = "";
+                                                        //chances left
+                                                        int chance = 3;
+                                                        for (int i=1; i<=3;i++){
+                                                          System.out.println("input your login");
+                                                          name = myScanner.next();
+                                                          System.out.println("input your password");
+                                                          pawd = myScanner.next();
+                                                          //difference
+                                                          //string : equals
+                                                          if("sean".equals(name) && "666".equals(pawd)){
+                                                            System.out.println("log in");
+                                                            break;
+                                                          }
+                                                          chance --;
+                                                          System.out.println(chance + " times left.");
+                                                        }
+                                                      }
+                                                    }
+    
+
+
+p144 continue
+continue 结束本次循环，直接继续下一次循环，并不跳出整个循环体
+可以用标签指明跳过的循环
+
+
+p145 continue 入门
+              public class Continue01{
+                public static void main(String []args) {
+                  int i = 1;
+                  while(i<4){
+                    i++;
+                    if(i==2){
+                      continue;
+                    }
+                    System.out.println("i=" + i);
+                  }
+                }
+              }// i=3,i=4
+
+
+p146  continue 细节
+                          public class ContinueDetail{
+                            public static void main(String []args) {
+                              label1:
+                              for (int j=0; j<4;j++){
+                                label2:
+                                for(int i=0;i<4;i++){
+                                  if(i==2){
+                                    continue;
+                                    //continue label2;  //013013013013
+                                    //continue label1;  //01010101
+                                  }
+                                  System.out.println("i=" + i);
+                                }
+                              }
+                            }
+                          }
+
+
+p147 return
+return使用在方法中表示跳出所在的方法
+return在main中表示退出程序
+                    public class Return01{
+                      public static void main(String []args) {
+                        for (int j=0; j<=4;j++){
+                          if(j==2){
+                            System.out.println("Sean" + j); //str1
+                            //break; //-----------------------------------2213
+                            //continue;//---------------------------------221223
+                            return;//-------------------------------------221
+                          }
+                          System.out.println("Hello world");//str2
+                        }
+                        System.out.println("go on. ..");//str3
+                      }
+                    }
+
+
