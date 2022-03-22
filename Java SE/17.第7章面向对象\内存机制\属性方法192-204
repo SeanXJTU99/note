@@ -1,0 +1,208 @@
+p192
+单独变量：
+  不利于数据管理。将一只猫的信息拆解
+  一旦多一个特征，需要不断加入新的变量
+		String cat1Name = "bai";
+		String cat2Name = "hua";
+		int cat1Age = 3;
+		int cat2Age = 100;
+		String cat1Color = "B";
+		String cat2Color = "H";
+数组：
+  数据类型体现不了；
+  只能通过下标获取信息，变量名称与内容对应关系不明确；
+  不能体现新的行为特征
+  	String[] cat1 = {"bai","3","B"};
+		String[] cat2 = {"hua","100","H"};
+		
+类和对象：利于数据管理，更贴近现实
+
+
+p193 类与对象
+
+事物（对象【属性，行为】）->猫[年龄，叫声]
+自定义数据类型：猫类[颜色，叫声]
+                （猫1[蓝色，行为]
+                  猫2[白色，行为]）
+
+类：自定义的数据类型 人类Person：name,job,study,teach
+对象：类的实例            Sean: Sean,Engineer,study
+
+
+
+p194 入门
+面向对象方式：
+定义一个类
+
+class Cat{
+	String name;
+	int age;
+	String color;
+}
+
+创建一个实例对象
+Cat cat1 = new Cat();
+		cat1.name = "bai";
+		cat1.age = 3;
+		cat1.colot = "B";
+访问对象属性
+System,out.println(cat1.name);
+
+
+
+p195 对象在内存的存在形式
+Cat cat1 = new Cat();      栈 cat1->0x0011
+cat1.name = "bai";         堆 0x0011:String 0x0022,3,String 0x0033 
+cat1.age = 3;              方法区(常量池：0x0022 bai;0x0033 B
+cat1.colot = "B";
+
+
+p196
+属性/成员变量/字段
+Car(name,age,color)
+
+class Car{
+  String name;
+  double price;
+  String color;
+  String[] master;//属性可以是基本类型和引用类型（字符串，数组
+}
+
+
+p197 属性细节
+1.访问修饰符： 控制访问范围 public,protected,private,默认
+        class Car{
+          public String name;  
+        }
+2.属性类型可以是基本类型或引用类型
+3.属性有默认值，short/int/ 0 
+               byte false 
+               double 0.0
+
+Person p1 = new Person();  p1只是对象名，new赋予的堆数据空间才是对象
+
+
+p198 创建和访问
+Cat cat1;  //声明            栈cat1->[null]
+cat1 = new Cat();//创建      栈cat1->[0x0011]        堆0x0011 存放属性的默认值0，[null]..
+访问
+cat1.name cat1.age
+
+
+
+p199
+类和对象内存分配机制
+
+Person p1 = new Person(); //p1指向0x0011，存放默认值
+p1.age = 10;           //age 默认值0->10
+p1.name = "Bai";      //name 默认值null->[0x0022],方法区常量Bai，地址0x0022
+Person.p2 = p1;       //p1赋给p2，p2也指向0x0011
+System.out.println(p2.age);
+
+
+p200 
+JAVA内存结构
+栈：存放基本数据类型（局部变量）
+堆：存放对象（Cat cat1,数组，字符串存放地址等）
+方法区：常量池（常量，字符串等），类加载信息
+        Person p = new Person();
+        p.name = "Bai";
+        p.age = 10;
+1.方法区加载Person类信息（类的属性和方法）
+2.在堆中分配空间，默认初始化（属性默认值0，null，false），
+3.p堆地址赋值给栈p，p指向堆中的对象空间
+4.指定初始化，p.name = "jack"
+
+
+p201
+
+
+p202成员方法（方法
+类：属性（成员变量）property，行为（成员方法）method
+public void speak(){
+		System.out.println("a nice person");
+	}
+public: 方法公开
+void: 没有返回值
+speak():方法名（参数列表）
+{}：方法体，执行代码
+不调用就不会输出
+
+调用：先创建一个对象，再用对象调用类的方法
+Person p1 = new Person();
+p1.speak();
+
+
+p203 成员方法
+
+                      public class Method01 {
+                          public static void main(String []args) {
+                          Person p1 = new Person();
+                          p1.speak();
+                          p1.cal01();
+                          p1.cal02(5);
+                          int returnRes  = p1.getSum(10,20);
+                          System.out.print(returnRes);
+                          //System,out.println(cat1.name+" "+ca1.age+" "+cat1.color+" "+cat1.weight);
+                          }
+                      }
+
+                      //OOP
+                      class Person{
+                        int age;
+                        String name;
+                        //method
+                        public void speak(){
+                          System.out.println("a nice person");
+                        }
+                        public void cal01(){
+                          int res = 0;
+                          for(int i =1; i<=1000; i++){
+                            res += i;
+                          }
+                          System.out.println(res);
+                        }
+                        public void cal02(int n){
+                          int res = 0;
+                          for(int i =1; i<=n; i++){
+                            res += i;
+                          }
+                          System.out.println("cal02="+res);
+                        }
+                        public int getSum(int n1, int n2){
+                          int res = n1 + n2;
+                          return res;
+                        }
+                      }
+
+
+
+p204 方法的调用机制（jvm
+栈                                     堆                     方法区
+主方法Main:
+Person p1 = new Person();---------> 分配对象空间,p1指向        加载类的属性方法
+int returnRes = p1.getSum(10,20)   
+      getSum空间 （新栈空间）
+      赋值n1=10，n2=20
+      res->30
+      return res;返回main空间
+      getSum空间释放
+int returnRes = 30;
+System.out.println(returnRes);
+main栈释放
+程序退出
+
+小结：
+程序执行到方法时，会在栈中分配一个新的空间
+方法执行完毕或执行到return时，返回
+返回到调用方法的地方
+返回后继续执行方法之后的代码
+
+
+
+
+
+
+
+
+
