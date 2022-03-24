@@ -20,6 +20,124 @@ p288 继承入门
 
 p289 继承细节
 1.私有属性子类不能直接访问，可以通过公共方法访问
-2.
+    private n4; public int getN4(){return n4;}                     //父类提供公共方法访问n4
+    private void test400(){}; public void callTest400(){test400();}//父类提供公共方法访问test400()
+
+p290
+2.子类一定会调用父类的构造器，完成父类的初始化
+    默认有super（）语句，调用父类无参构造器
+    
+3.子类对象创建时，默认调用父类的无参构造器，
+4，若父类没有无参构造器，需要在子类构造器中用super指定使用父类的构造器完成初始化
+否则编译不通过
+    父类 public Fu(int age){...} 
+    子类 public Sub(){super(30);...}
+
+
+
+p291
+5.指定使用父类构造器需要显示调用
+6.super使用时必须放在子类构造器的第一句
+super this都只能放在第一句，因此不能存在于同一个构造器中
+
+
+p292
+7. java 所有类都是Object的子类
+8.父类构造器的调用不限于直接父类，可以一直向上追溯到Object类
+topbase->base->sub
+
+
+p293
+9.子类最多直接继承一个父类
+    A不能同时继承B和C，但可以A继承B，B继承C
+10. 子类父类之间必须满足is-a关系，才能使用继承
+
+
+
+p294 继承本质分析
+子类对象在内存的存在形式：查找关系
+
+package com.sean.seanextend;
+
+/*
+继承的本质
+ */
+public class ExtendsTheory {
+    public static void main(String[] args) {
+        Son son = new Son();//内存的变化            1.方法区加载Son类：先父类后子类Object->GrandPa->Father->Son
+    }                                              2.堆分配son空间ox11
+}                                                  3.堆中先存储父类GrandPa name：0x22  hobby：0x23
+                                                          （常量池0x22 papa   ox23 pp）
+
+class GrandPa {                                    4.Father: name:0x33  age:39
+    String name = "papa";                                  (常量池 0x33 baba）
+    String hobby = "pp";                           5.Son：name：0x55
+}                                                          （常量池0x55 ss）
+                                                   6.堆0x11空间分配给主栈的son引用
+class Father extends GrandPa {                              （main栈 son->0x11)
+    String name = "baba"; 
+    int age = 39;
+}                                                   访问：先查找子类的属性是否可以访问，若无则逐层向上查找
+                                                          若都没有或私有则报错，
+class Son extends Father {                                只要有一层是private，就不再访问，无论上层能不能访问
+    String name = "ss";
+}
+
+
+
+p295 继承练习
+
+    this super 只能使用一个
+
+p296 继承练习
+p297 继承编写
+
+
+
+p298 super关键字
+
+super访问父类属性方法构造器，但不能访问private
+
+访问构造器时：
+    super(形参列表）；只能在子类构造器第一句
+    
+    
+
+p299 super 细节
+
+调用父类构造器，分工明确，父类属性由父类初始化，子类属性由子类初始化
+
+子类中有和父类成员重名时，为了访问父类成员，必须使用super
+
+调用方法：
+    先找本类
+    再找父类和更父类
+    
+ this.cal() 只找本类  = cal()
+ super.cal() 直接找父类
+ 
+ 
+ p300
+ super的访问不限于直接父类，若多个父类有同名成员，遵循就近原则和访问权限原则
+ 
+ p301 super this
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
