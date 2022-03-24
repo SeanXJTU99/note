@@ -1,0 +1,195 @@
+p264
+IDEA eclipse
+
+p265
+IDEA 下载
+2020.2版本
+
+
+p266
+IDEA 使用
+创建一个新项目
+源码字体 file-setting-editor-font-size
+                           color scheme -- general -- text -- default text -- bold
+                                           darcula
+
+p267 使用技巧
+菜单字体 file-setting-appearance-appearance-user
+字符编码              file encoding--global encoding
+
+
+p268 使用练习
+当run一个文件，会先编译，再运行
+src源码
+out编译后文件
+testpro01
+
+        public class ArrayTest {
+            public static void main(String[] args) {
+                MyTools mt = new MyTools();
+                int[] arr = {10,-1, 8, 0, 34};
+                mt.bubble(arr);
+                //print
+                System.out.println("===arr after sort====");
+                for (int i = 0; i < arr.length; i++) {
+                    System.out.print(arr[i] + " ");
+                }
+            }
+        }
+        class MyTools{
+            public void bubble(int[] arr){
+                //冒泡排序
+                int temp =0;
+                for(int i = 0; i<arr.length-1;i++){
+                    for (int j = 0; j < arr.length-i-1; j++) {
+                        if(arr[j]>arr[j+1]){//交换
+                            temp = arr[j];
+                            arr[j] = arr[j+1];
+                            arr[j+1] = temp;
+                        }
+                    }
+                }
+            }
+        }
+
+
+
+p269 IDEA常用快捷
+setting--keymap-editor actions
+删除当前行 delete line   ctrl+D
+复制当前行              ctrl+alt+下
+自动补全代码            alt + /
+添加注释                ctrl + /
+
+
+p270
+导入需要的类
+格式化代码  ctrl+alt+L
+快速运行    alt+R
+
+p271
+生成构造器     ctrl+insert
+类的层级（继承）关系  鼠标点类名 ctrl+h  右键 diagram
+定位方法  鼠标点方法（函数名） ctrl+b
+自动分配变量名  .var
+
+p272
+模板
+file -settings-editor-Live templates
+sout
+main
+fori
+forarr
+
+p273 包
+同一个项目下两个开发者希望定义两个同名类
+包的作用：
+区分同名的类
+类很多时可以管理类（eg：java api文档
+  可以把功能相近的类放在同一个包内
+控制访问范围
+语法：
+package com.seanbag
+package关键字，打包
+com.seanbag 包名
+
+
+
+
+p274 包的本质
+创建文件夹保存文件
+文件夹aaa(类 Dog，Person
+文件夹bbb(类 Dog, Cat
+JAVA-jdk-src-java-util-Scanner
+
+
+p275 包入门
+new-proj-src-new-package
+chapter08-src-com
+
+            package com.use;
+            import com.xiaoqiang.Dog;
+            public class Test {
+                public static void main(String[] args) {
+                    Dog dog = new Dog();
+                    System.out.println(dog);//com.xiaoqiang.Dog@1b6d3586
+                    com.xiaoming.Dog dog1 = new com.xiaoming.Dog();
+                    System.out.println(dog1);//com.xiaoming.Dog@4554617c
+                }
+            }
+
+
+
+p276 包命名
+规则：与标识符命名相同
+规范：小写字母+.
+    com.公司名.项目名.业务模块名
+    com.sina.crm.user
+    com.sina.crm.order
+ 
+ 
+ 
+p277 java常用包
+java.lang.*//基本包，不同引入 Math String System...
+java.util.*//系统工具包
+java.net  //网络开发
+java.awt  //UI界面开发
+
+
+
+p278 包的引入
+引入一个包
+import java.util.Scanner 一个类
+import java.util.*       util包的所有类（不建议
+
+用系统提供的Arrays进行数组排序
+          import java.util.Arrays;
+          public class import01 {
+              public static void main(String[] args) {
+                  int[] arr = {-1, 20, 3, 13, 3};
+                  //传统方法时自己编写排序算法
+                  //
+                  Arrays.sort(arr);
+                  for (int j : arr) {
+                      System.out.print(j + "\t");
+                  }
+              }
+          }
+
+package 打包：
+
+      //package的作用是声明当前类所在的包，要放在所有类的最上面，一个类最多一个package
+      package com.sean.pkg;
+      //import 放在package下面，类定义之前，没有顺序要求
+      import java.util.Arrays;
+      import java.util.Scanner;
+      public class PkgDetail {
+          public static void main(String[] args) {
+              Scanner scanner = new Scanner(System.in);
+              int[] arr = {0, 1,-1};
+              Arrays.sort(arr);
+          }
+      }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
