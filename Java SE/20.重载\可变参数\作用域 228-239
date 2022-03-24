@@ -1,0 +1,184 @@
+p228 Overload
+方法重载：同类中的同名方法，但参数不一样
+    System.out.println(100);
+    System.out.println("hello world!");
+out是System的一个对象
+println是out的方法
+100 和 hello world是两个参数列表，对应println(int),println(String)
+
+
+
+p229 示例
+类MyCalculator
+方法：calculate
+calculate（int n1, int n2); calculate(int n1, double n2);
+calculate(double n2, int n1); calculate(int n1, int n2, int n3);
+
+
+p230 注意事项
+1.方法名相同
+2.形参不同，个数，顺序，类型至少有一方面不一样
+3.形参参数名不做要求
+    public int calculate(int n1, int n2)
+    public int calculate(int a, int b)
+    属于重复定义
+4.返回类型不做要求
+    public int calculate(int n1, int n2)
+    public void calculate(int a, int b)
+    属于重复定义
+
+
+p231 练习
+
+
+p232 编程练习
+                    public class OverloadExercise {
+                      public static void main(String []args) {
+                        Methods myMethods = new Methods();
+                        int a = myMethods.m(1,1);
+                        int b = myMethods.m(2);
+                        System.out.println(a+b);
+                        myMethods.m("hello world");
+                        double c = myMethods.max(1.0,2.0,3.0);
+                        System.out.println(c);
+                      }}
+                    class Methods{
+                      public int m(int n1, int n2){		return n1*n2;	}
+                      public int m(int n){		return n*n;	}
+                      public void m(String a){		System.out.println(a);	}
+                      public int max(int n1, int n2){		return n1>n2 ? n1:n2;	}
+                      public double max(double a, double b){		return a>b ? a: b;	}
+                      public double max(double a, double b, double c){
+                      //return max(a,b)>max(b,c)? max(a,b):max(b,c);
+                        return max(a,max(b,c));	}
+                    }
+
+
+p233 
+
+p234 可变参数入门
+同类中多个同名同功能 参数的个数 不同的方法封装为一个方法
+
+访问修饰符 返回类型 方法名（数据类型… 形参）{}
+
+eg：求3.4.5.6个数的和
+
+                              public int sum(int... nums) 表示可以接收int型的多个参数
+                                public class VarParameter01 {
+                                  public static void main(String []args) {
+                                  HspMethod m = new HspMethod();
+                                  int n = m.sum(1,5,100);System.out.println(n);
+                                  }
+                              }
+                              class HspMethod{
+                                /*public int sum(int n1, int n2){
+                                  return n1+n2;		
+                                }*/
+                                public int sum(int... nums){
+                                  System.out.println("num is "+ nums.length);
+                                  int res = 0;
+                                  for(int i=0;i<nums.length;i++){
+                                    res += nums[i];
+                                  }
+                                  return res;
+                                }
+                              }
+
+
+p235 可变参数形参列表
+实参可以0或者任意多个
+实参可以是数组
+可变参数可以和普通类型参数放在形参列表，但可变参数必须在最后
+一个形参列表只能由一个可变参数
+          public class VarParameterDetail {
+            public static void main(String []args) {
+              double[] arr = {1,2,3};
+              T t1 = new T();
+              t1.f2(1.0, arr);
+            }
+          }
+          class T{
+            /*public int sum(int n1, int n2){
+              return n1+n2;		
+            }
+            public void f1(int... nums){
+              System.out.println();
+            }*/
+            public void f2(double a, double... nums){
+              for(int i = 0; i< nums.length; i++){
+              System.out.print(nums[i]);}
+            }
+          }
+
+
+p236 可变参数练习
+              public class VarParameterExercise {
+                public static void main(String []args) {
+                  double[] scores = {10,20,30};
+                  Vmethod m = new Vmethod();
+                  m.f("Bai", scores);
+                  System.out.println(m.f2("Bai", 10.0, 20.0, 30.0, 40.0));
+                }
+              }
+              class Vmethod{
+                public void f(String name, double... scores){
+                  System.out.println(name);
+                  double res = 0;
+                  for(int i = 0; i< scores.length; i++){
+                    res += scores[i];}
+                  System.out.print(res);
+                }
+                public String f2(String name, double... scores){
+                  double res = 0;
+                  for(int i = 0; i< scores.length; i++){
+                    res += scores[i];}
+                  return name + " "+ res;
+              }
+              }
+
+
+
+p237  作用域scope
+变量作用域：
+变量分为全局变量（属性，成员变量）和局部变量（成员方法中定义的变量）
+局部变量是成员方法中定义的变量
+
+    class Cat{
+      String age = 10;//全局变量
+      public void cry(){
+        int n =10;String name = "jack";	}}//局部变量
+        
+    n和name只能在cry方法中
+    age可以用于整个Cat类中
+
+全局变量可以不赋值直接使用，有默认值
+局部变脸不能不赋值，无默认值
+
+
+p238  作用域就近原则
+1.属性和局部变量可以重名，访问时就近原则
+2.同一个作用域中，不能重名
+3.属性随对象创建而生成，对象销毁时销毁
+  局部变量只在调用方法时生成，退出时销毁
+
+
+p239 作用域
+4.范围
+  属性：可以被本类和其他类使用（通过对象调用）
+          class Cat{
+            public void test(){
+              Person p1 = new Person();  //第1中跨类调用
+              System.out.println(p1.age);	}
+            public void eat(Person p){
+              System.out.println(p.age);	}//第2中跨类调用
+          }
+  局部变量：只能在本类对应方法中使用
+5.修饰符
+  属性可以有修饰符
+  局部没有
+
+
+
+
+
+
