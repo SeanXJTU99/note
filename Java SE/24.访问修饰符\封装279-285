@@ -1,0 +1,231 @@
+p279 修饰符规则
+public：对外公开                            同类 同包 子类 不同包
+protected: 对子类和同一个包公开              同类 同包 子类
+默认：对同一个包公开                         同类 同包
+private：只有类本身能访问，不对外公开         同类
+
+
+
+p280 修饰符示例 modifier
+
+可以修饰属性，成员方法，类
+类只能是public和默认
+成员方法和属性的规则完全一样
+
+
+
+p281 面向对象三大特征
+
+封装，继承，堕胎
+
+封装encapsulation encap
+把抽象出的数据（属性）和对数据的操作（方法）封装再一起
+数据被保护在内部，程序其他部分只能通过【方法】才能操作数据
+用户只能调用【方法】
+
+好处：
+    隐藏实现细节，用户只是调用
+    可以验证数据，保证安全合理
+    Person p =new Person(); p.name = "jack"; p.age = 1200;
+      数据被直接修改，未经过验证，出现极不合理的age=1200
+      方法内部可以设计来保证合理
+
+
+p282 封装实现
+1.属性private
+2.提供公共的（public）set方法，用于对属性判断并赋值
+    public void setXxx(int a){//某个属性
+        //加入数据验证逻辑
+        属性 = 参数名；
+    }
+3.提供一个public get方法，用于获取属性的值
+    public int getXxx(){//权限判断
+      return xx;
+    }
+
+
+p283 封装入门
+Encapsulation01.java
+
+age,name,sal
+年龄1-120，工资年龄封装，姓名2-6
+
+            package com.sean.encap;
+
+            public class Encapsulation01 {
+                public static void main(String[] args) {
+                    Person person = new Person();
+            //        person.name = "jack";
+                    person.setName("jackkey");
+                    person.setAge(300);
+                    person.setSal(100.0);
+                    System.out.println(person.info());
+
+                }
+            }
+            class Person{
+                public String name;
+                private int age;
+                private double sal;
+                //set
+                //返回属性值
+                public String info(){
+                    return "name= "+ name +"age="+ age+"salary" + sal;
+                }
+                //setter getter
+                public String getName() {
+                    return name;
+                }
+
+                public void setName(String name) {
+                    //加入数据检验
+                    if(name.length() >= 2 && name.length()<=6) {
+                        this.name = name;
+                    }else{
+                        System.out.println("length of name should between 2 and 6");
+                        this.name = "default";
+                    }
+                }
+
+                public int getAge() {
+                    return age;
+                }
+
+                public void setAge(int age) {
+                    //增加判断
+                    if(age >= 1 && age <= 120) {
+                        this.age = age;
+                    }else{
+                        System.out.println("age should between 1 - 120，默认年龄18");
+                        this.age = 18;//默认
+                    }
+                }
+
+                public double getSal() {
+                    return sal;
+                }
+
+                public void setSal(double sal) {
+                    //可以增加当前对象的权限判断
+                    this.sal = sal;
+                }
+            }
+
+
+
+
+p284 构造器与封装结合
+构造器可以绕过set函数
+        Person smith = new Person("smith", 200, 5000);
+        System.out.println("========");
+        System.out.println(smith.info());
+可以将set函数写在构造器中：
+           public Person(String name, int age, double sal) {
+        //        this.name = name;
+        //        this.age = age;
+        //        this.sal = sal;
+                //将set写在构造器中
+                setSal(sal);
+                setName(name);
+                setAge(age);
+            }
+
+
+p285 封装习题1
+Account 姓名（2-4）、余额>20 密码6位  不满足时给出默认值
+        set 赋值
+TestAccount 中测试
+
+                  package com.sean.encap;
+
+                  /*
+                  Account 姓名（2-4）、余额>20 密码6位  不满足时给出默认值
+                          set 赋值
+                  AccountTest中测试
+                   */
+                  public class Account {
+                      //为了封装，全部私有
+                      private String name;
+                      private  double balance;
+                      private  String pwd;
+
+                      //显示信息
+                      public void showInfo(){
+                          System.out.println("name = " + name + "\nbalance="
+                                  + balance+ "\npwd ="+ pwd);
+                      }
+
+                      //提供两个构造器，一般是无参和三参数
+
+
+                      public Account() {
+                      }
+
+                      public Account(String name, double balance, String pwd) {
+                          this.setName(name);
+                          this.setBalance(balance);
+                          this.setPwd(pwd);
+                      }
+
+                      public String getName() {
+                          return name;
+                      }
+
+                      public void setName(String name) {//  姓名（2-4）
+                          if(name.length()>=2 && name.length()<=4) {
+                              this.name = name;
+                          }else{
+                              System.out.println("name 2-4");
+                              this.name = "default";
+                          }
+                      }
+
+                      public double getBalance() {
+                          return balance;
+                      }
+
+                      public void setBalance(double balance) {//余额>20
+                          if(balance>20){
+                          this.balance = balance;}
+                          else{
+                              System.out.println("balance>20, default = 0.0");
+                              this.balance = 0.0;
+                          }
+                      }
+
+                      public String getPwd() {
+                          return pwd;
+                      }
+
+                      public void setPwd(String pwd) {//密码6位
+                          if(pwd.length() == 6) {
+                              this.pwd = pwd;
+                          }else{
+                              System.out.println("password should 6,default = 000000");
+                              this.pwd = "000000";
+                          }
+                      }
+                  }
+
+
+
+                  package com.sean.encap;
+
+                  public class TestAccount {
+                      public static void main(String[] args) {
+                          Account account = new Account();
+                          account.setName("jack");
+                          account.setBalance(6);
+                          account.setPwd("123456");
+                          account.showInfo();
+                      }
+                  }
+
+
+
+
+
+
+
+
+
