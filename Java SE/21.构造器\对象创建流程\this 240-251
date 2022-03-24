@@ -1,0 +1,243 @@
+p240 构造器/构造方法
+
+对象的初始化
+[修饰符] 方法名（形参列表）{}
+
+1.没有返回值
+2.方法和类名一样
+3.参数列表和成员方法的参数列表同样规则
+4.构造器的调用由系统完成（不需要再写代码调用
+5.对象初始化，而非创建对象（不是分配栈空间
+
+
+p241 构造器示例
+在创建人类对象时就直接指定该对象的年龄
+            public class Constructor {
+              public static void main(String []args) {
+                Person p1 = new Person("jack", 80);//有构造器
+                Cat c1 = new Cat();//无构造器
+                System.out.println(p1.age);
+                System.out.println(c1.age);
+              }
+            }
+            class Cat{  int age;   int weight;
+            }
+            class Person{
+              int age;     String name;
+              public Person(String pName, int pAge){
+                name = pName;   age = pAge;
+              }
+            }
+ 
+ 
+ 
+ 
+p242 构造器细节
+
+1.构造器可以重载
+eg 
+  public Person(String pName){}
+  public Person(int pAge){}
+  
+2.构造器无返回值
+3.必须和类名相同
+4.不创建对象
+5.不能主动调用
+
+p243
+6.未定义构造器时系统会生成默认无参数构造器
+  Dog dog1 = new Dog();  Dog()即为无参构造器
+
+7.自定义构造器会覆盖默认构造器
+除非显式定义一下Dog(){}
+
+
+p244 构造器重载
+              public class ConstructorExercise01 {
+                public static void main(String []args) {
+                  Person p1 = new Person("jack", 80);
+                  Person p2 = new Person();
+                  System.out.println(p1.age);
+                  System.out.println(p2.age);
+                }
+              }
+              class Person{
+                int age;
+                String name;
+                public Person(String pName, int pAge){
+                  name = pName;
+                  age = pAge;
+                }
+                public Person(){
+                  age = 18;
+                }
+              }
+
+
+
+p245 对象创建流程
+
+class Person{
+    int age = 90;
+    String name; 
+    Person(String n, int a){name = n; age =a;}} 
+ Person p = new Person("jack", 20);
+
+1.方法区：加载Person类的信息Person.class
+2.堆：开辟空间0x2211，
+3.1堆：默认初始化：0x2211 存放age=0和name=[null]
+3.2堆：显示初始化 age=90 name = [null]（类的属性）
+3.3.1堆：构造器初始化 name=[0x0011]; 常量池0x0011：jack（类中定义的构造器）
+3.3.2堆：构造器初始化 age = 20
+4.栈：p=[0x2211],指向堆空间，对象的引用
+
+类{
+成员属性
+构造器
+成员方法
+}
+
+
+
+p246 this关键字
+
+构造器的形参名与属性相同
+class Dog{
+  String name;
+  int age;
+  public Dog(String name, int age){
+    name = name; age = age; }}
+ Dog d = new Dog("spike",3)//name = null, age = 0
+  就近原则，构造器中的name是局部变量而非属性
+
+
+
+p247 this示例
+
+JVM给每个对象分配this，代表当前对象
+Jack：我的眼睛  我的指向Jack，this
+    public Dog(String name, int age){
+        this.name = name; 
+        this.age = age; }
+    Dog d1 = new Dog("spike",3);
+
+p248 this原理
+堆
+d1  0x1122
+    age 3
+    name 0x4433 指向常量池 0x4433 spike
+    this 0x1122 指向d1自己
+d2  0x2233
+    age 10
+    name 0x4434 指向常量池 0x4434 大黄
+    this 0x2233 指向d2自己
+
+              public class This01 {
+                public static void main(String []args) {
+                  Dog d = new Dog("spike",3);
+                  System.out.println(d.name);
+                  System.out.println(d.hashCode());//366712642
+                }
+              }
+              class Dog{
+                String name;
+                int age;
+                public Dog(String name, int age){
+                  this.name = name;
+                  this.age = age; 
+                  System.out.println(this.hashCode());//366712642
+                }
+              }
+
+
+p249 this小结
+哪个对象调用，this就指向哪个对象
+
+
+p250 this细节
+1.this可以访问本类的属性，方法，构造器
+  属性：this可用于区分属性和局部变量
+  方法：this.方法名（参数）
+  构造器：this（参数）只能在构造器中访问另一个构造器，且在首句
+
+              public class This02 {
+                public static void main(String []args) {
+                  T t1 = new T();
+                }
+              }
+              class T{
+                public T(){
+                  this("spike",3);
+                  System.out.println(" T()");
+                }
+                public T(String name, int age){
+                  System.out.println(" T(String name, int age)"); }
+              }
+
+2.不能在类定义的外部使用，只能在类定义的方法中使用
+
+          public class This02 {
+              public static void main(String []args) {
+                T t1 = new T();
+                t1.f3();
+              }
+          }
+          class T{
+            String name;
+            public T(){
+              this("spike",3);
+              System.out.println(" T()");
+              }
+            public T(String name, int age){
+              this.name = name;
+              System.out.println(" T(String name, int age)"); 
+              }
+            public void f3(){
+              String name = "smith";
+              System.out.println("name = "+name); //就近原则，局部变量smith
+              System.out.println("name =" +this.name); //this访问属性，spike
+              }
+          }
+
+
+
+
+p251 this练习
+                  public class ThisPerson {
+                    public static void main(String []args) {
+                      Person p1 = new Person("mary",20);
+                      Person p2 = new Person("smith", 30);
+                      System.out.println(p1.compareTo(p2));
+                    }
+                  }
+                  class Person{
+                    int age;
+                    String name;
+                    public Person(String name, int age){
+                      this.name = name;
+                      this.age = age;
+                    }
+                    public boolean compareTo(Person p){
+                      /*if(this.name.equals(p.name) && this.age == p.age){
+                        return true;
+                      }else{return false;}*/
+                      return this.name.equals(p.name)&& this.age == p.age;
+                    }
+                  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
