@@ -1,32 +1,33 @@
 p252
 求double数组最大值
 
-public class Homework01 {
-    public static void main(String []args) {
-		A01 a = new A01();
-		//double[] arr = {1.1,4.7,8.0};
-		//double[] arr = {};
-		double[] arr = null;
-		Double res = a.max(arr);
-		if(res != null){
-		System.out.println(a.max(arr));}
-		else{
-			System.out.println("get out");
-		}
-    }
-}
-class A01{
-	public Double max(double[] arr){  //防止出现空数组无法返回，使用Doule包装类，可以返回null
-		if (arr != null && arr.length>0){  //判断数组是否为空数组或者null
-		double max = arr[0];
-		for(int i=1;i<arr.length;i++){
-			if(max<arr[i]){
-				max = arr[i];
+		public class Homework01 {
+		    public static void main(String []args) {
+			A01 a = new A01();
+			//double[] arr = {1.1,4.7,8.0};
+			//double[] arr = {};
+			double[] arr = null;
+			Double res = a.max(arr);
+			if(res != null){
+				System.out.println(a.max(arr));}
+			else{
+				System.out.println("get out");
 			}
-		}return max;}
-		else{return null;}
-	}
-}
+		    }
+		}
+		class A01{
+			public Double max(double[] arr){  //防止出现空数组无法返回，使用Doule包装类，可以返回null
+				if (arr != null && arr.length>0){  //判断数组是否为空数组或者null
+					double max = arr[0];
+					for(int i=1;i<arr.length;i++){
+						if(max<arr[i]){
+							max = arr[i];
+						}
+					}return max;
+				}
+				else{return null;}
+			}
+		}
 
 
 
@@ -60,3 +61,291 @@ p253 查找字符串是否在数组中，并返回索引或-1
 
 
 p254
+类Book updatePrice
+
+			public class Homework03 {
+			    public static void main(String []args) {
+			      Book b = new Book(200.0);
+					//b.price  = 200;
+					b.updatePrice();
+					System.out.println(b.price);
+			    }
+			}
+			class Book{
+				double price;
+				public Book(double price){
+					this.price = price;
+				}
+				public void updatePrice(){
+					if(this.price>150){this.price = 150;}
+					else if(this.price>100){this.price = 100;}
+					//else{this.price = this.price;}
+				}
+			}
+
+
+
+p255
+复制数组（新建数组）
+				public class Homework04 {
+				    public static void main(String []args) {
+					double[] arr = {1,2,3};
+					A03 a = new A03();
+					double[] narr = a.copyArray(arr);
+					for(int i=0;i<narr.length;i++){
+						System.out.print(narr[i]+" ");
+					}System.out.println();
+				    }
+				}
+				class A03{
+					public double[] copyArray(double[] arr){
+						int len = arr.length;
+						double[] narr = new double[len];
+						for(int i=0;i<len;i++){
+							narr[i] = arr[i];
+						}
+						return narr;
+					}
+				}
+
+
+
+p256
+计算圆的周长和面积  Math.PI
+			public class Homework05 {
+			    public static void main(String []args) {
+					double r = 1.5;
+					Circle cir = new Circle(r);
+					System.out.println(cir.circle());
+			    }
+			}
+			class Circle{
+				public double r;
+				public Circle(double radius){
+					r = radius;
+				}
+				public double circle(){
+					double c = 2 * Math.PI * r;
+					return c;
+				}
+				public double area(){
+					double a = Math.PI * r * r;
+					return a;
+				}
+			}
+
+
+p257 除法
+		public class Homework06 {
+		    public static void main(String []args) {
+				double n1 = 1.0;double n2 = 0.0;
+				Cale cale = new Cale(n1, n2);
+				double res = cale.div();
+				System.out.println(res);   }}
+		class Cale{
+			public double n1;public double n2;
+			public Cale(double n1, double n2){
+				this.n1 = n1;this.n2 = n2;	}
+			public double div(){
+				if(n2!=0){
+				double res = n1/n2;
+				return res;}
+				else{System.out.println("n2 is zero.");return 0;}}}
+
+
+
+p258 
+homework07 略
+homework08 
+public class Test{
+	int count = 9;
+	public void count1(){
+		count = 10;
+		System.out.println("count1 = "+count);
+	}
+	public void count2(){
+		System.out.println("count1 = "+ count++);
+	}//任何一个类都可以有main方法
+	public static void main(String[] args){
+		// 匿名对象，也是对象，但只能用一次，指令结束就被销毁
+		new Test().count1();     //print 10
+		Test t1 = new Test();
+		t1.count2();             //print 9
+		t1.count2();             //print10
+	}
+}
+
+
+p259 
+homework09略
+homework 10
+			class Demo{
+				int i =100;
+				public void m(){
+					int j = i++;
+					System.out.println("i=" + i);
+					System.out.println("j=" + j);
+				}
+			}
+			class Test{
+				public static void main(String[] args){
+					Demo d1 = new Demo();
+					Demo d2 = d1;
+					d2.m();    //101;100;
+					System.out.println(d1.i);//101
+					System.out.println(d2.i);//101
+				}
+			}
+
+p260
+homework12
+构造器复用
+class Employee{
+	String name; char gender; int age; String pos; double sal;
+	public Employee(String pos, double sal){
+		this.pos = pos;
+		this.sal = sal;
+	}
+	public Employee(String name, char gender, int age){
+		this.name = name;
+		this.gender = gender;
+		this.age = age;
+	}
+	public Empolyee(String name, char gender, int age, String pos, double sal){
+		this(String name, char gender, int age);//this在构造器中只能放在第一句，只能调用一次
+		this.pos = pos;
+		this.sal = sal;
+	}
+}
+
+
+
+p261 将对象作为参数传递给放啊
+			public class Homework13 {
+			    public static void main(String []args) {
+				Circle c = new Circle();
+				c.radius = 1;
+				PassObject po = new PassObject();
+				int times = 5;
+				po.printAreas(c, times);    }}
+			class Circle{
+				public double radius;
+				public double findArea(){
+					return Math.PI * radius *radius;	}}
+			class PassObject{
+				public void printAreas(Circle c, int times){
+					for(int i = 1; i <= times; i++){
+						c.radius = i;
+						System.out.println(i+"   "+c.findArea());		}	}}
+
+
+p262 电脑石头剪刀布
+
+import java.util.Scanner;
+import java.util.Random;
+public class Guess {
+    public static void main(String []args) {
+		Tom t= new Tom();
+		int isWinCount = 0;
+		int[][] arr1 = new int[3][3];
+		int j = 0;
+		String[] arr2 = new String[3];
+		Scanner scan = new Scanner(System.in);
+		for(int i =0; i< 3; i++){
+			System.out.println("input your guess");
+			int num = scan.nextInt();
+			t.setTomGuessNum(num);
+			int tomGuess = t.getTomGuessNum();
+			arr1[i][j+1] = tomGuess;
+			
+			int comGuess = t.computerNum();
+			arr1[i][j+2] = comGuess;
+			
+			String isWin = t.vsComputer();
+			arr2[i] = isWin;
+			arr1[i][j] = t.count;
+			
+			System.out.println("=================");
+			System.out.println("game\tTom\t\tCom\t\tWinner");
+			System.out.println(t.count + "\t" + tomGuess + "\t\t" + comGuess + "\t\t" +isWin);;
+			System.out.println("=================");
+			System.out.println("\n\n");
+			isWinCount = t.winCount(isWin);
+			
+			System.out.println("game\tTom\tCom\t\tWinner");
+			for(int a =0; a<arr1.length;a++){
+				for(int b = 0; b<arr1[a].length; b++){
+					System.out.print(arr1[a][b] + "\t\t\t");
+				}
+				System.out.print(arr2[a]);
+				System.out.println();
+			}
+			System.out.println("win" +isWinCount + "times");
+		}
+    }
+}
+class Tom{
+	int tomGuessNum;
+	int comGuessNum;
+	int winCountNum;
+	int count = 1;
+	//public void showInfo(){}
+	public int computerNum(){
+		Random r = new Random();
+		comGuessNum = r.nextInt(3);
+		return comGuessNum;
+	}
+	public void setTomGuessNum(int tomGuessNum){
+		if(tomGuessNum > 2|| tomGuessNum < 0){
+			throw new IllegalArgumentException("input error");
+		}this.tomGuessNum = tomGuessNum;
+	}
+	public int getTomGuessNum(){
+		return tomGuessNum;
+	}
+	public String vsComputer(){
+		if(tomGuessNum==0&&comGuessNum==1){
+			return "win";
+		}else if(tomGuessNum==1&&comGuessNum==2){
+			return "win";
+		}else if(tomGuessNum==2&&comGuessNum==0){
+			return "win";
+		}else if(tomGuessNum==comGuessNum){
+			return "balance";
+		}else{return "lose";}
+	}
+	public int winCount(String s){
+		count ++;
+		if("win".equals(s)){
+			winCountNum ++;
+		}
+		return winCountNum;
+	}
+}
+
+
+
+
+p263
+
+对象在内存中的存在形式（堆，引用类型，基本类型
+属性，成员方法，
+方法的调用机制原理（主栈，方法栈
+传参机制（值拷贝，引用地址拷贝，方法栈不影响主栈中的数值
+递归调用
+可变参数
+作用域（局部变量，属性
+构造器（与类同名
+重载
+this（哪个对象调用就指向哪个，构造器中只能调用一次
+对象创建方法（内存分配与管理
+
+
+
+
+
+
+
+
+
+
