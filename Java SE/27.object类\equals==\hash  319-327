@@ -1,9 +1,0 @@
-==:比较基本数据的值和引用类型的地址（同一个对象时true
-equals:比较引用类型的地址
-  重写后：比较对象的内容
-
-查看源码CTRL+B
-
-hashcode
-toString
-finalize
