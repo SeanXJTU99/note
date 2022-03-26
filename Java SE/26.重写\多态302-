@@ -181,28 +181,88 @@ p308  对象多态
  
 
 
-p310 多态细节
+p310 多态 向上转型
 前提：类存在继承关系
 向上转型：父类指向子类对象  
     父类 引用名 = new 子类
     Animal animal = new Cat();
 特点：
-可以调用父类所有成员（访问权限需要遵守），
-不能调用子类特有成员
+1.可以调用父类所有成员（访问权限需要遵守），
+2.不能调用子类特有成员
     animal可以调用Animal的方法（eat，run，。。
     但不能调用Cat的特有方法（抓老鼠。。
+    
+3.按照从子类（运行类型）到父类（遍历类型）的查找顺序
+
+
   
-  
+p311 多态 向下转型
+
+子类类型 引用名 = （子类类型）父类引用
+    Animal animal = new Dog();
+    Dog dog = (Dog) animal;//此时有两个引用animal和dog同时指向new Dog对象
+只能强转父类的引用，不能强转父类的对象
+父类引用必须指向当前目标类型的对象
+    Cat cat = (Cat) animal;// Class Exception 类异常
+可以调用子类所有成员
+
+
+p312 多态细节
+
+1.属性不能重写，直接看编译类型
+            package com.sean.poly;
+
+            public class PolyDetail02 {
+                public static void main(String[] args) {
+                    Base base = new Sub();          //编译类型为Base
+                    System.out.println(base.count); //直接使用Base属性count=10
+                }
+            }
+            class Base{
+                int count = 10;
+            }
+            class Sub extends Base{
+                int count = 20;            //对象空间中存有两个值 10 20
+            }
+
+2.instanceof 比较操作符
+
+    判断对象的运行类型是否为 XX类 或 XX的子类
+                package com.sean.poly;
+
+                public class PolyDetail03 {
+                    public static void main(String[] args) {
+                        BB bb = new BB();
+                        System.out.println(bb instanceof BB);//true
+                        System.out.println(bb instanceof AA);//true
+                        AA aa = new BB();
+                        System.out.println(aa instanceof BB);//true
+                        System.out.println(aa instanceof AA);//true
+                        AA Aa = new AA();
+                        System.out.println(Aa instanceof BB);//false
+                        System.out.println(aa instanceof AA);//true
+                    }
+                }
+                class AA{}//父类
+                class BB extends AA{}//子类
 
 
 
+p313 多态练习
+double d = 13.4;
+long l = (long)d;
+int in = 5;
+boolean b = (boolean)in;//False int->boolean
+Object obj = "Hello";//向上转型
+String objStr = (String)obj;//向下转型
+
+Object objPri = new Integer(5);
+String str = (String) objOPri;//False 向下转型类型不符
+Integer str1 = (Integer) objPri; //正确的向下转型
 
 
 
-
-
-
-
+p314 多态练习
 
 
 
