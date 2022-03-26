@@ -113,15 +113,112 @@ p299 super 细节
     先找本类
     再找父类和更父类
     
- this.cal() 只找本类  = cal()
- super.cal() 直接找父类
+this.cal() 只找本类  = cal()
+super.cal() 直接找父类
+
+
+p300
+super的访问不限于直接父类，若多个父类有同名成员，遵循就近原则和访问权限原则
+
+p301 super this
  
- 
- p300
- super的访问不限于直接父类，若多个父类有同名成员，遵循就近原则和访问权限原则
- 
- p301 super this
- 
+
+
+
+p302 重写 override
+
+子类方法的名、返回、参数和父类一样
+覆盖了父类的方法
+package com.sean.override;
+
+public class Animal {
+    public void cry(){
+        System.out.println("crying");
+    }
+}
+public class Dog extends Animal{
+    //dog是animal子类
+    //dog的cry方法和animal的cry定义形式一样
+    //dog的cry方法重写了animal的cry
+    public void cry(){
+        System.out.println("the dog is crying");
+    }
+}
+public class Override01 {
+    public static void main(String[] args) {
+        //override
+        Dog dog = new Dog();
+        dog.cry(); //Dog中定义了cry方法，直接调用；若无，则向上查找Animal的cry
+    }
+}
+
+
+p303 重写
+1.方法名、形参列表必须完全一样
+    Animal: public void cry(){}
+    Dog:    public void cry(){}
+2.子类返回类型要一样，或者是父类返回类型的子类
+    Animal: public Object getInfo(){}
+    Dog:    public String getInfo(){} 
+        Object是String的父类，也构成重写
+        若子类为Object，父类为String，则报错，不兼容
+        
+3.子类不能缩小父类的访问权限    public>protected>默认>private
+    Animal: void sayOK(){}
+    Dog:    public void syaOK(){} //OK
+    Animal: void sayOK(){}
+    Dog:    private void syaOK(){} //ERROR
+
+
+p304 重载和重写
+
+名称            范围     方法名      形参列表   返回类型        修饰符
+
+重载overload    本类     必须一样    不能相同    无要求         无要求
+重写override    子父类   必须一样    必须一样   相同或子类    子类不能缩小
+
+
+
+p305
+Person， private（name age） 构造器，say()
+student,  private(score),id,  构造器，say()
+main,  p1,s1,调用say
+
+                package com.sean.override;
+
+                public class OverrideExercise {
+                    public static void main(String[] args) {
+                        Person jack = new Person("jack", 10);
+                        System.out.println(jack.say());
+                        Student smith = new Student("smith", 10, 123456, 100);
+                        System.out.println(smith.say());    }}
+
+                public class Person {
+                    private String name;
+                    private int age;
+                    public Person(String name, int age) {
+                        this.name = name;
+                        this.age = age;    }
+                    public String say(){return "name= "+name+"age= "+age;}}、
+
+                public class Student extends Person{
+                    private int id;
+                    private double score;
+                    //父类没有默认构造器，子类需要显式定义构造器
+                    public Student(String name, int age, int id, double score) {
+                        super(name, age);
+                        this.id = id;
+                        this.score = score;
+                    }
+                    public String say(){
+                        return super.say() + "id=" + id+"score="+score;
+                    }
+                    public int getId() {        return id;    }
+                    public void setId(int id) {        this.id = id;    }
+                    public double getScore() {        return score;    }
+                    public void setScore(double score) {        this.score = score;    }
+                }
+
 
 
 
