@@ -1,0 +1,356 @@
+p306 多态
+master要给动物们（animal)喂食(food
+传统方法解决：food{fish,bone,rice}
+             master
+             animal{dog,cat,pig}
+
+Master:
+  //给小猫 喂食 骨头
+    public  void feed(Cat cat, Bone bone){
+        System.out.println("master " + name + " feed " + cat.getName()
+                +" with " + bone.getName());
+    }
+    //给小猫 喂食 鱼 方法重载
+    public  void feed(Cat cat, Fish fish){
+        System.out.println("master " + name + " feed " + cat.getName()
+                +" with " + fish.getName());
+    }
+    需要不断地重载feed下去
+
+main:
+     Master tom = new Master("tom");
+        
+        Cat ca = new Cat("ca");
+        Bone bo = new Bone("bo");
+        tom.feed(ca,bo);
+        Cat mic = new Cat("mic");
+        Fish fi = new Fish("fi");
+        tom.feed(mic,fi);
+
+
+多态：提高代码复用性
+
+
+p307 多态基本介绍
+
+多态是指方法或对象有多种形态，建立在封装和继承的基础上
+
+具体体现：
+1.方法多态：
+    重写和重载
+    
+    
+p308  对象多态
+对象的多态：
+    1.一个对象的编译类型和运行类型可以不一致
+        Animal animal = new Dog(); 【animal编译类是Animal，运行类是Dog】子类对象（dog可以赋给父类引用（animal
+    2.编译类型由定义对象确定，不能改变
+        Animal animal        Animal类的对象引用
+    3.运行类型可以改变
+        animal = new Cat();  指向Cat类的对象空间
+    4.编译类型 = 运行类型
+    
+多态对程序的影响
+        Animal animal = new Dog();
+        animal.cry();   //执行到这里时 animal运行类型是dog，所以是dog的cry（）
+        animal = new Cat();
+        animal.cry();   //运行类型为Cat，Cat的cry()
+        animal = new Fish();
+        animal.cry();   //运行类型是Fish，Fish cannot cry
+        
+        
+ p309 多态入门
+ 
+ 主人喂食问题：
+ Master：
+    //使用多态机制，统一管理喂食
+    //animal 可以指向Animal子类的对象
+    //food 也可以指向Food子类的对象
+    public void feed(Animal animal, Food food){
+        System.out.println("master " + name + " feed " + animal.getName()
+                +" with " + food.getName());
+    }
+ main:
+        Master tom = new Master("tom");
+        Cat ca = new Cat("ca");
+        Bone bo = new Bone("bo");
+        tom.feed(ca,bo);
+        Cat mic = new Cat("mic");
+        Fish fi = new Fish("fi");
+        tom.feed(mic,fi);
+        Pig pp = new Pig("pp");
+        Rice rice = new Rice("rice");
+        tom.feed(pp,rice);
+ 
+
+
+p310 多态 向上转型
+前提：类存在继承关系
+向上转型：父类指向子类对象  
+    父类 引用名 = new 子类
+    Animal animal = new Cat();
+特点：
+1.可以调用父类所有成员（访问权限需要遵守），
+2.不能调用子类特有成员
+    animal可以调用Animal的方法（eat，run，。。
+    但不能调用Cat的特有方法（抓老鼠。。
+    
+3.按照从子类（运行类型）到父类（遍历类型）的查找顺序
+
+
+  
+p311 多态 向下转型
+
+子类类型 引用名 = （子类类型）父类引用
+    Animal animal = new Dog();
+    Dog dog = (Dog) animal;//此时有两个引用animal和dog同时指向new Dog对象
+只能强转父类的引用，不能强转父类的对象
+父类引用必须指向当前目标类型的对象
+    Cat cat = (Cat) animal;// Class Exception 类异常
+可以调用子类所有成员
+
+
+p312 多态细节
+
+1.属性不能重写，直接看编译类型
+            package com.sean.poly;
+
+            public class PolyDetail02 {
+                public static void main(String[] args) {
+                    Base base = new Sub();          //编译类型为Base
+                    System.out.println(base.count); //直接使用Base属性count=10
+                }
+            }
+            class Base{
+                int count = 10;
+            }
+            class Sub extends Base{
+                int count = 20;            //对象空间中存有两个值 10 20
+            }
+
+2.instanceof 比较操作符
+
+    判断对象的运行类型是否为 XX类 或 XX的子类
+                package com.sean.poly;
+
+                public class PolyDetail03 {
+                    public static void main(String[] args) {
+                        BB bb = new BB();
+                        System.out.println(bb instanceof BB);//true
+                        System.out.println(bb instanceof AA);//true
+                        AA aa = new BB();
+                        System.out.println(aa instanceof BB);//true
+                        System.out.println(aa instanceof AA);//true
+                        AA Aa = new AA();
+                        System.out.println(Aa instanceof BB);//false
+                        System.out.println(aa instanceof AA);//true
+                    }
+                }
+                class AA{}//父类
+                class BB extends AA{}//子类
+
+
+
+p313 多态练习
+double d = 13.4;
+long l = (long)d;
+int in = 5;
+boolean b = (boolean)in;//False int->boolean
+Object obj = "Hello";//向上转型
+String objStr = (String)obj;//向下转型
+
+Object objPri = new Integer(5);
+String str = (String) objOPri;//False 向下转型类型不符
+Integer str1 = (Integer) objPri; //正确的向下转型
+
+
+
+p314 多态练习
+            package com.sean.poly.exercise;
+
+            public class PolyExercise02 {
+                public static void main(String[] args) {
+                    Sub sub = new Sub();
+                    System.out.println(sub.count);
+                    sub.display();
+                    Base b = sub;
+                    System.out.println(b == sub);//指向同一个对象 true
+                    System.out.println(b.count); //访问属性，编译类型 10
+                    b.display();                 //方法调用，运行类型 20
+                }
+            }
+            class Base{
+                int count = 10;
+                public void display() {
+                    System.out.println(this.count);
+                }
+            }
+            class Sub extends Base{
+                int count = 20;
+                public void display(){
+                    System.out.println(this.count);
+                }
+            }
+
+
+p315 【动态绑定机制】
+调用方法时动态绑定：和运行类型绑定
+调用属性时没有绑定：哪里声明，就用哪里的属性
+
+
+                package com.sean.poly.dynamic;
+
+                public class DynamicBinding {
+                    public static void main(String[] args) {
+                        A a = new B();
+                        System.out.println(a.sum()); //调用B的sum(),属性i无绑定，使用B的属性i；20+20=40
+                        System.out.println(a.sum1());//30
+
+                        //当把B的sum和sum1注释后
+                        System.out.println(a.sum()); //B无sum,调用A的sum(),但动态绑定到B的getI();属性i无绑定，getI()使用B的属性i；20+10=30
+                        System.out.println(a.sum1());//B无sum1,调用A的sum1();属性i无绑定，sum1()使用A的属性i; 10+10=20
+                    }
+                }
+                class A{
+                    public int i =10;
+                    //调用方法时会和运行类型绑定
+                    public int sum(){   //调用B的getI()和i;20+10=30
+                        return getI() + 10;
+                    }
+                    public int sum1(){  //调用A的sum1()和i;10+10=20
+                        return i+10;
+                    }
+                    public int getI(){
+                        return i;
+                    }
+                }
+                class B extends A{
+                    public int i =20;
+                    public int sum(){
+                        return i + 20;
+                    }
+                    public int getI(){
+                        return i;
+                    }
+                    public int sum1(){
+                        return i+ 10;
+                    }
+                }
+
+
+
+p316 多态应用--多态数组
+
+数组的定义类型为父类，保存的元素是子类
+
+创建1Person，2student，2teacher，统一放在多态数组中，并调用每个对象的say方法
+
+
+
+p317 多态数组-升级
+调用子类的特有方法，如teach，study
+
+                package com.sean.poly.polyarr;
+
+                public class PolyArray {
+                    public static void main(String[] args) {
+                        //创建1Person，2student，2teacher，统一放在多态数组中
+                        //并调用每个对象的say方法
+                        Person[] persons = new Person[5];
+                        persons[0] = new Person("jack", 20);
+                        persons[1] = new Student("tommy", 20, 100);
+                        persons[2] = new Student("smith", 18, 60);
+                        persons[3] = new Teacher("mary", 48, 6000);
+                        persons[4] = new Teacher("white", 50, 10000);
+                        //循环遍历数组，调用say
+                        for (int i = 0; i < persons.length; i++) {
+                            System.out.println(persons[i].say());//动态绑定
+                            //类型判断 + 向下转型
+                            if (persons[i] instanceof Student) {
+                                Student student = (Student) persons[i];
+                                student.study();
+                            } else if (persons[i] instanceof Teacher) {
+                                ((Teacher) persons[i]).teach();
+                            }
+                        }
+                    }
+                }
+
+
+p318 多态参数
+方法定义的形参是父类，实参是子类
+例1：master喂食问题
+
+Master：
+    public void feed(Animal animal, Food food){
+        System.out.println("master " + name + " feed " + animal.getName()
+                +" with " + food.getName());
+    }
+main:
+        Master tom = new Master("tom");
+        Cat ca = new Cat("ca");
+        Bone bo = new Bone("bo");
+        tom.feed(ca,bo);
+        Cat mic = new Cat("mic");
+        Fish fi = new Fish("fi");
+        tom.feed(mic,fi);
+        Pig pp = new Pig("pp");
+        Rice rice = new Rice("rice");
+        tom.feed(pp,rice);
+
+例2 
+Employee类，name sal（private，getAnnual年工资计算方法
+worker类  work方法 getAnnual
+manager类 bonus属性  manage方法 getAnnual
+测试类添加showEmpAnnual 实现获取任意员工的年工资
+         testWork      实现work方法、manage方法
+         
+                            package com.sean.poly.polyparameter;
+
+                            public class PolyParameter {
+                                public static void main(String[] args) {
+                                    Worker tom = new Worker("tom", 2500);
+                                    Manager jack = new Manager("jack", 5000, 200000);
+                                    PolyParameter polyParameter = new PolyParameter();
+                                    polyParameter.showEmpAnnual(jack);
+                                    polyParameter.showEmpAnnual(tom);
+                                    polyParameter.testWork(tom);
+                                    polyParameter.testWork(jack);
+
+                                }
+                                //获取年工资
+                                public void showEmpAnnual(Employee e){
+                                    System.out.println(e.getAnnual());
+                                }
+                                //工作
+                                public void testWork(Employee e){
+                                    if(e instanceof Worker){
+                                        ((Worker) e).work();
+                                    }else if(e instanceof Manager){
+                                        ((Manager) e).Manage();
+                                    }
+                                }
+                            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
