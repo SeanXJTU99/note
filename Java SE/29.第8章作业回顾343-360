@@ -91,17 +91,90 @@ p349 hw07
 
 p350 hw08
 
+p351 hw09
+Point类，xy坐标构造器提供，子类LabeledPoint
 
 
+p352 hw10
+Doctor类，重写equals方法
 
 
+p353 hw11
+class Person{
+public void run(){sout("person run");}
+public void eat(){sout("person eat");}
+}
+class Student{
+public void run(){sout("student run");}
+public void study(){sout("student study")}
+}
+
+Person p = new Student(); 向上转型
+p.run();//只能调用Person的方法，但执行的依然是Student run()
+p.eat();
+
+Student s =(Student)p; 向下转型
+s.run();//Student run()
+s.study();
+s.eat();//继承自父类Person
 
 
+p354 hw12 ==\equals
+名称         概念        基本数据类型           引用类型
+==       比较运算符       t，值相等             对象相等
+equals   object类方法        f        默认判断对象相等，一般重写判断对象内容
 
 
+p355 hw13
+Person Student Teacher
+定义方法，形参为person类，调用学生study或者老师teach
+需要一个打印方法
+
+p356
+多态数组保存两个student，两个teacher，按年龄从高到低排序
+用instanceof判断类，然后执行相应方法
 
 
+p357 hw14
 
+
+p358 hw15
+多态：方法或对象有多种形态
+     具体体现：
+            方法重载，方法重写，
+            对象多态：编译类型运行类型不一致给
+                     运行类型可以变化，通过getClass查看运行类型
+
+
+p359 动态绑定机制
+调用对象的方法时，该方法会和对象的内存地址/运行类型绑定
+属性哪里声明哪里使用
+
+
+p360 回顾
+IDEA
+包管理
+访问修饰符
+封装
+    属性私有化，公开方法，构造器
+继承
+    共有属性方法，特有属性方法，super，this，继承的本质是查找关系  
+多态
+    方法重写
+        形参 方法名一致
+    方法重载
+    对象多态
+        向上转型、向下转型、编译类型、运行类型
+        动态绑定
+        多态数组，多态参数
+Object
+    equals==
+    hashCode
+    toString
+断点调试
+零钱通
+
+    
 
 
 
