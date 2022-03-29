@@ -1,3 +1,182 @@
 p343  homework01
 Person类 对象数组，name，age，job，按age从大到小排序
 
+package com.sean.homework;
+
+public class Homework01 {
+    public static void main(String[] args) {
+        Person[] persons = new Person[3];
+        persons[0] = new Person("jack", 10,"javase");
+        persons[1] = new Person("tom", 15,"bigdata");
+        persons[2] = new Person("mary", 20,"php");
+//        for (int i = 0; i < persons.length; i++) {
+//            System.out.println(persons[i]);
+//        }
+//
+        //使用冒泡
+        Person temp = null;
+        for (int i = 0; i < persons.length-1; i++) {
+            for (int j = 0; j < persons.length-1-i ; j++) {
+                //若前面人的年龄小于后面，交换
+                if(persons[j].getAge() < persons[j+1].getAge()){
+//                    按照名字长度
+//              if(persons[j].getName().length() < persons[j+1].getName().length()){    
+                    temp = persons[j];
+                    persons[j] = persons[j+1];
+                    persons[j+1] = temp;
+                }
+                
+                
+            }
+        }
+        for (Person person : persons) {
+            System.out.println(person);
+        }
+
+    }
+}
+//Person类 对象数组，name，age，job，按age从大到小排序
+class Person{
+    private String name;
+    private int age;
+    private  String job;
+    constructor
+    getter setter
+    toString
+}
+
+
+
+
+p344 homework02
+      本类   同包    子类    不同包
+pub    T      T       T       T
+pro    T      T       T       F
+dlt    t      t       f       f       (子类若在不同包则无法访问)
+pri    t      f       f       f
+
+
+
+p345 hw03
+
+
+p346 hw04
+通过继承实现员工工资核算打印
+经理：1000+单日工资*天数*等级1.2
+工人：单日工资*天数*等级1.0
+
+子类获取属性：getName（）
+
+
+p347 hw05
+略
+
+
+p348 hw06
+class Grand{String name = "AA"; private int age = 100; public void g1(){}}
+class Father extends Grand{String id = "001"; private double score; public void f1(){}}
+class Son extends Father{String name = "BB"; public void g1(){} private void show(){}}
+
+super this 可以调用那些属性和方法？
+Father: f1: 
+      super.name;super.g1()
+      this.id;this.score;this.name;this.g1();this.f1()
+Son: show:
+      super.id;super.f1();super.name;super.g1()
+      this.name;this.g1();this.show();this.id;this.f1();
+      
+p349 hw07
+
+
+
+p350 hw08
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
