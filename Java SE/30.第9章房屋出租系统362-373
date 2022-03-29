@@ -1,0 +1,212 @@
+p362 需求：
+基于文本界面的房屋出租软件
+实现对房屋信息的添加、修改、删除（数组），并打印明细
+
+
+新增房源
+查找房屋
+删除房屋
+修改房屋信息
+房屋列表
+退出
+
+
+添加：
+姓名 电话 地址 月租 状态（未出租/已出租)
+
+查找:
+输入查找id
+
+删除:
+删除编号并确认
+
+修改：
+编号 姓名 电话 地址 租金 状态显示，若不修改直接回车
+
+列表：
+当前所有房屋信息
+
+退出：
+确认退出y/n
+
+
+
+
+p363 系统设计
+程序框架图(分层模式)
+1.系统有哪些类
+2.类与类的调用关系
+
+
+界面层
+HouseView
+1.显示界面
+2.接收输入
+3.调用其他类(Service)完成增删改查
+
+HouseRentApp
+main(){创建View对象，调用该对象，显示主菜单}
+
+业务层
+HouseService
+1.相应View的调用
+2.完成crud（create read update delete
+
+Utility工具类
+完成获取用户的输入
+
+
+数据层
+House实体类
+1.一个House对象就表示一个房屋信息
+
+
+
+p364 工具类
+
+
+p365 House类
+
+  House实体类
+1.一个House对象就表示一个房屋信息
+编号 姓名 电话 地址 租金 状态
+constructor getter setter tostring
+
+
+p366 主菜单
+功能：用户打开软件，可以看到主菜单，可以退出软件
+思路：写在View里，mainMenu()
+
+
+    HouseView
+    1.显示界面
+    2.接收输入
+    3.调用其他类(Service)完成增删改查
+        编写mainMenu方法，显示主菜单
+
+
+p367 列表显示
+HouseView中
+编写listHouse()
+HouseService中
+定义一个House数组，存放House对象
+编写方法list()返回所有房屋信息
+
+
+
+
+p368 添加房屋
+HouseView中
+编写addHouse,界面，接收用户输入
+
+HouseService中
+编写add(House newHouse)，将新对象加入houses数组，返回bool（成功，失败
+
+        //add方法，添加新对象，返回bool
+            public boolean add(House newHouse){
+                if(houseNum == houses.length){
+                    System.out.println("已经满了，不能再添加");
+                    return false;
+                }
+                //将newHouse对象加到数组对象
+                houses[houseNum] = newHouse;
+                houseNum ++;
+                //id应当自增长
+                newHouse.setId(++idCounter);
+                return true;
+            }
+
+
+
+p369 删除房屋信息
+输入编号
+-1 不删除
+确认是否删除y/n
+
+界面：
+delHouse 接收用户输入id
+
+业务：
+del(int delid) 完成删除操作
+
+
+//del方法，删除一个房屋信息
+    public boolean del(int delId){
+        //找到要删除的房屋信息对应的数组下标
+        //下标和id不是一回事
+        int index = -1;
+        for (int i = 0; i < houseNum; i++) {
+            if(delId == houses[i].getId()){//删除的房屋id，是数组下标为i的元素
+                index = i;
+            }
+        }
+        if(index == -1){//没找到
+            return false;
+        }
+        //如果找到
+        for(int i = index; i<houseNum-1;i++){
+            houses[i] = houses[i+1];
+        }
+        //将当前房屋数组最后一个置空
+        houses[houseNum-1] = null;
+        houseNum--;
+        return true;
+    }
+
+
+
+
+p370 退出
+
+
+
+p371 查找
+界面：
+编写findHouse() 接收输入id
+
+业务：
+编写find(int findId) 返回House对象或null
+        public House findById(int findId){
+                for (int i = 0; i < houseNum; i++) {
+                    if(findId == houses[i].getId()){
+                        return houses[i];
+                    }
+                }
+                return null;
+            }
+
+
+
+p372 修改信息
+界面：
+updateHouse()接收输入id，调用业务的findById，有则修改，无则false
+业务：
+不用添加新方法
+
+public void update() {
+        System.out.println("====修改房屋信息====");
+        System.out.print("输入待修改的房屋id(-1退出):");
+        int updateId = Utility.readInt();
+        if (updateId == -1) {
+            System.out.println("=====放弃修改====");
+            return;
+        }
+
+        //这里返回的是引用类型（就是数组的元素
+        //house.Setxx()会直接修改 HouseService数组的元素
+        House house = houseService.findById(updateId);
+        if (house == null) {
+            System.out.println("=====修改的房屋信息编号不存在=====");
+            return;
+        }
+
+        System.out.println("name(" + house.getName() + "): ");
+        String name = Utility.readString(8, "");//若直接回车表示不修改
+        if (!"".equals(name)) {
+            house.setName(name);
+        }
+}
+
+
+p373 回顾
+
