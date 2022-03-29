@@ -140,12 +140,68 @@ p341 代码改进
                     }
 
 
+p342 OOP改进
+smallchangeOOP类：将各个功能封装为一个个方法
+smallchangeAPP:main中创建OOP对象，并调用相关方法，实现功能
 
+    OOP:     
+    
+    //显示菜单
+    public void mainMenu(){
+        do {
+            System.out.println("\n====零钱通菜单=====");
+            System.out.println("\t\t1.零钱通明细");
+            System.out.println("\t\t2.收益入账");
+            System.out.println("\t\t3.消费情况");
+            System.out.println("\t\t4.退出系统");
+            System.out.print("请选择1-4:");
+            key = scanner.next();
+            switch (key) {
+                case "1":
+                    this.detail();//将所有功能的具体实现封装在方法中,break -> return
+                    break;
+                case "2":
+                    this.income();
+                    break;
+                case "3":
+                    this.pay();
+                    break;
+                case "4":
+                    this.exit();
+                    break;
+                default:
+                    System.out.println("error, choose again");
+            }
+        } while (loop);
+    }
+    
+    public void income() {
+        System.out.print("收益入账金额");
+        money = scanner.nextDouble();
 
+        //money 应被校验
+        //找出不合理的情况并给出提示break
+        if (money <= 0) {
+            System.out.println("收益金额需要>0");
+            return;                                 //break;//退出方法不再执行后面的语句
+        }
 
+        balance += money;
+        //获取当前日期
+        date = new Date();
+        //收益信息加入details
+        details += "\n收益入账\t" + money + "\t" + sdf.format(date)
+                + "\t" + "余额：" + balance;
+    }
+    
 
-
-
+APP:直接调用主菜单方法
+public class SmallChangeAPP {
+    public static void main(String[] args) {
+        //直接调用OOP的对象
+        new SmallChangeOOP().mainMenu();
+    }
+}
 
 
 
