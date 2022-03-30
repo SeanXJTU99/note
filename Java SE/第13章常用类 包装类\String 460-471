@@ -1,0 +1,156 @@
+p460 包装类
+第13章常用类
+包装类
+String StringBuffer StringBuilder
+Math
+Date Calender LocalDate
+System
+Arrays
+BigInteger BigDecimal
+
+
+
+包装类：八种基本数据类型的引用类型 WrapperType
+
+【Boolean Character
+    【Byte Short Integer 
+      Long Float Double】父类：Number
+ 】父类：Object
+
+
+
+p461 装箱拆箱
+装箱：int->Integer 底层用valueOf方法
+              Integer.valueOf()
+拆箱：Integer->int 底层intValue方法              
+              
+        //手动装箱
+        int n1 = 100;
+        Integer integer = new Integer(n1);
+        Integer integer1 = Integer.valueOf(n1);
+        //手动拆箱
+        int i = integer.intValue();
+        
+        //自动装箱
+        int n2 = 200;
+        Integer integer2 = n2; //valueOf()
+        //自动拆箱
+        int n3 = integer2; //intValue()
+
+p462 练习
+三元运算符是一个整体
+Object obj1 = true? new Integer(1):new Double(2.0);
+sout(obj1);  //1.0 因为Double将三元运算符精度提高了
+
+
+
+p463 String包装类转换，常用方法
+
+Integer->String
+
+        Integer i = 100;
+        String str1 = i + "";
+        String str2 = i.toString();
+        String str3 = String.valueOf(i);
+
+String->Integer
+
+        String str4 = "1235";
+        Integer i2 = Integer.parseInt(str4); parseInt本身返回int，这里用到了自动装箱
+        Integer i3 = new Integer(str4);
+
+
+Integer Character 常用方法
+Character.toUpperCase('a') 转大写
+Character.toLowerCase('A') 转小写
+Character.isLetter('A') 是不是字母
+Character.isUpperCase('a')是不是大写
+
+p464
+Integer m =1;
+Integer n =1;
+底层是valueOf，-128到127之间直接返回，否则创建对象
+m==n true
+
+Integer x=128; Integer y = 128;
+x==y false;
+
+p465
+只要有基本数据类型，==就比较值
+int i1 = 128；
+Integer i2 = new Integer(128);
+
+int i3 = 127;
+Integer i4 = 127;
+
+
+p466 String介绍
+字符串用Unicode编码，一个字符占2字节
+常用构造器：new String();
+           new String(String original);
+           new String(char[] a);
+           new String(char[] a, int startIndex, int count);
+           new String(byte[] b);
+
+接口：Serializable 对象可串行，网络传输
+      Comparable   对象可比较大小
+是final类，不可继承
+
+底层的保存机制是char[] value
+                String本质是一个char数组
+                private final char[] value 不可修改value的地址
+                但是可以改变对象的内容
+                final char[] value = {'a','b','c'};
+                value[0] = 'H';
+
+
+p467 String创建对象
+方式1：String s = "123";                s指向常量池地址
+方式2：String str = new String("12");   str指向堆空间地址（char数组value），value指向常量池地址
+
+
+p468 String练习
+String.intern()返回常量池中的地址，若无则创建后再返回
+String b = new String("123")
+b== b.intern()  False, b指向堆，b.intern()指向常量池
+
+
+p469 
+Person p1 = new Person();
+p1.name = "123";
+Person p2 = new Person();
+p2.name = "123";
+
+p1.name.equals(p2.name)  T
+p1.name == p2.name;      T 都指向常量池的"123"
+p1.name == "123";        T  
+
+
+p470
+String str= "123"+"abc"; 编译为 string a = "123abc" 只创建一个对象在池中
+String a = "123";
+String b = "abc";
+String c = a + b;  变量相加，指向堆
+
+StringBuilder sb = new StringBuilder(); sb.append(a);sb.append(b); c=b.toString();
+sb是在堆中，
+
+
+
+p471
+
+main栈和调用的方法栈互不干扰
+所以方法中修改指针，不影响main中的指针
+
+
+
+
+
+
+
+
+
+
+
+
+
