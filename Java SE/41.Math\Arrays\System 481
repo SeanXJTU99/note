@@ -1,0 +1,273 @@
+p481 Math类
+abs
+pow
+ceil
+sqrt
+round
+floor
+random [0,1)的随机小数
+
+
+p482 Arrays类 数组
+用于数组操作
+toString底层：
+        int iMax = a.length - 1;
+        if (iMax == -1)
+            return "[]";
+        StringBuilder b = new StringBuilder();
+        b.append('[');
+        for (int i = 0; ; i++) {
+            b.append(String.valueOf(a[i]));
+            if (i == iMax)
+                return b.append(']').toString();
+            b.append(", ");
+        }
+        
+
+
+排序：
+        Integer arr[] = {1,-1,7,0,9};
+        //sort排序会直接影响到实参arr
+        //通过传入接口Comparator实现定制排序
+        //两个参数，1.排序数组arr，2.comparator的匿名内部类，实现compare方法
+        Arrays.sort(arr, new Comparator(){
+            @Override
+            public int compare(Object o1, Object o2) {
+                Integer i1 = (Integer)o1;
+                Integer i2 = (Integer)o2;
+                return i2 - i1;
+            }
+        });
+        System.out.println(Arrays.toString(arr));
+        
+        sort底层是binary二叉排序，其中最重要的一步是
+        if (c.compare(pivot, a[mid]) < 0)
+                    right = mid;
+                else
+                    left = mid + 1;
+
+
+p483
+自定义冒泡排序
+
+package arrays_;
+
+import java.util.Arrays;
+import java.util.Comparator;
+
+public class ArraysSortCustom {
+    public static void main(String[] args) {
+        int[] arr = {1, -1, 8, 0, 2};
+        bubble01(arr);
+        System.out.println(Arrays.toString(arr));
+
+        bubble02(arr, new Comparator() {
+            @Override
+            public int compare(Object o1, Object o2) {
+                int i1 = (Integer) o1;
+                int i2 = (Integer) o2;
+                return i1 - i2;
+            }
+        });
+    }
+
+    public static void bubble01(int[] arr) {
+        int temp = 0;
+        for (int i = 0; i < arr.length - 1; i++) {
+            for (int j = 0; j < arr.length - 1 - i; j++) {
+                if (arr[j] > arr[j + 1]) {
+                    temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                }
+            }
+        }
+    }
+
+    public static void bubble02(int[] arr, Comparator c) {
+        int temp = 0;
+        for (int i = 0; i < arr.length - 1; i++) {
+            for (int j = 0; j < arr.length - 1 - i; j++) {
+                if (c.compare(arr[j], arr[j + 1]) > 0) {
+                    temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                }
+            }
+        }
+    }
+}
+
+
+p484 
+binarySearch 二分查找，要求传入数组有序
+不存在时 return -(low + 1)
+        Integer[] arr = {1,2,90,100,123};
+        int index = Arrays.binarySearch(arr,100);
+        System.out.println(index);
+copyOf        
+        Integer[] newarr = Arrays.copyOf(arr, arr.length-1);
+        System.out.println(Arrays.toString(newarr));
+
+asList 将一组值转换位List
+        List asList = Arrays.asList(2,3,4,5,6,1); //List 是个接口
+        System.out.println(asList);
+        System.out.println(asList.getClass());//java.util.Arrays$ArrayList
+
+
+
+p485 Arrays练习
+
+按价格排序书
+                package arrays_;
+
+                import java.util.Arrays;
+                import java.util.Comparator;
+
+                public class ArraysExercise {
+                    public static void main(String[] args) {
+                        Book[] books = new Book[4];
+                        books[0]  = new Book("a",10);
+                        books[1]  = new Book("b",4);
+                        books[2]  = new Book("c",15);
+                        books[3]  = new Book("d",6);
+
+                        Arrays.sort(books, new Comparator<Book>() {
+                            @Override
+                            public int compare(Book o1, Book o2) {
+                                Book book1 = (Book)o1;
+                                Book book2 = (Book)o2;
+                                double priceDif = book2.getPrice() - book1.getPrice();
+                                if(priceDif>0){
+                                    return 1;
+                                }else if(priceDif<0){
+                                    return -1;
+                                }else{
+                                    return 0;
+                                }
+                            }
+                        });
+                        System.out.println(Arrays.toString(books));;
+
+                    }
+                }
+                class Book{
+                    private String name;
+                    private double price;
+
+                    setter getter constructor
+
+                    @Override
+                    public String toString() {
+                        return "Book{" +
+                                "name='" + name + '\'' +
+                                ", price=" + price +
+                                '}';
+                    }
+                }
+
+
+
+
+
+p486 System类
+exit 退出当前程序 exit（0）正常退出
+arraycopy 复制数组 System.arraycopy(src,0,dest,0,3);
+currentTimeMillens
+
+
+p487 BigInteger BigDecimal
+BigInteger：将数作为字符串存储
+    计算有特定方法进行
+BigDecimal: 超高精度小数
+
+
+p487 日期类
+第一代 date 毫秒，代表特定瞬间
+    SimpleDateFormat 格式化和解析日期的类
+    
+p488 
+p489
+        package date;
+
+        import java.text.ParseException;
+        import java.text.SimpleDateFormat;
+        import java.util.Date;
+
+        public class Date01 {
+            public static void main(String[] args) throws ParseException {
+                Date d1 =new Date();
+                System.out.println(d1);//Thu Mar 31 06:41:51 CST 2022
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd hh:mm:ss E");
+                String format = sdf.format(d1);
+                System.out.println(format);//20220331 06:43:45 星期四
+                String s = "20220331 10:10:10 星期四";
+                Date parse = sdf.parse(s);
+                System.out.println(sdf.format(parse));
+            }
+        }
+
+
+
+p490 第二代日期类
+calender ：构造器是私有的，只能getInstance实例化
+是一个抽象类，为日历字段转化提供方法（YEAR,MONTH,DAY_OF_MONTH,HOUR
+
+
+
+p491 Calender实例
+
+Calender没有对应的格式化类，需要人工组合
+package date;
+import java.util.Calendar;
+public class Calender01 {
+    public static void main(String[] args) {
+        Calendar c = Calendar.getInstance();
+        System.out.println(c);
+        System.out.println(c.get(Calendar.YEAR));
+        System.out.println(c.get(Calendar.MONTH)+1);
+        System.out.println(c.get(Calendar.HOUR_OF_DATE));//24小时制
+    }
+}
+
+
+p492第三代日期类
+Calender ：日期时间是可变的
+           Date年份从1900开始，月份从0开始
+           格式化只对Date有用，Calender没有
+           都不线程安全，不能处理闰秒
+jdk8
+LocalDate(日期 年月日）
+LocalTime（时分秒）
+LocalDateTime（日期时间）
+package date;
+
+import java.time.LocalDateTime;
+
+public class LocalDateTime01 {
+    public static void main(String[] args) {
+        //第三代日期
+        LocalDateTime ldt = LocalDateTime.now();
+        System.out.println(ldt);                 //2022-03-31T07:03:27.214
+        System.out.println(ldt.getHour());       //7
+    }
+}
+
+
+p493 
+格式日期类
+DateTimeFormat
+
+        LocalDateTime ldt = LocalDateTime.now();
+        System.out.println(ldt);
+        System.out.println(ldt.getHour());
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss");
+        String format = dtf.format(ldt);
+        System.out.println(format);   //2022.03.31 07:06:51
+
+Instant 时间戳
+        Instant now = Instant.now();
+        System.out.println(now);
+  //date和instant转换
+        Date date = Date.from(now);
+        Instant ins = date.toInstant();
