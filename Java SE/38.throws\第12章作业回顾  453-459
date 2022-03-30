@@ -1,0 +1,194 @@
+
+p453 throws 异常处理入门
+表示不处理异常，由方法的调用者处理
+
+throws FileNotFoundException或其父类 Exception
+throws 后面可以是异常列表，即可抛出多个异常
+        package exceptions.throws_;
+
+        import java.io.FileInputStream;
+        import java.io.FileNotFoundException;
+
+        public class Throws01 {
+            public static void main(String[] args) {
+
+            }
+            public void f1() throws FileNotFoundException{//调用者处理
+                //FileNotFoundException 编译异常
+                //也可以try-catch
+                FileInputStream fis = new FileInputStream("d://aa.txt");
+            }
+        }
+        
+   
+        
+p454 
+1.编译异常程序必须处理
+2.运行异常有默认处理机制
+    package exceptions.throws_;
+
+    public class ThrowsDetail {
+        public static void main(String[] args) {
+            f2();
+        }
+        public static void f2() /*throws ArithmeticException*/{
+            double res = 10 / 0;
+        }
+    }
+    
+3.子类重写父类方法时的抛出异常：
+    重写方法抛出的异常类型应与父类抛出的异常一致，或是父类抛出异常的子类型
+        class Father{
+            public void method() throws RuntimeException{
+            }
+        }
+        class Son extends Father{
+            @Override
+            public void method() throws NullPointerException {//空指针是运行时异常的子类型
+            }
+        }
+
+
+4.try catch 和 throws 二选一
+
+5.函数调用：
+    public static void f1() throws FileNotFoundException{
+        f3();//f3抛出编译异常，f1就必须显式的处理
+    }
+    public static void f3() throws FileNotFoundException {//找不到文件，编译异常
+        FileInputStream fis = new FileInputStream("d://aa.txt");
+    }
+    public static void f4(){
+        f5();//f5抛出运行异常，不需要显式处理
+    }
+    public static void f5()throws ArithmeticException{//算术异常，运行时异常        
+    }
+
+
+
+p455 自定义异常
+某些错误没在throwable类中
+
+定义类：自定义异常类名，
+  继承Exception，编译异常
+  继承RuntimeException，运行异常，方便处理
+
+接收Person年龄，18-120，否则抛出一个异常并提示
+              package exceptions.customexception;
+
+              public class CustomException {
+                  public static void main(String[] args) throws AgeException {
+                      int age = 180;
+                      if(!(age>=18 && age<=120)){
+                          throw new AgeException("age should between 18 and 120");
+                      }
+                      System.out.println("age correct");
+                  }
+              }
+              class AgeException extends RuntimeException{
+                  public AgeException(String message) {
+                      super(message);
+                  }
+              }
+
+
+
+p456 throw throws
+               意义                    位置        后缀
+throws   异常处理方式                 方法声明处    异常类型
+throw    手动生成异常对象的关键字      方法体内      异常对象
+
+
+class ReturnExDemo{
+  static void methodA(){
+    try{
+      sout("into A");                         1
+      throw new RuntimeException("ex");       3
+    }finally{
+      sout("A finally");                      2
+    }
+  }
+  static void methodB(){
+    try{
+      sout("into B");                         4
+      return;
+    }finally{
+      sout("B finally");                      5
+    }
+  }
+  public static void main(String[] args){
+    try{
+      ReturnExDemo.methodA();
+    }catch(Exception e){
+      sout(e.getMessage());
+    }
+    ReturnExDemo.methodB();
+  }
+}
+
+
+
+p457 hw01
+package hw;
+
+public class HomeWork01 {
+    public static void main(String[] args) {
+        //先验证输入参数正确
+        try {
+            if(args.length != 2){
+                throw new ArrayIndexOutOfBoundsException("args number error");
+            }
+            //转整数
+            int n1 = Integer.parseInt(args[0]);
+            int n2 = Integer.parseInt(args[1]);
+            double res = cal(n1, n2);
+            System.out.println(res);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println(e.getMessage());
+        } catch (NumberFormatException e) {
+            System.out.println("参数格式不正确，需要整数");
+        }catch(ArithmeticException e){
+            System.out.println("divide by 0");
+        }
+    }
+    public static double cal(int n1, int n2){
+        return n1 / n2;
+    }
+}
+
+
+
+p458 hw02
+public class Homework02 {
+    public static void main(String[] args){
+    //若为args[4] = null 则为NullPointerException
+        if(args[4].equals("john")){//ArrayIndexOutOfBoundsException
+            System.out.println("AA");
+        }else{
+            System.out.println("BB");
+        }
+        Object o =args[2];//String->Obj,向上转型
+        Integer i = (Integer)o;//String->Integer向下转型，错误 ClassCastException
+    }
+}
+hw03
+
+hw04
+
+p459 本章回顾
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
