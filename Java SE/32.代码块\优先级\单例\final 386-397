@@ -1,0 +1,332 @@
+p386 代码块
+只有方法体的方法
+修饰符最多写static
+只分为静态或普通代码块
+最后的分号可以省略
+
+
+相当于另一种形式的构造器，做初始化操作，调用优先于构造器
+
+package codeblock;
+
+public class Movie {
+    private String name;
+    private double price;
+    private String director;
+    public Movie(String name) {
+        System.out.println("movie started.");//三个构造器都有这一语句
+        this.name = name;
+    }
+    public Movie(String name, double price) {
+        System.out.println("movie started.");
+        this.name = name;
+        this.price = price;
+    }
+    public Movie(String name, double price, String director) {
+        System.out.println("movie started.");
+        this.name = name;
+        this.price = price;
+        this.director = director;
+    }
+    //加入代码块，调用构造器前默认执行
+    {
+        System.out.println("movie started.");
+    }；
+}
+
+
+
+
+
+p387 代码块细节
+1.静态代码块随类加载执行，并且智慧执行一次，
+  普通代码块每次对象创建都会执行一次
+2.类什么时候被加载：
+    创建实例
+    创建子类对象时父类也被加载（先加载父类
+    使用类的静态成员时
+    加载子类前一定先加载父类
+    只会加载一次
+
+                        public class CodeBlock01 {
+                            public static void main(String[] args) {
+                        //        Movie movie = new Movie("1", 10, "2");
+                        //        AA aa = new AA();
+                                BB bb = new BB();//AA;BB;
+                                System.out.println(Cat.n1);//Cat;99;
+
+                            }
+                        }
+                        class AA{
+                            static{
+                                System.out.println("AA");
+                            }
+                        }
+                        class BB extends AA{
+                            static {
+                                System.out.println("BB");
+                            }
+                        }
+                        class Cat{
+                            public static int n1 = 99;
+                            static {
+                                System.out.println("Cat");
+                            }
+                        }
+
+
+3.普通代码块创建对象一次就调用一次，跟类加载无关
+  如果只是使用类的静态成员，普通代码块不会执行
+  
+static是类加载时调用，只执行一次
+普通代码块是对象创建时调用，创建一次执行一次
+
+
+
+p388 代码块细节
+创建对象时的类的调用顺序
+1.静态代码块和静态属性初始化
+        private static int n = getN1();
+        static{}
+        public static int getN1(){return 100;}//先被调用
+
+
+2.普通代码块和普通属性初始化
+3.构造器
+
+
+
+p389 
+构造器隐含了
+    1.super()调用父类的无参构造器
+    2.调用本类的普通代码块
+  
+
+p390
+父类静态代码块和静态属性
+子类静态代码块和静态属性初始化
+父类普通
+父类构造器
+子类普通
+子类构造器
+
+    //输出结果：a;AAA;BBB;AA;A;b;B
+                  package codeblock;
+
+                  public class CodeBlock04 {
+                      public static void main(String[] args) {
+                          new B();
+                      }
+                  }
+                  class A{
+                      private static int a1 = getA1();
+                      static {  System.out.println("AAA");     }
+                      {     System.out.println("AA");       }
+                      public A(){
+                          System.out.println("A");
+                      }
+                      public static int getA1(){
+                          System.out.println("a");
+                          a1 = 10;
+                          return a1;
+                      }
+                  }
+                  class B extends A{
+                      private int b1 = getB1();
+                      static {        System.out.println("BBB");    }
+                      public B(){    System.out.println("B");     }
+                      public int getB1(){
+                          System.out.println("b");
+                          return b1 = 10;
+                      }
+                  }
+
+
+
+p391代码块练习
+
+
+
+
+p392 单例设计模式
+
+设计模式：
+大量实践中总结的优选代码结构、编程风格、思考方式。
+java共有23种模式
+
+
+单例模式：
+单个的实例，整个软件中，一个类只存在一个对象实例，只提供一个实例化方法
+
+1.饿汉2.懒汉
+
+饿汉模式：
+1.构造器私有化  防止直接new
+2.类内部创建对象
+3.向外暴露一个静态的公共方法
+        package single；
+        class GirlFd{
+            private String name;
+            //类内部创建对象，为了让getInstance调用，必须是static
+            private static GirlFd gf = new GirlFd("mary");
+            //构造器私有化
+            private GirlFd(String name) {
+                this.name = name;
+            }
+            //提供一个公共静态方法返回对象（如果不是static就必须创建对象才能调用，error）
+            public static GirlFd getInstance(){
+                return gf;
+            }
+        }
+        public class SingleTon01 {
+            public static void main(String[] args) {
+      //        GirlFd mary = new GirlFd("mary");
+                GirlFd instance = GirlFd.getInstance();
+                System.out.println(instance);
+                GirlFd instance1 = GirlFd.getInstance();
+                System.out.println(instance1);
+            }
+        }
+
+
+
+
+p393 懒汉式
+
+单例模式通常是重量级模式
+饿汉模式可能造成对象没有使用，资源浪费
+
+懒汉模式：
+  1.构造器私有化
+  2.定义一个static静态属性对象
+  3.提供一个public static方法，返回一个对象
+  
+                        package single;
+
+                        public class SingleTon02 {
+                            public static void main(String[] args) {
+                                Cat instance = Cat.getInstance();//调用时才创建一个对象
+                            }
+                        }
+
+                        //希望在程序中只创建一个Cat对象
+                        class Cat{
+                            private String name;
+                            private static int n1 = 99;
+                            private  static Cat cat;//未创建对象，默认为null
+                            private Cat(String name) {
+                                this.name = name;
+                            }
+                            public static Cat getInstance(){
+                                if(cat==null){
+                                    cat  = new Cat("c1");  //保证只有一个对象
+                                }
+                                return cat;
+                            }
+                        }
+
+饿汉没有线程安全问题，懒汉有线程安全问题
+java.lang.Runtime 是饿汉模式
+
+
+
+
+p394 final
+
+修饰类、属性、方法、局部变量
+1.不希望类被继承           final class A{}
+2.不希望父类方法被子类重写  public final void func(){}
+3.不希望属性被修改          public final double TAX_RATE = 0.08;
+4.不希望局部变量被修改      public void cry(){final double NUM = 0.01;} 局部常量
+
+
+
+p395 final细节
+1.final修饰的叫常量 全大写，单词用下划线分隔 XXX_XX_XX
+2.final修饰的属性必须定义初始值，且不能修改
+    赋值位置：定义语句；构造器；代码块
+3.final修饰的静态属性必须定义初值，
+    赋值位置：定义语句；静态代码块
+                                final class A{
+                                    public final double T = 0.09;
+                                    public final double T_R;
+                                    public final double T_R_X;
+                                    public final static  double TAX = 0.09;
+                                    public final static int TAX_R;
+                                    static{
+                                        TAX_R = 10;
+                                    }
+                                    public A(){
+                                        T_R = 1.1;
+                                    }
+                                    {
+                                        T_R_X = 10;
+                                    }
+                                }
+
+4.final类不能继承，但可以实例化
+5.普通类的final方法，不能重写，但可以继承
+
+
+p396 final细节
+6. final类中不用再final方法（已经没有子类，肯定不会重写
+7. final不能修饰构造器
+8. final往往和static搭配使用，不会导致类加载。（只使用属性，而不加载类
+
+                class BB{
+                    public final static int n = 10;//main只会调用n，不会加载BB类，不会调用static代码块
+                    static {
+                        System.out.println("BBB");
+                    }
+                }
+                public class Final01 {
+                    public static void main(String[] args) {
+                        System.out.println(BB.n);  
+                    }
+                }
+
+9.包装类 Integer，Double，Float，String等都不能被继承
+
+
+p397 final实例
+
+                            package final_;
+
+                            public class FinalExercise {
+                                public static void main(String[] args) {
+                                    Circle circle = new Circle(1);
+                                    double area = circle.Area();
+                                    System.out.println(area);
+                                }
+                            }
+                            class Circle{
+                                private double radius;
+                                private final double PI = 3.14;
+                                private final double pi;
+                                private final double Pi;
+                                public Circle(double radius){
+                                    this.radius = radius;
+                                    pi = 3;
+                                }
+                                {
+                                    Pi = 3.1415926;
+                                }
+                                public double Area(){
+                                    return PI * radius * radius;
+                                }
+                            }
+
+
+形参中也可以定义final
+public class T{
+public int addOne(final int x){
+  ++x;//错误，不能修改final x的值
+  return x + 1;//允许
+}
+}
+
+
+
+
+
+
