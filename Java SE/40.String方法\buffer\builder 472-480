@@ -1,0 +1,152 @@
+p472
+String 保存字符串常量，每次更新都需要开辟新空间，效率较低
+为此提供了StringBuffer 和 StringBuilder
+
+equals 区分大小写
+equalsIgnoreCase 不区分大小写
+length
+IndexOf  字符在字符串中第一次出现的位置索引
+lastIndexOf 最后一次出现的索引
+substring(1,6) 从索引1开始截取到5
+charAt(n) 获取索引处的 字符
+
+
+p473 常用方法
+compareTo 先区分字符编码大小，再比较长度，返回int
+format 格式化输出
+toUpperCase 全部大写
+toLowerCase 全部小写
+str.concat(s1).concat(s2) 拼接 str+s1+s2
+str.replace（s1,s2） 将所有s1 换为s2,但需要接收，否则对str没有影响
+String[] split = str.split(","); 分隔后返回数组
+toCharArray 转为字符数组
+
+p474 
+format 我的名字是%s 年龄%d 成绩是%.2f 性别是%c
+
+
+p475 StringBuffer
+可变字符序列 char[] value  非final类型
+可变长度
+直接父类是AbstractStringBuilder
+实现了 Serializable，可网络传输
+因为不是final，所以存放再堆中
+StringBuffer 是final类，不能继承
+内容存放在父类中
+
+stringBuffer 是字符串变量，值可以更改，不用每次新开辟空间，当原空间不够时才开辟新空间
+因为字符序列存在char[] value
+    crud时候不用每次创建新对象
+
+
+p476 构造器
+StringBuffer();                   创建一个无字符的16字符缓冲区
+StringBuffer(CharSequence seq);   
+StringBuffer(int capacity);       指定char[] 的大小
+StringBuffer(String str);         为str创建一个str.length+16的缓冲区
+
+String 和Buffer转换
+
+String<->Buffer
+        String str = "helo";
+        //返回Buffer对象，对str没有影响
+        StringBuffer stringBuffer = new StringBuffer(str);
+        //append
+        StringBuffer stringBuffer1 = new StringBuffer();
+        stringBuffer1 = stringBuffer1.append(str);
+        
+        
+        //Buffer ->string
+        StringBuffer stringBuffer2 = new StringBuffer("123abc");
+        //toString
+        String s = stringBuffer2.toString();
+        //构造器
+        String s1 = new String(stringBuffer2);
+
+p477 Buffer常用方法
+增append
+删delete（start，end）
+改replace（start,end,string）
+查indexOf
+插insert
+长度length
+
+p478 Buffer练习
+String str = null;
+StringBuffer sb = new StringBuffer();
+sb.append(str);    append(null)会置为“null”
+sout(sb.length());  4
+sout(sb);  null
+StringBuffer sb1 = new StringBuffer(str);  源码super(str.length()+16) 空指针异常
+sout(sb1);
+
+
+
+package string_.stringbuffer;
+
+public class StringBufferExercise {
+    public static void main(String[] args) {
+        //价格每三位用逗号隔开
+        //使用StringBuffer insert 方法
+        String price = "123456.99";
+        StringBuffer sb = new StringBuffer(price);
+        //先找到小数点索引
+        //在该位置前3位插入，
+//        int i = sb.lastIndexOf(".");
+
+        for(int i = sb.lastIndexOf(".")-3;i>0;i-=3){
+            sb = sb.insert(i,",");
+        }
+        System.out.println(sb);
+    }
+}
+
+
+
+p479 StringBuilder
+方法API与Buffer相同
+线程不安全
+是Buffer的一个简易替换
+用在字符串缓冲区被单个线程使用的时候（单线程操作，Builder是最好的选择
+
+Builder主要方法 append insert
+可以重写以接收任意类型数据
+
+final类
+Builder的字符序列依然存放在AbstractStringBuilder中，堆中
+多线程下有风险
+
+
+p480 Builder应用
+Builder 和Buffer都是可变字符序列，方法也一样
+    Buffer 线程安全、同步
+    Builder 不安全，效率最高
+String 是字符常量，效率低，但复用率高（不同指针都可以指向常量池同一字符串）
+
+如果要对String做大量修改，不要用String，会产生大量副本字符串存留在内存中，极大影响性能
+
+字符串大量修改：buffer、builder
+    单线程：builder
+    多线程：buffer
+很少修改，多对象引用：string
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

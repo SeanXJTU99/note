@@ -1,3 +1,0 @@
-p472
-String 保存字符串常量，每次更新都需要开辟新空间，效率较低
-为此提供了StringBuffer 和 StringBuilder
