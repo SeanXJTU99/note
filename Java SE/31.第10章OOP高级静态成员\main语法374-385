@@ -1,0 +1,195 @@
+p374  类变量引出
+类变量 类方法
+理解main方法，static
+代码块
+单例设计模式
+final关键字
+抽象类
+接口
+内部类
+
+
+类变量：
+main方法中定义count计数小孩人数
+count独立于对象
+访问count很麻烦
+因此需要类变量
+
+
+
+p375 类变量入门
+一个int count，创建一个对象时，count++，所有对象共享
+堆空间中，所有对象空间都指向类变量
+静态变量/类变量/静态属性
+
+class Child{
+    public static int count =0;//被Child类的所有对象共享
+    sout("Child.count");//类变量可以通过类名直接访问
+}
+main:{
+        Child child1 = new Child("jot");
+        child1.join();
+        child1.count++;
+}
+
+
+p376 类变量内存布局
+栈：child1,child2
+堆：0x11，0x12，count(被0x11 0x12指向，所有对象共享）
+方法区：jdk8以前静态域存储count，jdk8以后通过反射在class类对象存储static
+
+被所有对象共享
+在类加载的时候生成
+
+
+p377 类变量定义访问
+定义：修饰符 static 类型 名count
+访问：Child.count/child1.count，受访问权限限制
+private static int count 
+无法在main方法中访问Child.count
+
+
+p378 类变量细节
+
+需要让所有对象共享
+静态变量共享，实例变量独享
+不加static的都叫普通变量/成员变量/非静态属性
+必须遵循访问权限
+实例变量无法通过Class.count访问
+类加载后无需创建对象就可使用static，类消亡后销毁
+
+
+p379 类方法
+public static void function(){}
+
+静态方法可以访问静态变量
+推荐使用类名.静态方法调用
+      package staticjava;
+
+      public class StaticMethod {
+          public static void main(String[] args) {
+              Stu tom = new Stu("tom");
+              Stu jac = new Stu("jac");
+              tom.payFee(100);//推荐使用Stu.payFee
+              jac.payFee(200);
+              Stu.showFee();
+          }
+      }
+      class Stu{
+          private String name;
+          private static double fee = 0;
+
+          public Stu(String name) {
+              this.name = name;
+          }
+          public static void payFee(double fee){
+              Stu.fee += fee;
+          }
+          public static void showFee(){
+              System.out.println("Fee = " + Stu.fee);
+          }
+      }
+
+
+
+
+p380 类方法场景
+方法不涉及任何实例对象时，可以使用静态方法
+如：Math.sin  Math.cos
+
+当我们希望不创建实例也能调用，可以用静态方法
+往往将一些通用方法涉及为静态方法，方便调用
+
+
+
+
+p381 注意事项
+类方法和普通方法都是在类加载时存放在方法区的
+类方法中没有this
+命名不能使用和对象有关的关键字如this super 
+
+静态方法只能访问静态成员
+
+普通成员方法可以访问静态或非静态的成员
+
+
+
+
+p382 静态成员练习
+package staticjava;
+
+public class TestPerson {
+    public static void main(String[] args) {
+        System.out.println("num of total= " + Person.getTotalPerson());//0
+        //静态变量不需要创建对象，直接访问 不经过构造器
+        Person p1 = new Person();
+        System.out.println("num of total= " + Person.getTotalPerson());
+    }
+}
+class Person{
+    private int id;
+    private static int total = 0;
+    public static int getTotalPerson(){
+    //静态方法不能访问非静态属性
+//        id++;
+        return total;
+    }
+    public Person(){
+        total ++;
+        id = total;
+    }
+}
+
+
+
+p383 main方法语法
+
+public static void main(String[] args){}
+
+main方法是JVM在调用
+JVM调用所有类的main方法，所以只能是public
+JVM调用时不创建对象，所以只能是static
+main接收String型数组参数，保存执行java命令时传递给所运行的类的参数
+命令行：
+java Hello tom jack
+
+
+p384 
+main方法中可以直接调用所在类的静态成员，但不能直接调用非静态，必须创建对象
+public class TestPerson {
+    public static void main(String[] args) {
+        TestPerson p1 = new TestPerson();
+        p1.sout();
+        public void sout(){
+            System.out.println(" ");
+        }
+    }
+}
+
+
+
+
+p385 main示例
+IDEA传递args参数
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
