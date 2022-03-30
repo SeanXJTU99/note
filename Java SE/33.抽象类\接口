@@ -1,0 +1,140 @@
+p398 抽象类
+父类方法需要声明但不确定实现，可以声明为抽象方法，该类为抽象类
+
+抽象方法就是没有实现的方法，没有方法体（不带大括号）
+方法声明为abstract时，类也需要声明为abstract
+abstract class A{
+public abstract void eat();}
+
+一般抽象类会被继承，子类实现方法
+
+
+p399 细节
+价值在于设计，具体实现由子类完成
+
+1.抽象类不能实例化
+2.抽象类可以没有抽象方法，可以有实现方法
+3.一旦类包含抽线方法，就必须声明为抽象类
+4.abstract只能修饰类和方法
+
+
+p400
+5.抽象类还是类，可以有任意成员
+6.抽象方法不能有主体，不能实现
+7.如果A类继承了抽象类B，A必须实现B的所有抽象方法，除非A也是抽象类
+    实现即有方法体（可以是空的方法体{}）
+8.抽象方法不能使用private final static修饰，因为这三种都不能被重写
+    private：子类无法访问，私有方法不能重写
+    final：子类无法继承
+    static：必须有方法体，和重写无关
+
+
+p401 抽象类练习
+
+
+p402 模板模式
+
+1.有多个类，完成不同的任务job
+2.统计得到各自完成任务的时间
+
+
+父类：模板
+    job：抽象方法
+    timer方法
+A B C继承timer，并重写各自的job
+
+      package abstract_;
+
+      abstract public class Template {
+          public  abstract void job();
+          public void Timer(){
+              long start = System.currentTimeMillis();
+              job();
+              long end = System.currentTimeMillis();
+              System.out.println("time = " + (end-start));
+          }
+      }
+      class A extends Template{
+          public  void job(){
+              long res = 0;
+              for (int i = 1; i <= 1000000; i++) {
+                  res += i;
+              }
+          }
+      }
+      class B extends Template{
+          public  void job(){
+              long res = 0;
+              for (int i = 1; i <= 800000; i++) {
+                  res += i;
+              }
+          }
+      }
+
+public class TestTemplate {
+    public static void main(String[] args) {
+//        AA aa =new AA();
+//        aa.job();
+//        BB bb = new BB();
+//        bb.job();
+        A a = new A();
+        a.Timer();
+        B b = new B();
+        b.Timer();
+    }
+}
+
+    
+
+
+
+p403 接口
+定义接口和相关规范：
+package interface_;
+
+public interface UsbInterface {
+    //规定接口的相关方法
+    public void start();
+    public void end();
+}
+
+让类实现接口
+//实现Usb接口的方法
+public class Phone implements UsbInterface{
+    @Override
+    public void start() {
+        System.out.println("phone starts working");
+    }
+
+    @Override
+    public void end() {
+        System.out.println("phone ended working");
+    }
+}
+
+通过接口调用方法
+public class Computer {
+    public void work(UsbInterface usbInterface){
+        usbInterface.start();
+        usbInterface.end();
+    }
+}
+主程序：
+public class Interface01 {
+    public static void main(String[] args) {
+        Phone phone = new Phone();
+        Computer c = new Computer();
+        c.work(phone);//手机接入电脑
+        //输出：phone starts working；phone ended working；
+    }
+}
+
+
+
+
+
+
+
+
+
+
