@@ -1,0 +1,3 @@
+数组扩容：Person[] pe2 = new Person[pe1.length + 1]; //创建一个新数组
+           for(){}//遍历值拷贝
+           pe2[pe2.length-1] = new Person();//添加新元素
