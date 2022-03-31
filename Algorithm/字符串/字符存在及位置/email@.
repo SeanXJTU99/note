@@ -1,0 +1,8 @@
+
+String email = scanner.next();
+//邮箱校验,应包含@.且@在.之前
+        int i1 = email.indexOf('@');
+        int i2 = email.indexOf('.');
+        if(!(i1 > 0 && i2 > i1 +1 )){
+            throw new RuntimeException("email format error");
+        }
