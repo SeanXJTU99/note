@@ -1,0 +1,235 @@
+p569 
+坦克大战1
+线程
+坦克大战2
+IO流
+坦克大战3
+
+16章
+java绘图
+java事件处理
+坦克大战1.0
+
+WSAD 移动 J攻击
+
+p570 java 绘图坐标体系
+坐标原点位于左上角
+
+
+p571 快速入门
+调用paint():
+组件第一次在屏幕显示自动调用
+窗口最小化，再最大化
+大小发生变化
+repaint被调用
+
+
+p572 Graphics类
+
+package draw;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class DrawCircle extends JFrame{ //画框
+    private  MyPanel mp = null;
+    public static void main(String[] args) {
+        new DrawCircle();
+    }
+    public DrawCircle(){
+        //初始化面板
+        mp =  new MyPanel();
+        //面板放入窗口
+        this.add(mp);
+        this.setSize(400,300);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setVisible(true);
+    }
+}
+
+//定义MyPanel，继承JPanel
+class MyPanel extends JPanel{  //面板
+    @Override
+    public void paint(Graphics g) {
+        super.paint(g);
+//        g.drawOval(0,0,100,100);
+//        g.drawLine(10,10,100,100);
+//        g.drawRect(10,10,100,100);
+//        g.setColor(Color.CYAN);
+//        g.fillRect(10,10,100,100);
+//
+//        g.setColor(Color.MAGENTA);
+//        g.fillOval(10,10,200,100);
+
+        //获取图片
+        Image image = Toolkit.getDefaultToolkit().
+                getImage(Panel.class.getResource("/memory.jpg"));
+        g.drawImage(image,10,10,1319,742,this);
+
+//        g.setColor(Color.GREEN);
+//        g.setFont(new Font("隶书", Font.BOLD, 50));
+//        g.drawString("hello world", 100,100);
+
+        
+    }
+}
+
+p573 画出坦克
+
+
+p574 java事件 让小球动起来
+    监听键盘事件
+    
+p575 事件处理机制
+委派事件模型
+事件发生会将信息传递给监听者，生成事件对象KeyEvent
+这些接口在Java.awt.event  javax.swing
+
+p576 让坦克动起来
+四个方向的坦克
+
+p577 让坦克动起来
+
+package tankegame02;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.security.Key;
+import java.util.Vector;
+
+public class MyPanel  extends JPanel implements KeyListener {
+    //定义我的坦克 初始化
+    Hero hero = null;
+    Vector<Enemy> enemyTanks = new Vector<>();
+    int enemyTankSize = 3;
+    public MyPanel(){
+        hero = new Hero(100,100, 2);
+        for (int i = 0; i < enemyTankSize; i++) {
+            Enemy enemy = new Enemy(100*(i+1), 0, 2);
+            enemy.setDirect(2);
+            enemyTanks.add(enemy);
+        }
+
+    }
+
+    @Override
+    public void paint(Graphics g) {
+        super.paint(g);
+        g.fillRect(0,0,1000,750);
+
+        //画出坦克
+        drawTank(hero.getX(),hero.getY(),g, hero.getDirect(), 0);
+//        drawTank(hero.getX()+60,hero.getY(),g, 3, 1);
+//        drawTank(hero.getX()+100,hero.getY(),g, 0, 1);
+        for (int i = 0; i < enemyTanks.size(); i++) {
+            Enemy enemy = enemyTanks.get(i);
+            drawTank(enemy.getX(),enemy.getY(),g,enemy.getDirect(), 1);
+        }
+    }
+
+    //画坦克
+    public  void drawTank(int x, int y, Graphics g, int direct, int type){
+        switch(type){
+            case 0:
+                g.setColor(Color.cyan);
+                break;
+            case 1:
+                g.setColor(Color.yellow);
+                break;
+        }
+
+        switch(direct){
+            case 0:
+                g.fill3DRect(x,y, 10,60,false);
+                g.fill3DRect(x+30,y, 10,60,false);
+                g.fill3DRect(x+10,y+10, 20,40,false);
+                g.fillOval(x+10,y+20, 20,20);
+                g.drawLine(x+20,y+30, x+20,y);
+                break;
+            case 1:
+                g.fill3DRect(x,y,60,10,false);
+                g.fill3DRect(x,y+30, 60,10,false);
+                g.fill3DRect(x+10,y+10,40,20,false);
+                g.fillOval(x+20,y+10,20,20);
+                g.drawLine(x+30,y+20,x+60,y+20);
+                break;
+            case 2:
+                g.fill3DRect(x,y, 10,60,false);
+                g.fill3DRect(x+30,y, 10,60,false);
+                g.fill3DRect(x+10,y+10, 20,40,false);
+                g.fillOval(x+10,y+20, 20,20);
+                g.drawLine(x+20,y+30, x+20,y+60);
+                break;
+            case 3:
+                g.fill3DRect(x,y,60,10,false);
+                g.fill3DRect(x,y+30, 60,10,false);
+                g.fill3DRect(x+10,y+10,40,20,false);
+                g.fillOval(x+20,y+10,20,20);
+                g.drawLine(x+30,y+20,x,y+20);
+                break;
+            default:
+                System.out.println("todo");
+                break;
+        }
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if(e.getKeyCode() == KeyEvent.VK_W){
+            hero.setDirect(0);
+            hero.moveUP();
+        }else if(e.getKeyCode() == KeyEvent.VK_D){
+            hero.setDirect(1);
+            hero.moveRight();
+        }else if(e.getKeyCode() == KeyEvent.VK_S){
+            hero.setDirect(2);
+            hero.moveDown();
+        }else if(e.getKeyCode() == KeyEvent.VK_A){
+            hero.setDirect(3);
+            hero.moveLeft();
+        }
+        this.repaint();
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
