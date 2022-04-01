@@ -297,6 +297,45 @@ name birthday相同时不能放入
 
 
 
+p528 LHS
+LHS是HS的子类，底层是LinkedHashMap 维护一个数组+双向链表（HS是单向链表
+
+可以按照存储顺序取出元素
+整个链表有head和tail
+每个节点保存before和after，
+
+添加元素时，先求hash值，再求索引，确定其再hashtable的位置
+再将元素加入到双向链表中（若已存在，不添加）
+双向链表不一定在同一索引位置）
+通过双向链表保证了存取顺序一致
+
+tail.next = newElement;
+newElement = tail;
+tail  = newElement;
+
+
+p529 
+底层是LinkedHashMap
+数组+双向链表
+第一次添加时，直接将数组table扩容到15
+存放的节点类型是 LinkedHashMap$Entry Entry是Node的一个子类
+数组是Node[], 存放类型是Entry，即多态数组
+
+Entry 是LHM的一个静态内部类，
+static class Entry extends HM.Node
+Node也是HM的一个静态内部类
+继承是在HM内部完成的
+
+先完成head tail before after
+再进行HM的方法
+
+
+p530 LHS练习
+
+重写hashcode equals
+
+
+
 
 
 
