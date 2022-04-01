@@ -1,0 +1,256 @@
+p519 HashSet
+
+set接口的实现子类
+HashSet底层是HashMap
+public HashSet() {
+        map = new HashMap<>();
+    }
+
+添加对象不能重复（地址重复或equals
+
+
+HashSet set = new HashSet();
+        System.out.println(set.add("jack")); T
+        System.out.println(set.add("tom"));  T
+        System.out.println(set.add("ma"));   T
+        System.out.println(set.add("lucy")); t
+        System.out.println(set.add("jack")); F
+//        System.out.println(set.remove("tom"));
+        System.out.println(set.add(new Dog("tom")));  T
+        System.out.println(set.add(new Dog("tom")));  T
+        System.out.println(set.add(new String("tom"))); F
+        System.out.println(set.add(new String("tom"))); F String 重写了equals
+        
+        
+
+
+p520 HashSet底层
+HashSet底层是HashMap，HashMap底层是数组+链表+红黑树
+当链表大小超出n，数组大小在范围内时
+链表树化为红黑树
+
+package Set;
+public class HashSetStructure {
+    public static void main(String[] args) {
+        //创建一个数组(表)，类型是Node
+        Node[] table = new Node[16];
+        Node john = new Node("john", null);
+        table[2] = john;
+//        System.out.println(table);
+        Node jack = new Node("jack", null);
+        john.next = jack;
+        Node rose = new Node("rose", null);
+        jack.next = rose;
+        Node lucy = new Node("lucy", null);
+        table[3] = lucy;
+    }
+}
+class Node {
+    Object item;
+    Node next;
+    public Node(Object item, Node next) {
+        this.item = item;
+        this.next = next;
+    }
+    @Override
+    public String toString() {
+        return "item=" + item;
+    }
+}
+
+
+
+p521 HashSet底层机制
+结论： hash + equals
+1.底层是HashMap
+2.添加时先得到hash值，再转化为索引  Set.add("jack");
+3.找到table的索引位置，看是否为空
+4.如果空，直接加入
+5.如果有(hash冲突)，调用equals比较，相同时放弃添加，不同时添加到next链表
+6.在jdk8中，若链表元素个数超过默认值8，但table大小<64,table扩容，若table>64，链表转为红黑树
+
+
+p525 HashSet源码
+
+        HashSet hashSet = new HashSet();
+        hashSet.add("jack");
+
+public boolean add(E e) {  //e="jack"
+        return map.put(e, PRESENT)==null; //private static final Object PRESENT = new Object();
+    }
+执行put(),执行hash(key)得到对应的hash值
+public V put(K key, V value) {
+        return putVal(hash(key), key, value, false, true);
+    }
+先执行hash(key):     尽量避免了hash碰撞
+          static final int hash(Object key) {
+                  int h;
+                  return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
+              }
+
+putVal:
+final V putVal(int hash, K key, V value, boolean onlyIfAbsent,
+                   boolean evict) {
+        Node<K,V>[] tab; Node<K,V> p; int n, i;              //辅助变量
+        if ((tab = table) == null || (n = tab.length) == 0)  //table是HashMap的一个属性，Node类型，第一次添加时为空
+            n = (tab = resize()).length;                     //创建一个全null数组tab，默认16个空间
+        if ((p = tab[i = (n - 1) & hash]) == null)           //计算hash值对应的索引p，并判断p处是否为空
+            tab[i] = newNode(hash, key, value, null);        //p为空时，创建一个新节点，存入用户输入值key，并放入tab中
+        else {
+            Node<K,V> e; K k;
+            if (p.hash == hash &&
+                ((k = p.key) == key || (key != null && key.equals(k))))
+                e = p;
+            else if (p instanceof TreeNode)
+                e = ((TreeNode<K,V>)p).putTreeVal(this, tab, hash, key, value);
+            else {
+                for (int binCount = 0; ; ++binCount) {
+                    if ((e = p.next) == null) {
+                        p.next = newNode(hash, key, value, null);
+                        if (binCount >= TREEIFY_THRESHOLD - 1) // -1 for 1st
+                            treeifyBin(tab, hash);
+                        break;
+                    }
+                    if (e.hash == hash &&
+                        ((k = e.key) == key || (key != null && key.equals(k))))
+                        break;
+                    p = e;
+                }
+            }
+            if (e != null) { // existing mapping for key
+                V oldValue = e.value;
+                if (!onlyIfAbsent || oldValue == null)
+                    e.value = value;
+                afterNodeAccess(e);
+                return oldValue;
+            }
+        }
+        ++modCount;
+        if (++size > threshold)                   //记录table大小，第一次添加++size=1 threshold=12 ，判断是否即将越界
+            resize();                             //如果即将越界，为table扩容
+        afterNodeInsertion(evict);
+        return null;
+    }
+
+
+
+p523 HashMap源码
+
+hashSet.add("tom");
+hashSet.add("jack");
+
+final V putVal(int hash, K key, V value, boolean onlyIfAbsent,
+                   boolean evict) {
+        Node<K,V>[] tab; Node<K,V> p; int n, i;
+        if ((tab = table) == null || (n = tab.length) == 0)
+            n = (tab = resize()).length;
+        if ((p = tab[i = (n - 1) & hash]) == null)                  //此时计算得到的索引p节点重复不为空，进入else
+            tab[i] = newNode(hash, key, value, null);
+        else {
+            Node<K,V> e; K k;          //最小作用域原理，需要时再定义局部变量
+            if (p.hash == hash &&                                         //if:若当前索引位置链表的第一个元素和待添加元素hash冲突
+                ((k = p.key) == key || (key != null && key.equals(k))))   //且key和p指向的节点的key 相互equal(看是否重写）
+                e = p;                            //不能加入
+            else if (p instanceof TreeNode)                               //else if:若p是红黑树
+                e = ((TreeNode<K,V>)p).putTreeVal(this, tab, hash, key, value); //就调用putTreeVal
+            else {                                                         //else 此时p是链表，
+                for (int binCount = 0; ; ++binCount) {                     //沿着链表遍历比较，没有值相等则添加，有则不添加
+                    if ((e = p.next) == null) {
+                        p.next = newNode(hash, key, value, null);         //加入该链表的最后
+                        if (binCount >= TREEIFY_THRESHOLD - 1) // -1 for 1st   //加入后立即判断该链表是否有8个节点
+                            treeifyBin(tab, hash);                           //如果有8个，且table<64,当前链表转为红黑树
+                        break;
+                    }
+                    if (e.hash == hash &&                             //链表中存在相同元素 直接break
+                        ((k = e.key) == key || (key != null && key.equals(k))))
+                        break;
+                    p = e;
+                }
+            }
+            if (e != null) { // existing mapping for key
+                V oldValue = e.value;                         
+                if (!onlyIfAbsent || oldValue == null)
+                    e.value = value;
+                afterNodeAccess(e);
+                return oldValue;
+            }
+        }
+        ++modCount;
+        if (++size > threshold)
+            resize();
+        afterNodeInsertion(evict);
+        return null;                                 //加入失败
+    }
+
+
+
+p524  扩容机制
+                package Set;
+                import javax.swing.plaf.basic.BasicMenuUI;
+                import java.util.HashSet;
+                import java.util.Objects;
+                @SuppressWarnings("all")
+                public class HashSerSource {
+                    public static void main(String[] args) {
+                        HashSet hashSet = new HashSet();
+                        hashSet.add("jack");
+                        hashSet.add("tom");
+                        hashSet.add("jack");
+                        System.out.println(hashSet);
+                //        for (int i = 0; i < 100; i++) {
+                //            hashSet.add(i);
+                //        }
+                        for (int i = 0; i < 12; i++) {
+                            hashSet.add(new A(i));
+
+                        }
+                        System.out.println(hashSet);
+                    }
+                }
+                class A{
+                    private  int i;
+                    public A(int n){
+                        this. i = n;
+                    }
+                    @Override
+                    public int hashCode() {
+                        return 100;
+                    }
+                }
+
+
+
+
+p525 临界值
+临界值：
+if (++size > threshold)
+            resize();
+            
+   每加入一个节点，size++一次
+   所以加入链表中，也会引起threshold
+
+
+
+p526 hashset练习
+创建3个Employee对象，放入HashSet中
+name age相同时不能放入
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
