@@ -1,0 +1,171 @@
+p548 
+倒序输出新闻标题，若超过15字只输出前15字+...
+
+package hw;
+
+import java.util.ArrayList;
+import java.util.Collections;
+
+public class Homework01 {
+    public static void main(String[] args) {
+        ArrayList arrayList = new ArrayList();
+        arrayList.add(new News("123832953208570385278w5"));
+        arrayList.add(new News("456832958235"));
+        Collections.reverse(arrayList);
+        for (Object obj : arrayList) {
+//            News news = (News) obj;
+//            System.out.println(news);
+            System.out.println(obj);
+        }
+
+    }
+}
+
+class News {
+    private String title;
+    private String cont;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getCont() {
+        return cont;
+    }
+
+    public void setCont(String cont) {
+        this.cont = cont;
+    }
+
+    public News(String title) {
+        this.title = title;
+    }
+
+    @Override
+    public String toString() {
+        String title_cont;
+        if (this.title.length() >= 15) {
+            title_cont = this.title.substring(0, 15) + "...";
+        } else {
+            title_cont = this.title;
+        }
+        return title_cont;
+    }
+}
+
+
+p549 ArrayList
+
+
+
+p550 
+package hw;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
+/*
+实例化一个Map类型对象m，键值对存储姓名工资
+将jack工资改为2600
+所有员工加薪100
+遍历所有员工
+遍历所有工资
+ */
+public class Homework03 {
+    public static void main(String[] args) {
+        HashMap m = new HashMap();
+        m.put("tom",2600);
+        m.put("jack",1000);
+        m.put("mary",1500);
+        m.put("jack",2600);
+
+        Set keySet = m.keySet();
+        for (Object key :keySet) {
+            m.put(key, (Integer)m.get(key)+100);
+        }
+        Set set = m.entrySet();
+        Iterator iterator = set.iterator();
+        while (iterator.hasNext()) {
+            Map.Entry entry  = (Map.Entry) iterator.next();
+            System.out.println(entry.getKey());
+        }
+        iterator = set.iterator();
+        while (iterator.hasNext()) {
+            Map.Entry entry  = (Map.Entry) iterator.next();
+            System.out.println(entry.getValue());
+        }
+    }
+}
+
+
+p551 
+HashSet 和TreeSet 如何实现去重？
+HS：hashcode+equals
+底层通过先存入对象，运算得到一个hash值，再得到索引，如果table索引位置没有数据就直接存放，如果有就equals比较，
+TreeSet:传入一个Comparator匿名对象，就使用实现的compare去重
+        未传入Comparator，则通过对象实现的compareTo去重
+
+
+TreeSet treeSet  = new TreeSet();
+//Person 没有实现Compareable接口，也没有传入comparator匿名对象，报错
+treeSet.add(new Person());
+
+p552 
+class Person{
+    public int id;
+    public String name;
+    重写hashcode equls。
+}
+package hw;
+
+import java.util.HashSet;
+import java.util.Objects;
+
+public class Homework04 {
+    public static void main(String[] args) {
+        HashSet hashSet = new HashSet();
+        Person p1 =new  Person(1,"a");
+        Person p2 =new  Person(2,"b");
+        hashSet.add(p1);
+        hashSet.add(p2);
+        p1.name = "c";
+        hashSet.remove(p1);           //p1.name被修改，remove按照修改后hash查找索引，无法找到，无法删除
+        System.out.println(hashSet);
+        hashSet.add(new  Person(1,"c"));//添加了新索引元素，索引与之前remove相同
+        System.out.println(hashSet);
+        hashSet.add(new  Person(1,"a"));//索引与p1相同，加入table同一位置，但equals不同，加入链表
+        System.out.println(hashSet);
+
+    }
+}
+
+
+
+ArrayList  线程不安全，高效，1.5倍扩容
+Vector     线程安全    低效  2倍扩容
+
+
+p553
+本章回顾
+collection
+  list
+      arraylist  数组
+      linkedlist 双向链表
+      vector     数组
+  set
+      HashSet    HM
+      LHS        LHM  存取一致
+      TreeSet    TM
+map
+      Hash表     数组+链表+红黑树
+      LHM        数组+链表+双向链表
+      TM         二叉树，compareable接口实现，匿名内部类
+工具类 collections
+
+
