@@ -1,0 +1,143 @@
+p554 泛型
+泛型语法
+【自定义泛型】
+    泛型类
+    泛型接口
+    泛型方法
+泛型方法
+
+
+JUnit：
+@Test alt+enter  5.4
+
+p560
+
+package generic;
+
+public class MyDate implements Comparable<MyDate>{   //实现了Comparable接口并指定泛型
+    private int year;
+    private int month;
+    private int day;
+
+    @Override
+    public String toString() {
+        return  year +
+                "." + month +
+                "." + day;
+    }
+
+    @Override
+    public int compareTo(MyDate o) {            //实现compareTo方法
+        int years = year-o.getYear();
+        if(years!=0){
+            return years;
+        }
+        int months = month - o.getMonth();
+        if(months!= 0){
+            return months;
+        }
+        return day - o.getDay();
+    }
+}
+
+import java.util.ArrayList;
+import java.util.Comparator;
+
+public class GenericExercise02 {
+    public static void main(String[] args) {
+        ArrayList<Emp> emps = new ArrayList<>();
+        emps.add(new Emp("jack", 4000,
+                new MyDate(1999, 5, 4)));
+        emps.add(new Emp("tom", 5000,
+                new MyDate(1998, 5, 31)));
+        emps.add(new Emp("mary", 4000,
+                new MyDate(2000, 6, 1)));
+        System.out.println(emps);
+        emps.sort(new Comparator<Emp>() {
+            @Override
+            public int compare(Emp emp1, Emp emp2) {
+                if (!(emp1 instanceof Emp && emp2 instanceof Emp)) {
+                    System.out.println("class cast error");
+                    return 0;
+                }
+                //先比较name
+                int i = emp1.getName().compareTo(emp2.getName());
+                if (i != 0) {
+                    return i;
+                }
+                return emp1.getBirth().compareTo(emp2.getBirth());
+            }
+        });
+        System.out.println(emps);
+    }
+}
+
+class Emp {
+    private String name;
+    private double sal;
+    private MyDate birth;
+}
+
+
+
+p567 hw
+package hw;
+
+public class User {
+    private int id;
+    private  int age;
+    private String name;
+}
+
+import java.util.*;
+
+public class DAO<T> {
+    private Map<String, T> map = new HashMap<>();
+    public T get(String id){
+        return map.get(id);
+    }
+    public void update(String id ,T entity){
+        map.put(id,entity);
+    }
+    public List<T> list(){
+        Set<String> keySet = map.keySet();
+        List<T> ts = new ArrayList<>();
+        for (String key :keySet) {
+            ts.add(map.get(key));
+        }
+        return ts;
+        
+//        return (List<T>)map.values();  Hashmap无法转为List
+    }
+    public void save(String id, T entity){
+        map.put(id,entity);
+    }
+    public void delete(String id){
+        map.remove(id);
+    }
+}
+
+import org.junit.jupiter.api.Test;
+
+import java.util.List;
+
+public class Homework01 {
+    public static void main(String[] args) {
+
+    }
+    @Test
+    public void testList(){
+        DAO<User> dao = new DAO<>();
+        dao.save("001",new User(1, 19,"jcak"));
+        dao.save("002",new User(2,20,"user"));
+        dao.save("003",new User(3,25,"luv"));
+        List<User> userList = dao.list();
+        System.out.println(userList);
+
+        dao.update("003", new User(3,58, "milan"));
+        List<User> list1 = dao.list();
+        System.out.println(list1);
+    }
+}
+
+p568 回顾
