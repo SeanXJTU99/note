@@ -1,0 +1,357 @@
+集合框架体系
+collection ： List Set
+Map ：HashMap ...
+Collections 工具类
+难点：底层实现|应用场景
+
+
+p499 
+数组的不足：创建时长度必须指定，且不再更改
+           保存的必须是统一类型
+           增删麻烦
+  数组扩容：Person[] pe2 = new Person[pe1.length + 1]; 
+           for(){}
+           pe2[pe2.length-1] = new Person();
+
+集合：可以动态保存任意多个对象
+      提供了一系列操作crud
+
+
+p500
+集合框架体系
+    Map
+        HashMap
+            LinkedHashMap
+        TreeMap
+        HashTable
+            Properties
+Iterable
+    Collection
+        List(接口
+            ArrayList（类
+            LinkedList 链表
+            Vector
+        Set
+            HashSet
+            TreeSet
+集合：单列集合，双列集合（键值对）
+
+List Set 的实现子类都是单列集合，存放的是E
+Map  的实现子类都是双列集合，存放的是K-V对
+
+package collection;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
+public class Collection_ {
+    @SuppressWarnings("all")
+    public static void main(String[] args) {
+        ArrayList arrayList = new ArrayList();
+        arrayList.add("jack");        //单个元素
+        arrayList.add("tom");
+        HashMap hashMap = new HashMap();
+        hashMap.put("N01","beijing");  //键值对
+        hashMap.put("N02", "shanghai");
+    }
+}
+
+
+p501 collection
+继承了Iterable接口
+其实现子类可以存放多个object元素
+有序子接口List
+无序子接口Set
+
+常用方法：
+实现子类ArrayList
+           添加
+        List list = new ArrayList();
+        list.add("jack");
+        list.add(10); //相当于list.add(new Integer(10));
+        System.out.println(list);//[jack, 10]
+        存放的不再是基本数据，而是对象
+            删除remove
+        list.remove(0);
+        list.remove("jack");
+            contains 清空
+            size 元素个数
+            addAll 添加一个集合
+        ArrayList list2 = new ArrayList();
+        list2.add("10");
+        list2.add("jack");
+        list.addAll(list2);
+            isEmpty
+            clear
+            containsAll
+            removeAll
+
+
+p502  collection 遍历方法
+iterator 迭代器对象
+所有collection实现子类都可以用迭代器遍历
+iterator只遍历，不存放
+iterator.next返回的是object编译类型，运行类型取决于此前的定义
+
+Iterator iterator = list2.iterator();
+        while(iterator.hasNext()){System.out.println(iterator.next());}
+      如果不用hasNext判断，next指向空时会抛出NoSuchElementException
+
+        ArrayList col = new ArrayList();
+        col.add(new Book("jack",10));
+        col.add(new Book("jak",20));
+        col.add(new Book("jk",30));
+
+        Iterator iterator1 = col.iterator();
+        while(iterator1.hasNext()){
+            Object obj = iterator1.next();
+            System.out.println(obj);
+        }
+        快捷：itit
+
+当退出while循环后，iterator游标已经不再next，
+希望再次遍历需要重置迭代器
+           iterator = col.iterator();
+
+
+
+p503 增强for遍历
+for(元素类型 元素名：集合名/数组名){访问元素}
+可以在Collection或数组使用
+底层依然是迭代器
+public class CollectionFor {
+    public static void main(String[] args) {
+        ArrayList col = new ArrayList();
+        col.add(new Book("jack",10));
+        col.add(new Book("jak",20));
+        col.add(new Book("jk",30));
+
+        for(Object obj : col){
+            System.out.println(obj);
+        }
+        快捷：I
+        
+        int[] nums = {1,2,3,4,5};
+        for(int i:nums){
+            System.out.println(i);
+        }
+    }
+}
+
+p504 练习
+创建3个Dog（name age），放入ArrayList 付给List引用
+迭代器/for遍历
+重写toString
+
+        List list = new ArrayList();
+        list.add(new Dog(10));
+        list.add(new Dog(20));
+        list.add(new Dog(30));
+        list.add("dog");
+        for (Object dog :list) {
+            System.out.println(dog);
+        }
+        Iterator it = list.iterator();
+        while (it.hasNext()) {
+            Object dog = it.next();
+            System.out.println(dog);
+        }
+
+
+
+p505  List 接口常用方法
+List(接口
+            ArrayList 动态数组
+            LinkedList 链表
+            Vector
+
+添加是有顺序的，取出与添加顺序一致，元素可以重复（底层是数组
+支持索引  list.get(int index)
+List容器中元素都对应一个整数型序号记录位置，根据序号存取容器中元素
+
+方法
+void add
+boolean addAll
+Object get(int index)
+int indexOf(Object obj)
+int lastIndexOf
+Object remove(int index) 删除指定位置元素，并返回该元素
+Object set(int index, Object obj) 相当于替换
+List subList(int start, int end) 返回子集合 [start,end)
+
+
+p506 List 练习
+
+package List;
+
+import java.util.ArrayList;
+import java.util.List;
+@SuppressWarnings("all")
+public class ListMethod {
+    public static void main(String[] args) {
+        List list = new ArrayList ();
+        list.add("jack");
+        list.add("tom");
+        list.add(10);
+        list.add(1,"mary");
+        System.out.println(list);
+        Object obj = list.remove(2);
+        System.out.println(obj);
+        list.set(2,"tom");
+        System.out.println(list);
+        for (Object ele :list) {
+            System.out.println(ele);
+        }
+    }
+}
+
+
+
+p507 List三种遍历
+
+//iterator
+Iterator it = list.iterator();
+        while (it.hasNext()) {
+            Object next = it.next();
+            System.out.println(next);
+        }
+//增强for
+        for (Object ele :list) {
+            System.out.println(ele);
+        }
+//普通for
+        for (int i = 0; i < list.size(); i++) {  //注意长度为size()
+            System.out.println(list.get(i));     //序号为get(i)
+        }
+
+
+
+
+p508
+添加10本书，按价格排序，并打印
+
+package List;
+
+import collection.Book;
+import java.util.ArrayList;
+import java.util.List;
+
+public class ListExercise {
+    public static void main(String[] args) {
+        List books = new ArrayList();
+        for (int i = 0; i < 12; i++) {
+            books.add(new Book(i+"", Math.random()));
+        }
+
+        int booksSize = books.size();//提前计算长度，提高效率
+        for (int i = 0; i < booksSize - 1; i++) {
+            for (int j = 0; j < booksSize - 1 - i; j++) {
+//                if (books.get(j))无法直接使用getPrice
+                Book book1 = (Book)books.get(j);
+                Book book2 = (Book)books.get(j+1);
+                if (book1.getPrice() < book2.getPrice()){
+                    books.set(j,book2);
+                    books.set(j+1,book1);
+                }
+            }
+        }
+        for (Object book :books) {
+            System.out.println(book);
+        }
+    }
+}
+
+
+p509 ArrayList底层结构和源码分析
+ArrayList可以接收所有类型，包括null
+用数组完成存储
+线程不安全 没有synchronized 修饰 
+Vector线程安全
+
+ArrayList->add()->没有synchronized修饰
+
+public void add(int index, E element) {
+        rangeCheckForAdd(index);
+
+        ensureCapacityInternal(size + 1);  // Increments modCount!!
+        System.arraycopy(elementData, index, elementData, index + 1,
+                         size - index);
+        elementData[index] = element;
+        size++;
+    }
+
+p510 结论
+1.ArrayList在底层维护一个Object类型的elementData数组
+                      transient Object[] elementData  transient表示不会被序列化
+2.ArrayList无参构造时，数组容量为0，
+                      第一次添加时扩容为10
+                      如需再次扩容，扩容为1.5倍
+3.ArrayList（int）指定容量，扩容时为1.5倍
+
+
+p511 代码分析 无参构造器
+//ArrayList arr = new ArrayList();
+public ArrayList() {            //无参构造器，创建一个空数组
+        this.elementData = DEFAULTCAPACITY_EMPTY_ELEMENTDATA;
+    }
+
+private static final Object[] DEFAULTCAPACITY_EMPTY_ELEMENTDATA = {}; //空数组
+
+//第一次添加元素  arr.add(10);
+public boolean add(E e) {
+        ensureCapacityInternal(size + 1);  // Increments modCount!! 确认是否扩容
+        elementData[size++] = e;      //先将e赋值给size，再让size+1
+        return true;
+    }
+
+private void ensureCapacityInternal(int minCapacity) {  //检查数组大小 传入参数minCapacity=size+1
+        ensureExplicitCapacity(calculateCapacity(elementData, minCapacity));
+    }
+private static int calculateCapacity(Object[] elementData, int minCapacity) {
+        if (elementData == DEFAULTCAPACITY_EMPTY_ELEMENTDATA) {  //检测空数组
+            return Math.max(DEFAULT_CAPACITY, minCapacity);  //若为空，则返回0和size+1的最大值
+        }
+        return minCapacity;  //非空则返回size+1
+    }
+
+
+private void ensureExplicitCapacity(int minCapacity) {
+        modCount++;                  //记录数组的修改次数，防止多线程异常
+
+        // overflow-conscious code
+        if (minCapacity - elementData.length > 0)  //若源数组大小不够，则扩容
+            grow(minCapacity);
+    }
+
+//扩容
+private void grow(int minCapacity) {
+        // overflow-conscious code
+        int oldCapacity = elementData.length;
+        int newCapacity = oldCapacity + (oldCapacity >> 1);  //等于oldCapacity*1.5
+        if (newCapacity - minCapacity < 0)                    //第一次扩容，oldCapacity=0，无法直接扩容
+            newCapacity = minCapacity;                         //直接赋值
+        if (newCapacity - MAX_ARRAY_SIZE > 0)
+            newCapacity = hugeCapacity(minCapacity);
+        // minCapacity is usually close to size, so this is a win:
+        elementData = Arrays.copyOf(elementData, newCapacity);  // 保留原数据并添加null，第一次等于复制了10个空
+    }
+
+
+
+
+p512 有参构造器
+public ArrayList(int initialCapacity) {  //有参构造器
+        if (initialCapacity > 0) {
+            this.elementData = new Object[initialCapacity];
+        } else if (initialCapacity == 0) {
+            this.elementData = EMPTY_ELEMENTDATA;
+        } else {
+            throw new IllegalArgumentException("Illegal Capacity: "+
+                                               initialCapacity);
+        }
+    }
+
+
+
