@@ -1,0 +1,213 @@
+540 Htable
+Map的实现子类
+与HMap平级
+父类是Dictionary 实现了Map， cloneable serializeable
+键值对都不能为null，
+使用方法和Hmap一样
+Ht线程安全，HM不安全
+
+底层是 Hashtable$Entry[] table  内部类数组 初始化大小为11
+private static class Entry implements Map.Entry 静态内部类，且实现了Map.Entry接口
+k-v对放在Hashtable$Entry对象中
+扩容机制是  x2+1
+
+
+
+
+
+p541 扩容机制
+添加一个键值对，并封装到Entry中
+    addEntry(hash,key,value,index);
+Entry[] tab = table;
+if(count>=threshold)
+    rehash():
+    int newCapacity = (oldCapacity<<1)+1;
+
+
+     版本      线程安全     效率      允许null
+HM   1.2        F         高            T
+Ht   1.0        T         低            F
+
+
+
+p542 Properties
+
+Properties 继承Ht，并实现Map接口，也存放键值对
+与Ht类似，不能为null（抛出NullPointerException）
+用于从xxx.properties文件中加载数据到Peroperties对象中，做读取和修改
+开发中properties常用作配置文件
+
+
+put 
+get 
+remove
+put(相同的key，value）
+
+
+p543 开发中如何选择集合实现类
+先判断存储类型（单列？双列？）
+    一组对象：Collection子类
+        允许重复 List
+                    ArrayList  改查
+                    LinkedList 增删
+                    Vector
+        不重复  Set
+                    HS        无序 底层维护一个哈希表
+                    LHS       存取顺序一致
+                    TreeSet   有序
+    键值对：Map实现子类
+                    HM         键无序：底层：哈希表 数组+链表+红黑树
+                    TreeMap    键有序：
+                    LHM        存取顺序一致
+                    Properties 读取文件 IO流
+                    
+
+p544 TreeSet
+无参构造器是无序的
+TreeSet底层是TreeMap
+
+按照字符串大小排序:
+使用TreeSet提供的构造器传入比较器，匿名内部类指定排序规则
+
+  /*    TreeSet treeSet = new TreeSet(new Comparator() {
+            @Override
+            public int compare(Object o1, Object o2) {
+                return ((String)o1).compareTo((String)o2);  //String类的compareTo方法
+            }
+        });
+        treeSet.add("jack");
+        treeSet.add("tom");
+        treeSet.add("sp");
+        System.out.println(treeSet);
+*/
+
+    public boolean add(E e) {
+        return m.put(e, PRESENT)==null;      //value值是PRESENT， 因为是单列
+    }
+
+public V put(K key, V value) {
+        Entry<K,V> t = root;                                  //第一次添加k-v对放入Entry对象t， 并为根节点
+        if (t == null) {
+            compare(key, key); // type (and possibly null) check   //此处调用匿名内部类，但其实没有比较
+
+            root = new Entry<>(key, value, null);
+            size = 1;
+            modCount++;
+            return null;
+        }
+        int cmp;
+        Entry<K,V> parent;
+        // split comparator and comparable paths
+        Comparator<? super K> cpr = comparator;
+        if (cpr != null) {
+            do {
+                parent = t;
+                cmp = cpr.compare(key, t.key);                //此处调用匿名内部类
+                if (cmp < 0)
+                    t = t.left;                             //左子树
+                else if (cmp > 0)
+                    t = t.right;                            //右子树
+                else
+                    return t.setValue(value);           //相同时重置value，不添加
+            } while (t != null);
+        }
+        else {
+            if (key == null)
+                throw new NullPointerException();
+            @SuppressWarnings("unchecked")
+                Comparable<? super K> k = (Comparable<? super K>) key;
+            do {
+                parent = t;
+                cmp = k.compareTo(t.key);
+                if (cmp < 0)
+                    t = t.left;
+                else if (cmp > 0)
+                    t = t.right;
+                else
+                    return t.setValue(value);
+            } while (t != null);
+        }
+        Entry<K,V> e = new Entry<>(key, value, parent);
+        if (cmp < 0)
+            parent.left = e;
+        else
+            parent.right = e;
+        fixAfterInsertion(e);
+        size++;
+        modCount++;
+        return null;
+    }
+
+
+
+p545 TreeMap
+与HM Ht 并列关系，都是Map的实现子类
+也通过comparetor匿名内部类排序
+键值对存放在TreeMap$Entry内部类数组[]中
+
+public boolean add(E e) {
+        return m.put(e, PRESENT)==null;      //value值不再是PRESENT， 因为是单列
+    }
+
+
+
+p546 collections 工具类
+只能用于有序单列集合Collection子类
+package collections_;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+public class Collections_ {
+    public static void main(String[] args) {
+        //创建集合测试
+        List list = new ArrayList   ();
+        list.add("tom");
+        list.add("jack");
+        list.add("smith");
+
+        Collections.reverse(list); //反转
+        System.out.println(list);
+
+        Collections.shuffle(list); //随机打乱
+        System.out.println(list);
+        Collections.sort(list); //自然排序
+        System.out.println(list);
+        Collections.sort(list, new Comparator() {
+            @Override
+            public int compare(Object o1, Object o2) {
+                return ((String)o1).length() -((String)o2).length() ;
+            }
+        });
+        Collections.swap(list, 0, 1); //两元素交换
+
+        System.out.println(Collections.max(list));  //自然排序最大
+        System.out.println(Collections.max(list, new Comparator() {//指定排序最大
+            @Override
+            public int compare(Object o1, Object o2) {
+                return ((String)o1).length() -((String)o2).length();
+            }
+        }));
+
+        Collections.frequency(list,"tom");  //指定元素出现频率
+                
+        //拷贝
+        ArrayList dest = new ArrayList();
+        for (int i = 0; i < list.size(); i++) {
+            dest.add("");
+        }
+        Collections.copy(dest, list);
+        System.out.println(dest);
+        
+        Collections.replaceAll(list, "tom", "jack"); //元素替换
+    }
+}
+
+
+
+
+
+
+
