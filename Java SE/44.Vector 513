@@ -1,0 +1,158 @@
+p513 Vector
+底层也是对象数组，protected Object[] elementData\
+线程安全  public synchronized boolean add(E e)
+多线程操作数组时应使用Vector
+
+p514 Vector源码
+可变数组
+安全但效率不高
+无参构造默认10，满后按2倍扩容
+指定大小，每次按2倍扩容
+
+
+//Vector vector = new Vector();
+public Vector() {
+        this(10);   // 默认10
+    }
+
+//vector.add(i)
+public synchronized boolean add(E e) {
+        modCount++;
+        ensureCapacityHelper(elementCount + 1);
+        elementData[elementCount++] = e;
+        return true;
+    }
+             private void ensureCapacityHelper(int minCapacity) {
+                  // overflow-conscious code
+                  if (minCapacity - elementData.length > 0)
+                      grow(minCapacity);
+              }
+
+            //扩容：
+            private void grow(int minCapacity) {
+                    // overflow-conscious code
+                    int oldCapacity = elementData.length;
+                    int newCapacity = oldCapacity + ((capacityIncrement > 0) ?
+                                                     capacityIncrement : oldCapacity);
+                    if (newCapacity - minCapacity < 0)
+                        newCapacity = minCapacity;
+                    if (newCapacity - MAX_ARRAY_SIZE > 0)  //是否超出最大值2^31-1
+                        newCapacity = hugeCapacity(minCapacity);
+                    elementData = Arrays.copyOf(elementData, newCapacity);
+                }
+
+
+p515 LinkedList底层
+
+底层是双向链表和双端队列
+可以添加任意元素包括null
+线程不安全，未实现synchronized
+
+1.底层维护了一个双向链表
+2.first last 头指针 尾指针
+3.每个节点Node对象，维护prev next item三个属性
+4.添加删除效率较高
+ 模拟双向链表
+ package List;
+
+public class LinkedList01 {
+    public static void main(String[] args) {
+        //模拟简单的双向链表
+        //创建节点
+        Node jack = new Node("jack");
+        Node tom = new Node("tom");
+        Node mary = new Node("mary");
+
+        //链表构建
+        jack.next = tom;
+        tom.next = mary;
+        mary.pre = tom;
+        tom.pre = jack;
+
+        Node first = jack;//first是一个对象引用，指向jack，头节点
+        Node last = mary;
+
+        //遍历
+        while(true){
+            if(first == null){
+                break;
+            }
+            System.out.println(first);
+            first = first.next;
+        }
+        while(true){
+            if(last == null){
+                break;
+            }
+            System.out.println(last);
+            last = last.pre;
+        }
+    }
+}
+//定义一个Node类
+class Node{
+    public Object item;
+    public Node next;
+    public Node  pre;
+
+    public Node(Object name) {
+        this.item = name;
+    }
+
+    @Override
+    public String toString() {
+        return "Node name=" + item;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
