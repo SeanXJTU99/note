@@ -1,0 +1,256 @@
+p513 Vector
+底层也是对象数组，protected Object[] elementData\
+线程安全  public synchronized boolean add(E e)
+多线程操作数组时应使用Vector
+
+p514 Vector源码
+可变数组
+安全但效率不高
+无参构造默认10，满后按2倍扩容
+指定大小，每次按2倍扩容
+
+
+//Vector vector = new Vector();
+public Vector() {
+        this(10);   // 默认10
+    }
+
+//vector.add(i)
+public synchronized boolean add(E e) {
+        modCount++;
+        ensureCapacityHelper(elementCount + 1);
+        elementData[elementCount++] = e;
+        return true;
+    }
+             private void ensureCapacityHelper(int minCapacity) {
+                  // overflow-conscious code
+                  if (minCapacity - elementData.length > 0)
+                      grow(minCapacity);
+              }
+
+            //扩容：
+            private void grow(int minCapacity) {
+                    // overflow-conscious code
+                    int oldCapacity = elementData.length;
+                    int newCapacity = oldCapacity + ((capacityIncrement > 0) ?
+                                                     capacityIncrement : oldCapacity);
+                    if (newCapacity - minCapacity < 0)
+                        newCapacity = minCapacity;
+                    if (newCapacity - MAX_ARRAY_SIZE > 0)  //是否超出最大值2^31-1
+                        newCapacity = hugeCapacity(minCapacity);
+                    elementData = Arrays.copyOf(elementData, newCapacity);
+                }
+
+
+p515 LinkedList底层
+
+底层是双向链表和双端队列
+可以添加任意元素包括null
+线程不安全，未实现synchronized
+
+1.底层维护了一个双向链表
+2.first last 头指针 尾指针
+3.每个节点Node对象，维护prev next item三个属性
+4.添加删除效率较高
+ 模拟双向链表
+ package List;
+
+public class LinkedList01 {
+    public static void main(String[] args) {
+        //模拟简单的双向链表
+        //创建节点
+        Node jack = new Node("jack");
+        Node tom = new Node("tom");
+        Node mary = new Node("mary");
+
+        //链表构建
+        jack.next = tom;
+        tom.next = mary;
+        mary.pre = tom;
+        tom.pre = jack;
+
+        Node first = jack;//first是一个对象引用，指向jack，头节点
+        Node last = mary;
+
+        //遍历
+        while(true){
+            if(first == null){
+                break;
+            }
+            System.out.println(first);
+            first = first.next;
+        }
+        
+        //插入对象
+        /*
+        1.创建一个Node对象
+        2.设置prev，next
+         */
+        Node smith = new Node("smith");
+        smith.pre = tom;
+        smith.next = mary;
+        mary.pre = smith;
+        tom.next = smith;
+        first = jack;        
+  
+        while(true){
+            if(last == null){
+                break;
+            }
+            System.out.println(last);
+            last = last.pre;
+        }
+    }
+}
+//定义一个Node类
+class Node{
+    public Object item;
+    public Node next;
+    public Node  pre;
+
+    public Node(Object name) {
+        this.item = name;
+    }
+
+    @Override
+    public String toString() {
+        return "Node name=" + item;
+    }
+}
+
+
+p516 LinkedList底层
+增删改查 add remove set get
+
+//LinkedList linkedList = new LinkedList();
+    public LinkedList() {
+    }
+//此时 first=last=null
+//linkedList.add(1);
+
+public boolean add(E e) {
+        linkLast(e);
+        return true;
+    }
+                void linkLast(E e) {
+                        final Node<E> l = last;  //last = null 赋给l
+                        final Node<E> newNode = new Node<>(l, e, null);  //前后都是null
+                       /* 
+                       Node(Node<E> prev, E element, Node<E> next) {
+                            this.item = element;
+                            this.next = next;
+                            this.prev = prev;
+                        }
+                        */
+                        last = newNode;           //让last指向该节点
+                        if (l == null)
+                            first = newNode;      //让first指向该节点
+                        else
+                            l.next = newNode;
+                        size++;
+                        modCount++;
+                    }
+
+//添加linkedList.add(2);
+void linkLast(E e) {
+        final Node<E> l = last;   //last 是1节点，赋给L
+        final Node<E> newNode = new Node<>(l, e, null);  //L赋给2节点pre，也就是2节点pre指向1节点
+        last = newNode;          //last指向2节点
+        if (l == null)           //L是1节点，不空
+            first = newNode;
+        else
+            l.next = newNode;  //1节点next指向2节点
+        size++;
+        modCount++;
+    }
+
+
+remove() 默认删除第一个节点
+remove(int index)指定删除节点
+removeFirst() 删除第一个 = remove()
+
+private E unlinkFirst(Node<E> f) {           //f指向第一个节点
+        // assert f == first && f != null;
+        final E element = f.item;
+        final Node<E> next = f.next;
+        f.item = null;
+        f.next = null; // help GC
+        first = next;
+        if (next == null)
+            last = null;
+        else
+            next.prev = null;
+        size--;
+        modCount++;
+        return element;
+    }
+
+
+
+p517 ArrayList 和 LinkedList 比较
+                   底层              增删              改查          线程
+ArrayList       可变数组          较低，数组扩容    较高，索引支持     不安全
+LinkedList      双向链表          较高，链表增删         较低         不安全
+
+
+开发中主要使用查询，大部分情况是哟个ArrayList
+
+p518 Set接口
+
+无序，无索引 即添加取出顺序不一致，但取出顺序是固定的
+不允许重复元素，最多包含一个null
+方法和collection一样
+
+遍历：
+迭代器
+增强for
+常用实现子类：HashSet
+
+package Set;
+
+import java.util.HashSet;
+import java.util.Set;
+
+public class SetMethod {
+    public static void main(String[] args) {
+        Set set = new HashSet();
+        set.add("jack");
+        set.add("john");
+        set.add("lucy");
+        set.add("jack");
+        set.add(null);
+        System.out.println(set);//[null, john, lucy, jack] 取出顺序固定
+        //遍历
+        Iterator iterator = set.iterator();
+        while (iterator.hasNext()) {
+            Object next = iterator.next();
+            System.out.print(next + " ");
+        }
+        //删除
+        set.remove(null);
+        //for遍历
+        for (Object o : set) {
+            System.out.print(o + " ");
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
