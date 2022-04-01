@@ -1,0 +1,384 @@
+p528 LHS
+LHS是HS的子类，底层是LinkedHashMap 维护一个数组+双向链表（HS是单向链表
+
+可以按照存储顺序取出元素
+整个链表有head和tail
+每个节点保存before和after，
+
+添加元素时，先求hash值，再求索引，确定其再hashtable的位置
+再将元素加入到双向链表中（若已存在，不添加）
+双向链表不一定在同一索引位置）
+通过双向链表保证了存取顺序一致
+
+tail.next = newElement;
+newElement = tail;
+tail  = newElement;
+
+
+p529 
+底层是LinkedHashMap
+数组+双向链表
+第一次添加时，直接将数组table扩容到15
+存放的节点类型是 LinkedHashMap$Entry Entry是Node的一个子类
+数组是Node[], 存放类型是Entry，即多态数组
+
+Entry 是LHM的一个静态内部类，
+static class Entry extends HM.Node
+Node也是HM的一个静态内部类
+继承是在HM内部完成的
+
+先完成head tail before after
+再进行HM的方法
+
+
+p530 LHS练习
+
+重写hashcode equals
+
+
+
+
+p531 Map接口特点
+Map中存放k-v键值对
+
+Set中也存放k-v，但v是默认的常量对象
+
+Map接口特点：
+使用广泛
+Map和Colletion并列存在
+保存key-value，两者均可以是任意引用类型数据
+key-value 封装再HM$Node对象中
+key不允许重复，value可以重复
+存取顺序不一致
+都可以为null，但key只能由一个null
+常用String作为key
+key-value是单一对象关系，指定key总能找到value
+
+
+              package map;
+
+              import java.util.HashMap;
+              import java.util.Map;
+              @SuppressWarnings("all")
+              public class Map_ {
+                  public static void main(String[] args) {
+                      Map map = new HashMap();
+                      map.put("no1","jack");
+                      map.put("no2","tom");
+                      map.put("no2","mary");//key相同相当于替换
+                      map.put(1,2);
+                      Set set = map.entrySet();
+                      
+                      System.out.println(map);
+                  }
+              }
+
+p532 
+k-v放在HM$Node中，又因为Node实现了Entry接口，Set和Collection只是建立了一个引用方便遍历
+tab[i] = newNode(hash, key, value, null);
+
+为方便遍历，底层还会创建一个EntrySet集合，该集合的元素类型是Entry
+一个Entry对象中就有k,v  Set<Map.Entry<K,V>>
+K放在Set中，指向Node中的k
+V放在Collection中，指向Node中的v
+
+HashMap.java:
+static class Node<K,V> implements Map.Entry<K,V> {
+final int hash;
+        final K key;
+        V value;
+        Node<K,V> next;
+...
+}
+
+        /*
+        entrySet方法返回的集合中定义的类型是Map.Entry 但实际存放依然是Node，因为Node是Entry的实现子类
+        当把Node对象存放到entrySet集合中就方便了遍历，因为Map.Entry类提供了getKey和gtValue方法
+         */
+        Set set  = map.entrySet();
+        System.out.println(set.getClass());
+        for (Object obj : set) {
+            //向下转型
+            //将entrySet中的Object对象向下转型为Entry类对象，通过Entry类提供的方法访问键值对
+            
+            Map.Entry entry = (Map.Entry)obj; 
+            System.out.println(entry.getKey() + "-" + entry.getValue());
+        }
+
+        /*
+        可以单独获得key值或value值
+        通过keySEt和valueSet方法
+        返回keySet valueSet对象
+        都是Map的内部类，分别实现了Set和Collection接口
+         */
+        Set set1 = map.keySet();
+        Collection values = map.values();
+                
+
+
+p533 Map接口方法
+Map
+  Hashtable
+      Properties
+  HashMap
+      LinkedHashMap
+  SortedMap接口
+      TreeMap
+  
+Map常用方法
+put
+remove(key)
+get(key)
+        Object val = map.get("n1");
+        System.out.println(val);
+clear
+size
+contains(key) 查找key是否存在
+  
+
+
+p534 Map六大遍历
+entrySet所有键值对
+keySet  所有键
+values  所有值
+
+
+
+package map;
+
+import java.util.*;
+
+@SuppressWarnings("all")
+public class MapFor {
+    public static void main(String[] args) {
+        Map map = new HashMap();
+        map.put(1,"11");
+        map.put(2,"12");
+        map.put(3,"13");
+        map.put(4,"14");
+        //1.先取出key，再通过key访问value
+        Set keyset = map.keySet();
+        //  1)for
+        for (Object key : keyset) {
+            System.out.println(key + "-" + map.get(key));
+        }
+        //  2)iterator
+        Iterator iterator = keyset.iterator();
+        while (iterator.hasNext()) {
+            Object next = iterator.next();
+            System.out.println(next);
+        }
+        //2.只取所有的values
+        Collection values = map.values();
+        for (Object value :values) {
+            System.out.println(values);
+        }
+        Iterator iterator1 = values.iterator();
+        while (iterator1.hasNext()) {
+            Object value = iterator1.next();
+            System.out.println(value);
+        }
+        //3.用entrySet获取所有k-v
+        Set entrySet = map.entrySet();
+        for (Object o :entrySet) { //entrySet存放的是entry对象
+            //将entry转为Map.Entry
+            Map.Entry m = (Map.Entry)o;
+            System.out.println(m.getKey()+"-"+m.getValue());
+        }
+        Iterator iterator2 = entrySet.iterator();
+        while (iterator2.hasNext()) {
+            Object entrynext = iterator2.next();  //entrynext运行类型是Node
+//            System.out.println(entrynext);
+            Map.Entry m =(Map.Entry) entrynext;
+            System.out.println(m.getKey()+ "-" +m.getValue());
+        }
+    }
+}
+
+
+
+p535 Map课堂练习
+用HashMap添加3个员工对象
+键 员工id
+值 员工对象
+员工类：姓名，工资，id
+遍历显式工资>18000的员工
+sal->emp(v)->k-v->Node->EntrySet
+
+package map;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
+public class MapExercise {
+    public static void main(String[] args) {
+        Map hashMap = new HashMap();
+        hashMap.put(1, new Emp("tom", 3000, 1));
+        hashMap.put(2, new Emp("jack", 420000, 2));
+        hashMap.put(3, new Emp("sean", 14000, 3));
+        Set keySet = hashMap.keySet();
+        for (Object key : keySet) {
+            //获取value
+            Emp emp = (Emp) hashMap.get(key);
+            if (emp.getSal() > 18000) {
+                System.out.println(emp);
+            }
+        }
+        Set entrySet = hashMap.entrySet();
+        Iterator iterator = entrySet.iterator();
+        while (iterator.hasNext()) {
+            Map.Entry next = (Map.Entry) iterator.next();
+            //通过Entry得到
+            Emp emp = (Emp) next.getValue();
+            if(emp.getSal() > 18000){
+                System.out.println(emp);
+            }
+        }
+    }
+}
+
+class Emp {
+    private String name;
+    private double sal;
+    private int id;
+
+    public Emp(String name, double sal, int id) {
+        this.name = name;
+        this.sal = sal;
+        this.id = id;
+    }
+ getter setter toString
+}
+
+
+p536 HashMap阶段小结
+
+Map常用实现类：HashMap Hashtable Properties
+HashMap是使用频率最高的实现类
+以k-v对的方法存储（HashMap$Node类）
+key不能重复 value可以重复
+相同key可以修改
+HashMap不同步，线程不安全
+底层是数组+链表+红黑树
+
+
+p537 HashMap底层机制
+数组->链表中存放节点Node Node实现了Map.Entry
+
+扩容机制和HashSet一致
+HM底层维护了Node类的数组table，默认null
+添加k-v是，通过key得到索引，判断是否有元素，若有判断是否相等，不相等判断树结构或链表结构
+
+
+
+p538 HashMap源码
+/*
+        HashMap map = new HashMap();
+        map.put(1,"1");
+        map.put(2,"2");
+        map.put(1,"3");
+        */
+ public HashMap() {
+        this.loadFactor = DEFAULT_LOAD_FACTOR; // all other fields defaulted
+    }
+    
+public V put(K key, V value) {
+        return putVal(hash(key), key, value, false, true);
+    }
+
+final V putVal(int hash, K key, V value, boolean onlyIfAbsent,
+                   boolean evict) {
+        Node<K,V>[] tab; Node<K,V> p; int n, i;
+        if ((tab = table) == null || (n = tab.length) == 0)
+            n = (tab = resize()).length;
+        if ((p = tab[i = (n - 1) & hash]) == null)
+            tab[i] = newNode(hash, key, value, null);
+        else {
+            Node<K,V> e; K k;
+            if (p.hash == hash &&
+                ((k = p.key) == key || (key != null && key.equals(k))))          //发现key值相同
+                e = p;                                                            //不加入新元素，直接赋值给e，进行下一步
+            else if (p instanceof TreeNode)
+                e = ((TreeNode<K,V>)p).putTreeVal(this, tab, hash, key, value);
+            else {
+                for (int binCount = 0; ; ++binCount) {
+                    if ((e = p.next) == null) {
+                        p.next = newNode(hash, key, value, null);
+                        if (binCount >= TREEIFY_THRESHOLD - 1) // -1 for 1st
+                            treeifyBin(tab, hash);
+                        break;
+                    }
+                    if (e.hash == hash &&
+                        ((k = e.key) == key || (key != null && key.equals(k))))
+                        break;
+                    p = e;
+                }
+            }
+            if (e != null) { // existing mapping for key                  //value改变
+                V oldValue = e.value;
+                if (!onlyIfAbsent || oldValue == null)
+                    e.value = value;                                     //新的value替换旧的value
+                afterNodeAccess(e);
+                return oldValue;
+            }
+        }
+        ++modCount;
+        if (++size > threshold)
+            resize();
+        afterNodeInsertion(evict);
+        return null;
+    }
+
+树化：
+
+final void treeifyBin(Node<K,V>[] tab, int hash) {
+        int n, index; Node<K,V> e;
+        if (tab == null || (n = tab.length) < MIN_TREEIFY_CAPACITY)  //table大小没有超出范围64
+            resize();                                                //table扩容
+        else if ((e = tab[index = (n - 1) & hash]) != null) {        //table大小超出64 开始树化
+            TreeNode<K,V> hd = null, tl = null;
+            do {
+                TreeNode<K,V> p = replacementTreeNode(e, null);
+                if (tl == null)
+                    hd = p;
+                else {
+                    p.prev = tl;
+                    tl.next = p;
+                }
+                tl = p;
+            } while ((e = e.next) != null);
+            if ((tab[index] = hd) != null)
+                hd.treeify(tab);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
