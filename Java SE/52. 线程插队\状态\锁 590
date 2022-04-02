@@ -1,0 +1,302 @@
+p590 插队
+1.yield 线程礼让，让出cpu，但礼让时间不确定，不一定礼让成功
+2.join 线程插队，插队成功，肯定先执行完插队线程所有任务
+      t1调用 t2.join, 先完成t2，再回到t1调用的地方
+        package methods;
+        public class ThreadMethod02 {
+            public static void main(String[] args) throws InterruptedException{
+                T2 t2 = new T2();
+                t2.start();
+                for (int i = 0; i < 20; i++) {
+                    Thread.sleep(1000);
+                    System.out.println("main" + i);
+                    if(i==5){
+                        System.out.println("thread0 first");
+                        t2.join();//Thread.yield(); 礼让可能不成功，因为资源充分时不需要礼让
+                    }
+                }
+            }
+        }
+        class T2 extends Thread{
+            @Override
+            public void run() {
+                for (int i = 0; i <20; i++) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println(Thread.currentThread().getName() + i);
+                }
+            }
+        }
+
+
+p591 插队练习
+
+
+package methods;
+        public class ThreadMethod02 {
+            public static void main(String[] args) throws InterruptedException{
+                T2 t2 = new T2();
+                for (int i = 0; i < 20; i++) {
+                    Thread.sleep(1000);
+                    System.out.println("main" + i);
+                    if(i==5){
+                        t2.start();
+                        t2.join();//Thread.yield(); 礼让可能不成功，因为资源充分时不需要礼让
+                    }
+                }
+            }
+        }
+        class T2 extends Thread{
+            @Override
+            public void run() {
+                for (int i = 0; i <10; i++) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println(Thread.currentThread().getName() + i);
+                }
+            }
+        }
+
+
+p592 守护线程
+
+用户线程：当线程完成或通知 结束
+守护线程：一般为用户线程服务，当系统里所有用户线程结束，守护才结束，如垃圾回收机制
+
+设置守护：
+    
+myDaemonThread.setDaemon(true);
+
+
+
+
+p593 生命周期 7大状态
+NEW           未启动    新创建
+RUNNABLE      JVM中执行 可运行
+BLOCKED       被阻塞
+WAITING        等待
+TIMED_WAITING  超时等待
+TERMINATED    已退出
+
+new-NEW-start -RUNNABLE（Ready ？线程调度器 Running）-终止-TERMINATED
+                 -等待锁-BLOCKED--获得锁-
+               -wait/join-WAIT-notify-
+            -sleep-TIMED_WAITING-时间结束--
+
+
+
+package state_;
+
+public class ThreadState_ {
+    public static void main(String[] args) throws InterruptedException {
+        T t = new T();
+        System.out.println(t.getName() + t.getState());
+        t.start();
+        while(Thread.State.TERMINATED != t.getState()){
+            System.out.println(t.getName() + t.getState());
+            Thread.sleep(1000);
+        }
+    }
+}
+class T extends Thread{
+    @Override
+    public void run() {
+        while(true){
+            for (int i = 0; i <10; i++) {
+                System.out.println(i);
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }break;
+        }
+    }
+}
+
+
+
+p594 线程同步synchronized
+
+同步：多线程中，一些数据不允许被多个线程同时访问，保证同一时刻最多一个线程访问
+线程同步，当由一个线程对内存操作时，其他线程都不能对该内存地址操作
+实现：synchronized
+1.同步代码块
+    synchronized（对象）{得到对象锁，才能操作}
+2.方法声明
+    public synchronized void m(String name){code}
+
+
+
+class SellTicket03 implements  Runnable{
+    private int ticketNum = 100;
+    private boolean loop = true;     //循环控制变量
+    public synchronized void sell(){ //同步方法，锁在this对象上
+        if(ticketNum<=0){
+            System.out.println("sold out");
+            loop = false;
+            return;
+        }
+        try {
+            Thread.sleep(50);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println(Thread.currentThread().getName() + "sold a ticket"+
+                "left " +(--ticketNum));
+    }
+
+    @Override
+    public void run() {
+        while(loop){
+            sell();
+        }
+    }
+}
+
+SellTicket03 sellTicket03 = new SellTicket03();
+
+        new Thread(sellTicket03).start();
+        new Thread(sellTicket03).start();
+        new Thread(sellTicket03).start();
+
+
+
+
+
+p595同步原理 互斥锁
+对象上带有一位锁
+t1 t2 t3抢锁，抢到锁的才能操作同步代码，然后归还锁，线程再次开始抢锁
+
+互斥锁
+会导致执行效率降低
+同步方法非静态锁可以加在this，也可以时其他对象（必须是同一个对象）
+同步方法静态 锁为当前类本身
+
+代码块上加锁
+public /*synchronized*/ void sell() {
+        synchronized (this) {     //锁依然加在this对象上
+            if (ticketNum <= 0) {
+                System.out.println("sold out");
+                loop = false;
+                return;
+            }
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println(Thread.currentThread().getName() + "sold a ticket" +
+                    "left " + (--ticketNum));
+        }
+    }
+
+因为    new Thread(sellTicket03).start();
+        new Thread(sellTicket03).start();
+        new Thread(sellTicket03).start();
+操作的是同一个对象，所以可以
+
+Object object = new Object();
+    public /*synchronized*/ void sell() {
+        synchronized (/*this*/object) {...}}
+
+
+静态方法：
+public synchronized static void m1(){} 此时锁在类上
+
+
+同步方法没有static，默认锁对象this
+方法由static，锁默认对象：当前类
+一般是同步代码块
+必须要操作同一个对象
+
+如：extends Thread
+new；new；new；
+对象不相同，无法在类定义中synchronized
+
+
+p596 死锁
+Object object = new Object();
+    public /*synchronized*/ void sell() {
+        synchronized (/*this*/new Object()) {...}}    每次声明新对象，无法同步
+        
+
+多线程都占用了对方的锁资源，不肯相让，导致死锁
+package syn;
+
+public class DeadLock {
+    public static void main(String[] args) {
+        DeadLockDemo a = new DeadLockDemo(true);
+        DeadLockDemo b = new DeadLockDemo(false);
+        a.start();
+        b.start();
+    }
+}
+class DeadLockDemo extends Thread{
+    static Object o1 = new Object();
+    static Object o2 = new Object();
+    boolean flag;
+    public DeadLockDemo(boolean flag) {
+        this.flag = flag;
+    }
+    @Override
+    public void run() {
+        if(flag){
+            synchronized (o1){//对象互斥锁，得不到o2，阻塞状态，也无法释放o1的资源
+                System.out.println("1");
+                synchronized (o2){
+                    System.out.println("2");
+                }
+            }
+        }else {
+            synchronized (o2){
+                System.out.println("2");
+                synchronized (o1){
+                    System.out.println("1");
+                }
+            }
+        }
+    }
+}
+
+需要避免这种代码写法
+
+p597 释放锁
+1.同步代码执行结束
+2.当前线程在同步中遇到break return
+3.遇到Error Exception
+4.当前线程执行了wait()，当前线程暂停并释放锁
+
+不会释放锁：
+sleep不会释放锁，yield 不会
+其他线程调用该线程的suspend方法，被挂起（running--挂起---ready)
+
+
+
+p598 本章作业
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
