@@ -1,0 +1,296 @@
+p580 进程线程
+
+程序program：我们的代码
+进程：运行的程序，操作系统会为进程分配内存空间
+    进程是程序的一次执行过程，或正在运行的一个程序，有产生，存在，消亡的过程
+线程：线程的实体
+    由进程创建，一个进程可以有多个线程（如一个迅雷有三个下载）
+
+
+p581 线程概念
+
+单线程：一个时刻只能运行一个线程
+多线程：可以运行多个线程
+并发：同一时刻，多任务交替执行，单cpu多任务就是并发
+并行：同一时刻，多任务同时执行，多核cpu
+
+        Runtime runtime = Runtime.getRuntime();
+        int i = runtime.availableProcessors();
+        System.out.println(i);
+        
+p582 创建线程
+java：
+    Thread类继承，重写run方法
+    实现Runnable接口，重写run方法
+
+1.继承Thread类
+
+package threaduse;
+public class Thread01 {
+    public static void main(String[] args) {
+        //Cat对象当作线程使用
+        Cat cat = new Cat();
+        cat.start();     //线程启动
+    }
+}
+//继承后该类就可以是线程
+//Thread类是实现了Runnable接口的run方法
+class Cat extends Thread{
+    int times = 0;
+    @Override
+    public void run() {
+        while(times<=8) {
+            System.out.println("I'm miao miao" + ++times + Thread.currentThread().getName());
+            //修眠1000ms
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+
+
+p583 多线程机制
+使用JConsole监控
+
+进程---main线程---cat.start---Thread-0线程
+    当main线程启动一个子线程，主线程不会阻塞，继续执行
+    主线程子线程交替执行
+main和thread0 的结束没有必然联系
+main结束，进程也不会退出，直到thread0也退出
+
+
+p584  start
+cat.start():启动一个新线程
+cat.run():主线程调用run方法，是串行化执行，run执行完毕，主线程才会继续向下执行
+
+
+public synchronized void start() {} 线程安全
+private native void start0();  start0 是native方法，由JVM调用，底层是C/C++
+
+start() 不一定马上执行线程，只是将线程变为可运行状态，具体执行时间由CPU调度
+
+
+
+p585 Runnable
+
+thread必须继承才能创建线程
+但java是单继承，很可能无法继承Thread
+
+此时需要Runnable接口
+
+
+
+
+
+
+
+p586 多线程
+
+package threaduse;
+public class Thread03 {
+    public static void main(String[] args) {
+        T1 t1 = new T1();
+        T2 t2 = new T2();
+        Thread thread1 = new Thread(t1);
+        Thread thread2 = new Thread(t2);
+        thread1.start();
+        thread2.start();
+        //main启动两个线程后直接退出
+    }
+}
+class T1 implements Runnable{
+    int count = 0;
+    @Override
+    public void run() {
+        while(count<=10) {
+            System.out.println("hello world" + (++count));
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+class T2 implements Runnable{
+    int count = 0;
+    @Override
+    public void run() {
+        while(count<=10) {
+            System.out.println("hi Sean" + (++count));
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+
+
+本质来说，Thread Runnable 底层都是通过start实现，没有区别
+实现Runnable接口方式更适合多线程共享一个资源的情况，避免了单继承
+
+T3 implements Runnable
+
+T3 t3 = new T3();//一个实现方法
+Thread thread1=new Thread(t3);
+Thread thread2=new Thread(t3);//两个线程使用
+thread1.start(); 
+thread2.start();
+
+
+
+p587 多线程售票
+package ticket;
+
+public class SellTicket {
+    public static void main(String[] args) {
+//        SellTicket01 sellTicket01 = new SellTicket01();
+//        SellTicket01 sellTicket02 = new SellTicket01();
+//        SellTicket01 sellTicket03 = new SellTicket01();
+//        //超卖了
+//        sellTicket01.start();
+//        sellTicket02.start();
+//        sellTicket03.start();
+        SellTicket02 sellTicket02 = new SellTicket02();
+
+        new Thread(sellTicket02).start();
+        new Thread(sellTicket02).start();
+        new Thread(sellTicket02).start();
+        //也会超卖
+    }
+}
+class SellTicket01 extends Thread{
+    private static int ticketNum = 20;
+
+    @Override
+    public void run() {
+        while(true){
+            if(ticketNum<=0){
+                System.out.println("sold out");
+                break;
+            }
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println(Thread.currentThread().getName() + "sold a ticket"+
+                    "left " +(--ticketNum));
+        }
+    }
+}
+class SellTicket02 implements Runnable{
+    private static int ticketNum = 20;
+
+    @Override
+    public void run() {
+        while(true){
+            if(ticketNum<=0){
+                System.out.println("sold out");
+                break;
+            }
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println(Thread.currentThread().getName() + "sold a ticket"+
+                    "left " +(--ticketNum));
+        }
+    }
+}
+
+
+
+p588 线程终止
+1.完成任务自动退出
+2.通过使用变量来控制run方法退出的 停止线程即通知
+
+
+package exit_;
+public class ThreadExit {
+    public static void main(String[] args) throws InterruptedException {
+        T t1 = new T();
+        t1.start();
+        //若由main修改loop，控制t1的终止
+        //main休眠10秒再通知退出
+        Thread.sleep(10*1000);
+        t1.setLoop(false);
+    }
+}
+class T extends Thread{
+    private int count = 0;
+    private boolean loop = true;
+    @Override
+    public void run() {
+        while(loop) {
+            System.out.println("hello world" + (++count));
+            try {
+                Thread.sleep(60);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    public void setLoop(boolean loop) {
+        this.loop = loop;
+    }
+}
+
+
+p589 常用方法
+setName  设置名称
+getName
+start      底层会创建新线程并调用run
+run        不会创建新线程，只是调用方法
+setPriority  设置优先级
+getPriority
+sleep
+interrupt   中断线程（不是终止）一般是中断休眠的线程
+
+package methods;
+
+public class ThreadMethod {
+    public static void main(String[] args) throws InterruptedException {
+        T t = new T();
+        t.setName("1");
+        t.setPriority(Thread.MIN_PRIORITY);
+        t.start();
+
+        //main输出5个hi，然后中断休眠
+        for (int i = 0; i < 5; i++) {
+            Thread.sleep(1000);
+            System.out.println("hi" + i);
+
+        }
+        System.out.println(t.getName()+t.getPriority());
+        t.interrupt();
+
+    }
+}
+class T extends Thread{
+    @Override
+    public void run() {
+        for (int i = 0; i < 100; i++) {
+            System.out.println(Thread.currentThread().getName() + i);
+        }
+        try {
+            System.out.println(Thread.currentThread().getName()+ " sleeping");
+            Thread.sleep(20000);
+        } catch (InterruptedException e) {
+            System.out.println(Thread.currentThread().getName()+ " interrupt");
+        }
+    }
+}
+
+
+
+
+
+
+
