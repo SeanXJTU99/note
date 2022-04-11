@@ -26,25 +26,116 @@ p664 域名 端口
 
 p665 通信协议
 网络中数据的组织形式
+应用层
+传输层
+网络层
+数据链路+物理层
+
+p666 TCPUDP
+传输层 
+TCP：传输控制协议
+     先建立TCP链接，形成通道
+     三次握手
+     B-S
+     可进行大数据量传输
+     传输完毕释放链接
+UDP：
+     数据，源，目的封装为数据包
+     每个数据报64k
+     无需链接，不可靠，类似发短信
+     发送结束不需要释放资源，速度快
+     不一定送达
+   
+
+
+p667 InetAddress类
+        //获取本机对象
+        InetAddress localHost = InetAddress.getLocalHost();
+        System.out.println(localHost);//DESKTOP-GCI7539/192.168.0.109
+
+        //根据域名获取对象
+        InetAddress byName = InetAddress.getByName("www.baidu.com");
+        System.out.println(byName);//www.baidu.com/14.215.177.39
+        //根据对象获取地址
+        String hostAddress = byName.getHostAddress();
+        System.out.println(hostAddress);//14.215.177.39
+        //获取主机或域名
+        String hostName = byName.getHostName();
+        System.out.println(hostName);//www.baidu.com
 
 
 
+p668 Socket
+套接字开发时事实上的标准
+通信两端都有Socket
+通信实际上是Socket之间的通信
+Socket允许程序将网络连接作为一个流，数据在两个Socket间IO传输
+主动发起通信的程序是客户端，等待监听的是服务端
+
+socket.getOutputStream() 将数据写入通道（网络）
+socket.getInputStream()  从通道读入数据
+
+Socket分为TCP编程和UDP编程
+
+
+p669 TCP字节流
+
+服务端在9999监听，等待链接
+没有客户端连接9999时，程序阻塞，等待连接
+客户端发起链接
+传输数据
+服务端接收并显示
+关闭Socket
+
+
+public class SocketTCP01Server {
+    public static void main(String[] args) throws IOException {
+        //在本机9999监听
+        ServerSocket serverSocket = new ServerSocket(9999);
+        System.out.println("server listening at 9999 port");
+        //无客户端连接时，程序阻塞
+
+        //若有连接，返回一个socket对象
+        Socket socket = serverSocket.accept();
+        System.out.println("server socket = " + socket.getClass());
+        //通过socket获得输入流对象
+        InputStream inputStream = socket.getInputStream();
+        //IO读取
+        byte[] buf = new byte[1024];
+        int readLen = 0;
+        while((readLen = inputStream.read(buf))!= -1){
+            System.out.println(new String(buf, 0, readLen));
+        }
+        //释放资源
+        inputStream.close();
+        socket.close();
+        serverSocket.close();//serverSocket 可以建立多个socket连接多个客户端（多并发）
+    }
+}
+
+
+public class SocketTCP01Client {
+    public static void main(String[] args) throws IOException {
+        //建立客户端,连接服务器
+        Socket socket = new Socket(InetAddress.getLocalHost(),
+                9999);//连接本机9999端口
+        System.out.println("client socket = " + socket.getClass());
+        //连接上后生成Socket，得到字节输出流对象
+        OutputStream outputStream = socket.getOutputStream();
+        //写入数据并发送
+        outputStream.write("hello, server".getBytes());
+        //释放资源
+        outputStream.close();
+        socket.close();
+        System.out.println("client quit");
+    }
+}
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+p670 TCP02
+客户端发送helloserver，并接收服务器回发的helloclient，再退出
+服务端接收信息并发送helloclient再退出
 
 
 
